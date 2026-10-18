@@ -1,0 +1,265 @@
+﻿@page "/RabbitTaskCreate/{rabbitTasksId:int?}"
+@using Application.ServiceContract
+@using FluentValidation
+@using MWSMan.Core.Model.Events
+@using Model.ApplicationModels
+@using Blazor.PersianDatePicker
+@using Model.PresentationModels
+@using Model.PublicModels
+@rendermode InteractiveServer
+@inject IRequestHubService requestHubService
+@inject IList<ServerSelected> servers
+@inject IRabbitTaskService taskService
+@inject IValidator<RabbitTasks> TaskValidator
+@inject CenterEvent centerEvent
+
+
+<title>ایجاد وظایف با زمانبندی</title>
+<!-- Bootstrap 5 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+
+<style>
+    /* body {
+                                min-height: 100vh;
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                background: #f8f9fa;
+                                font-family: Tahoma, sans-serif;
+                            } */
+
+    .form-container {
+        background: #ffffff7a;
+        border-radius: 10px;
+        padding: 30px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        max-width: 600px;
+        width: 85%;
+        min-width: 500px;
+        direction: rtl;
+        overflow: hidden;
+        transform: scale(1.2);
+        transform-origin: center;
+        margin-left: 12%;
+    }
+
+    .parameters-container {
+        max-height: 320px;
+        overflow-y: auto;
+        margin-bottom: 15px;
+        padding-right: 5px;
+    }
+
+    .form-row {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 10px;
+        margin-top: 5px;
+    }
+
+        .form-row input, .form-row select {
+            flex: 1;
+        }
+
+    .submit-btn {
+        display: block;
+        margin: 5px auto;
+        /* width: 120px; */
+    }
+
+    /* Scrollbar خوشگل */
+    .parameters-container::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .parameters-container::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 4px;
+    }
+
+    .parameters-container::-webkit-scrollbar-thumb {
+        background: #007bff;
+        border-radius: 4px;
+    }
+
+        .parameters-container::-webkit-scrollbar-thumb:hover {
+            background: #0056b3;
+        }
+
+    .remove-btn {
+        background: transparent;
+        border: none;
+        color: red;
+        font-size: 18px;
+        cursor: pointer;
+    }
+
+    .parameters-container {
+        scrollbar-width: none;
+    }
+
+        .parameters-container::-webkit-scrollbar {
+            display: none;
+        }
+
+    /* Shadow بالا و پایین فرم اصلی */
+    .form-container {
+        box-shadow: 0 -10px 15px rgba(0,0,0,.05), 0 10px 20px rgba(0,0,0,.15);
+    }
+
+    .invalid {
+        border: 2px solid red !important;
+    }
+
+</style>
+
+
+@if (ShowAlert)
+{
+    <div style="margin-left:11%;z-index:100;max-width: 500px;" class="alert alert-success alert-dismissible fade show" role="alert">
+        @AlertMessage
+        <button type="button" class="btn-close" @onclick="() => ShowAlert = false"></button>
+    </div>
+}
+
+
+
+
+<div class="form-container">
+    <!-- اولین ردیف: select -->
+    <div class="form-row mb-3 d-block">
+        <label class="col-form-label">نام :</label>
+        <input type="Text" class="form-control" @bind="@rabbitTasks.TaskName" />
+        <label class="col-form-label">تاریخ شروع :</label>
+        <InputPersianDatePicker Theme="PickerTheme.Blue" Placeholder="تاریخ"
+                                MinDateSetOnToday="true" CssClass="form-control" CalendarType="Calendar.DualModeJalaliDefault" @bind-ValueAsDateOnly="FromDate" @bind-Value="rabbitTasks.FromPersianDate"></InputPersianDatePicker>
+
+        <label class="col-form-label">تاریخ پایان :</label>
+        <InputPersianDatePicker Theme="PickerTheme.Blue" Placeholder="تاریخ"
+                                MinDateSetOnToday="true" CssClass="form-control" CalendarType="Calendar.DualModeJalaliDefault" @bind-ValueAsDateOnly="ToDate" @bind-Value="rabbitTasks.ToPersianDate"></InputPersianDatePicker>
+
+
+
+        <label class="col-form-label mt-1">نام درخواست یا پیام آماده :</label>
+        <select id="nameSelect" class="form-select" @bind="RequestHubId">
+            <option value="">انتخاب کنید</option>
+
+            @foreach (var item in ReqOrMessHubList)
+            {
+                <option value="@item.Id">@item.RequestName - @item.ProcessorName - @(item.IsTransactional?"درخواست":"پیام")</option>
+            }
+        </select>
+
+        <label class="col-form-label">ساعت :</label>
+        <input type="Text" class="form-control" @bind="@rabbitTasks.IntervalHour" />
+        <label class="col-form-label">دقیقه :</label>
+        <input type="Text" class="form-control" @bind="@rabbitTasks.IntervalMinute" min="0" max="59" />
+        @*<label class="col-form-label"> :</label>
+        <input type="Text" class="form-control" @bind="@rabbitTasks.TaskName" /> *@
+    </div>
+    <button type="button" class="btn btn-primary submit-btn" @onclick="() => CreateTask()">ایجاد یا ویرایش وظیفه </button>
+</div>
+
+@code
+{
+    DateOnly? FromDate = DateOnly.FromDateTime(DockerStaticDateTime.NowDateTime);
+    DateOnly? ToDate = DateOnly.FromDateTime(DockerStaticDateTime.NowDateTime.AddDays(30));
+
+
+
+
+    [Parameter]
+    public int? rabbitTasksId { get; set; }
+    private RabbitTasks rabbitTasks;
+
+    bool ShowAlert = false;
+    string AlertMessage = "";
+    int RequestHubId;
+    private IEnumerable<RabbitConsumerRequestHub> ReqOrMessHubList = new List<RabbitConsumerRequestHub>();
+
+    protected async override Task OnInitializedAsync()
+    {
+        var result = await requestHubService.ReadAllAsync();
+        if (!result.IsSuccess)
+        {
+            AlertMessage = "مشکلی در فراخوانی دیتا به وجود آمده است";
+            ShowAlert = true;
+            StateHasChanged();
+        }
+        ReqOrMessHubList = result.Data ?? ReqOrMessHubList;
+    }
+    protected override async Task OnParametersSetAsync()
+    {
+        if (rabbitTasksId is not null)
+        {
+            rabbitTasks = (await taskService.ReadAsync(rabbitTasksId.Value, p => p.RabbitTaskServerss)).Data;
+            servers.ToList().ForEach(p => p.isSelected = false);
+            servers.ToList().ForEach(p => p.isSelected = (rabbitTasks?.RabbitTaskServerss?.Select(s => s.ServerName.ToLower()).Contains(p.serverInfo.ServerName.ToLower()) ?? false));
+            centerEvent.ServerEventCaller();
+        }
+        else
+        {
+            rabbitTasks = new RabbitTasks();
+        }
+        await base.OnParametersSetAsync();
+    }
+
+    private async Task CreateTask()
+    {
+
+        rabbitTasks.FromDateTime = (FromDate.Value).ToDateTime(TimeOnly.FromDateTime(DockerStaticDateTime.NowDateTime));
+        rabbitTasks.ToDateTime = (ToDate.Value).ToDateTime(TimeOnly.FromDateTime(DockerStaticDateTime.NowDateTime));
+        rabbitTasks.RabbitConsumerRequestHubId = RequestHubId;
+        rabbitTasks.IntervalTotalMinute = (short)((rabbitTasks.IntervalHour * 60) + rabbitTasks.IntervalMinute);
+        if (!Validation(out string? err))
+        {
+            AlertMessage = err;
+            ShowAlert = true;
+            return;
+        }
+        ICollection<RabbitTaskServers> rabbitTaskserverss = servers.Where(p => p.isSelected).Select(s => new RabbitTaskServers()
+        {
+            ServerName = s.serverInfo.ServerName,
+            RabbitTasks = rabbitTasks
+        }).ToList();
+        rabbitTasks.RabbitTaskServerss = rabbitTaskserverss;
+        OperationResult result;
+        if (rabbitTasksId is not null)
+            result = await taskService.UpdateAsync(rabbitTasks);
+        else
+            result = await taskService.CreateAsync(rabbitTasks);
+
+        if (!result.IsSuccess)
+        {
+            ShowAlert = true;
+            AlertMessage = result.ErrMsg;
+        }
+        else
+        {
+            ShowAlert = true;
+            AlertMessage = "موفق بود";
+        }
+    }
+
+    private bool Validation(out string? errmsg)
+    {
+        errmsg = null;
+        if (!servers.Any(p => p.isSelected))
+        {
+            errmsg = "سروری انتخاب نشده است";
+            return false;
+        }
+        if (RequestHubId < 1)
+        {
+            errmsg = "پردازشگری انتخاب نشده است";
+            return false;
+        }
+        var validate = TaskValidator.Validate(rabbitTasks);
+        if (!validate.IsValid)
+        {
+            errmsg = validate.Errors.First().ErrorMessage;
+            return false;
+        }
+        return true;
+    }
+}

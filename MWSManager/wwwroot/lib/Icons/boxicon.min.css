@@ -1,0 +1,6929 @@
+﻿@font-face {
+    font-family: boxicons;
+    font-weight: 400;
+    font-style: normal;
+    src: url(../fonts/boxicons.eot);
+    src: url(../fonts/boxicons.eot)format("embedded-opentype"),url(../fonts/boxicons.woff2)format("woff2"),url(../fonts/boxicons.woff)format("woff"),url(../fonts/boxicons.ttf)format("truetype"),url(../fonts/boxicons.svg?#boxicons)format("svg")
+}
+
+.bx {
+    font-variant: normal;
+    text-rendering: auto;
+    text-transform: none;
+    speak: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1;
+    display: inline-block;
+    font-family: boxicons !important
+}
+
+.bx-ul {
+    margin-left: 2em;
+    padding-left: 0;
+    list-style: none
+}
+
+    .bx-ul > li {
+        position: relative
+    }
+
+    .bx-ul .bx {
+        font-size: inherit;
+        line-height: inherit;
+        text-align: center;
+        width: 2em;
+        position: absolute;
+        left: -2em
+    }
+
+@-webkit-keyframes spin {
+    0% {
+        -webkit-transform: rotate(0);
+        transform: rotate(0)
+    }
+
+    to {
+        -webkit-transform: rotate(359deg);
+        transform: rotate(359deg)
+    }
+}
+
+@keyframes spin {
+    0% {
+        -webkit-transform: rotate(0);
+        transform: rotate(0)
+    }
+
+    to {
+        -webkit-transform: rotate(359deg);
+        transform: rotate(359deg)
+    }
+}
+
+@-webkit-keyframes burst {
+    0% {
+        opacity: 1;
+        -webkit-transform: scale(1);
+        transform: scale(1)
+    }
+
+    90% {
+        opacity: 0;
+        -webkit-transform: scale(1.5);
+        transform: scale(1.5)
+    }
+}
+
+@keyframes burst {
+    0% {
+        opacity: 1;
+        -webkit-transform: scale(1);
+        transform: scale(1)
+    }
+
+    90% {
+        opacity: 0;
+        -webkit-transform: scale(1.5);
+        transform: scale(1.5)
+    }
+}
+
+@-webkit-keyframes flashing {
+    0% {
+        opacity: 1
+    }
+
+    45% {
+        opacity: 0
+    }
+
+    90% {
+        opacity: 1
+    }
+}
+
+@keyframes flashing {
+    0% {
+        opacity: 1
+    }
+
+    45% {
+        opacity: 0
+    }
+
+    90% {
+        opacity: 1
+    }
+}
+
+@-webkit-keyframes fade-left {
+    0% {
+        opacity: 1;
+        -webkit-transform: translate(0);
+        transform: translate(0)
+    }
+
+    75% {
+        opacity: 0;
+        -webkit-transform: translate(-20px);
+        transform: translate(-20px)
+    }
+}
+
+@keyframes fade-left {
+    0% {
+        opacity: 1;
+        -webkit-transform: translate(0);
+        transform: translate(0)
+    }
+
+    75% {
+        opacity: 0;
+        -webkit-transform: translate(-20px);
+        transform: translate(-20px)
+    }
+}
+
+@-webkit-keyframes fade-right {
+    0% {
+        opacity: 1;
+        -webkit-transform: translate(0);
+        transform: translate(0)
+    }
+
+    75% {
+        opacity: 0;
+        -webkit-transform: translate(20px);
+        transform: translate(20px)
+    }
+}
+
+@keyframes fade-right {
+    0% {
+        opacity: 1;
+        -webkit-transform: translate(0);
+        transform: translate(0)
+    }
+
+    75% {
+        opacity: 0;
+        -webkit-transform: translate(20px);
+        transform: translate(20px)
+    }
+}
+
+@-webkit-keyframes fade-up {
+    0% {
+        opacity: 1;
+        -webkit-transform: translateY(0);
+        transform: translateY(0)
+    }
+
+    75% {
+        opacity: 0;
+        -webkit-transform: translateY(-20px);
+        transform: translateY(-20px)
+    }
+}
+
+@keyframes fade-up {
+    0% {
+        opacity: 1;
+        -webkit-transform: translateY(0);
+        transform: translateY(0)
+    }
+
+    75% {
+        opacity: 0;
+        -webkit-transform: translateY(-20px);
+        transform: translateY(-20px)
+    }
+}
+
+@-webkit-keyframes fade-down {
+    0% {
+        opacity: 1;
+        -webkit-transform: translateY(0);
+        transform: translateY(0)
+    }
+
+    75% {
+        opacity: 0;
+        -webkit-transform: translateY(20px);
+        transform: translateY(20px)
+    }
+}
+
+@keyframes fade-down {
+    0% {
+        opacity: 1;
+        -webkit-transform: translateY(0);
+        transform: translateY(0)
+    }
+
+    75% {
+        opacity: 0;
+        -webkit-transform: translateY(20px);
+        transform: translateY(20px)
+    }
+}
+
+@-webkit-keyframes tada {
+    0% {
+        -webkit-transform: scale(1);
+        transform: scale(1)
+    }
+
+    10%,20% {
+        -webkit-transform: scale3d(.95,.95,.95)rotate(-10deg);
+        transform: scale3d(.95,.95,.95)rotate(-10deg)
+    }
+
+    30%,50%,70%,90% {
+        -webkit-transform: scale(1)rotate(10deg);
+        transform: scale(1)rotate(10deg)
+    }
+
+    40%,60%,80% {
+        -webkit-transform: scale(1)rotate(-10deg);
+        transform: scale(1)rotate(-10deg)
+    }
+
+    to {
+        -webkit-transform: scale(1);
+        transform: scale(1)
+    }
+}
+
+@keyframes tada {
+    0% {
+        -webkit-transform: scale(1);
+        transform: scale(1)
+    }
+
+    10%,20% {
+        -webkit-transform: scale3d(.95,.95,.95)rotate(-10deg);
+        transform: scale3d(.95,.95,.95)rotate(-10deg)
+    }
+
+    30%,50%,70%,90% {
+        -webkit-transform: scale(1)rotate(10deg);
+        transform: scale(1)rotate(10deg)
+    }
+
+    40%,60%,80% {
+        -webkit-transform: rotate(-10deg);
+        transform: rotate(-10deg)
+    }
+
+    to {
+        -webkit-transform: scale(1);
+        transform: scale(1)
+    }
+}
+
+.bx-spin, .bx-spin-hover:hover {
+    -webkit-animation: 2s linear infinite spin;
+    animation: 2s linear infinite spin
+}
+
+.bx-tada, .bx-tada-hover:hover {
+    -webkit-animation: 1.5s infinite tada;
+    animation: 1.5s infinite tada
+}
+
+.bx-flashing, .bx-flashing-hover:hover {
+    -webkit-animation: 1.5s linear infinite flashing;
+    animation: 1.5s linear infinite flashing
+}
+
+.bx-burst, .bx-burst-hover:hover {
+    -webkit-animation: 1.5s linear infinite burst;
+    animation: 1.5s linear infinite burst
+}
+
+.bx-fade-up, .bx-fade-up-hover:hover {
+    -webkit-animation: 1.5s linear infinite fade-up;
+    animation: 1.5s linear infinite fade-up
+}
+
+.bx-fade-down, .bx-fade-down-hover:hover {
+    -webkit-animation: 1.5s linear infinite fade-down;
+    animation: 1.5s linear infinite fade-down
+}
+
+.bx-fade-left, .bx-fade-left-hover:hover {
+    -webkit-animation: 1.5s linear infinite fade-left;
+    animation: 1.5s linear infinite fade-left
+}
+
+.bx-fade-right, .bx-fade-right-hover:hover {
+    -webkit-animation: 1.5s linear infinite fade-right;
+    animation: 1.5s linear infinite fade-right
+}
+
+.bx-xs {
+    font-size: 1rem !important
+}
+
+.bx-sm {
+    font-size: 1.55rem !important
+}
+
+.bx-md {
+    font-size: 2.25rem !important
+}
+
+.bx-lg {
+    font-size: 3rem !important
+}
+
+.bx-fw {
+    vertical-align: middle;
+    width: 1.28571em;
+    height: .8em;
+    font-size: 1.28571em;
+    line-height: .8em;
+    margin-top: -.2em !important
+}
+
+.bx-pull-left {
+    float: left;
+    margin-right: .3em !important
+}
+
+.bx-pull-right {
+    float: right;
+    margin-left: .3em !important
+}
+
+.bx-rotate-90 {
+    transform: rotate(90deg)
+}
+
+.bx-rotate-180 {
+    transform: rotate(180deg)
+}
+
+.bx-rotate-270 {
+    transform: rotate(270deg)
+}
+
+.bx-flip-horizontal {
+    transform: scaleX(-1)
+}
+
+.bx-flip-vertical {
+    transform: scaleY(-1)
+}
+
+.bx-border {
+    border: .07em solid #0000001a;
+    border-radius: .25em;
+    padding: .25em
+}
+
+.bx-border-circle {
+    border: .07em solid #0000001a;
+    border-radius: 50%;
+    padding: .25em
+}
+
+.bxs-balloon:before {
+    content: "ī­ "
+}
+
+.bxs-castle:before {
+    content: "ī­¹"
+}
+
+.bxs-coffee-bean:before {
+    content: "ī®’"
+}
+
+.bxs-objects-horizontal-center:before {
+    content: "ī®«"
+}
+
+.bxs-objects-horizontal-left:before {
+    content: "īÆ„"
+}
+
+.bxs-objects-horizontal-right:before {
+    content: "īÆ¯"
+}
+
+.bxs-objects-vertical-bottom:before {
+    content: "īÆ¶"
+}
+
+.bxs-objects-vertical-center:before {
+    content: "ī½€"
+}
+
+.bxs-objects-vertical-top:before {
+    content: "ī½"
+}
+
+.bxs-pear:before {
+    content: "ī½‚"
+}
+
+.bxs-shield-minus:before {
+    content: "ī½"
+}
+
+.bxs-shield-plus:before {
+    content: "ī½„"
+}
+
+.bxs-shower:before {
+    content: "ī½…"
+}
+
+.bxs-sushi:before {
+    content: "ī½†"
+}
+
+.bxs-universal-access:before {
+    content: "ī½‡"
+}
+
+.bx-child:before {
+    content: "ī½"
+}
+
+.bx-horizontal-left:before {
+    content: "ī½‰"
+}
+
+.bx-horizontal-right:before {
+    content: "ī½"
+}
+
+.bx-objects-horizontal-center:before {
+    content: "ī½‹"
+}
+
+.bx-objects-horizontal-left:before {
+    content: "ī½"
+}
+
+.bx-objects-horizontal-right:before {
+    content: "ī½¨"
+}
+
+.bx-objects-vertical-bottom:before {
+    content: "ī½ˇ"
+}
+
+.bx-objects-vertical-center:before {
+    content: "ī½¸"
+}
+
+.bx-objects-vertical-top:before {
+    content: "ī½"
+}
+
+.bx-rfid:before {
+    content: "ī½‘"
+}
+
+.bx-shield-minus:before {
+    content: "ī½’"
+}
+
+.bx-shield-plus:before {
+    content: "ī½“"
+}
+
+.bx-shower:before {
+    content: "ī½”"
+}
+
+.bx-sushi:before {
+    content: "ī½•"
+}
+
+.bx-universal-access:before {
+    content: "ī½–"
+}
+
+.bx-vertical-bottom:before {
+    content: "ī½—"
+}
+
+.bx-vertical-top:before {
+    content: "ī½"
+}
+
+.bxl-graphql:before {
+    content: "ī½™"
+}
+
+.bxl-typescript:before {
+    content: "ī½"
+}
+
+.bxs-color:before {
+    content: "ī¼¹"
+}
+
+.bx-reflect-horizontal:before {
+    content: "ī¼ŗ"
+}
+
+.bx-reflect-vertical:before {
+    content: "ī¼»"
+}
+
+.bx-color:before {
+    content: "ī¼¼"
+}
+
+.bxl-mongodb:before {
+    content: "ī¼½"
+}
+
+.bxl-postgresql:before {
+    content: "ī¼¾"
+}
+
+.bxl-deezer:before {
+    content: "ī¼æ"
+}
+
+.bxs-hard-hat:before {
+    content: "ī¼Ŗ"
+}
+
+.bxs-home-alt-2:before {
+    content: "ī¼«"
+}
+
+.bxs-cheese:before {
+    content: "ī¼¬"
+}
+
+.bx-home-alt-2:before {
+    content: "ī¼­"
+}
+
+.bx-hard-hat:before {
+    content: "ī¼®"
+}
+
+.bx-cheese:before {
+    content: "ī¼Æ"
+}
+
+.bx-cart-add:before {
+    content: "ī¼°"
+}
+
+.bx-cart-download:before {
+    content: "ī¼±"
+}
+
+.bx-no-signal:before {
+    content: "ī¼²"
+}
+
+.bx-signal-1:before {
+    content: "ī¼³"
+}
+
+.bx-signal-2:before {
+    content: "ī¼´"
+}
+
+.bx-signal-3:before {
+    content: "ī¼µ"
+}
+
+.bx-signal-4:before {
+    content: "ī¼¶"
+}
+
+.bx-signal-5:before {
+    content: "ī¼·"
+}
+
+.bxl-xing:before {
+    content: "ī¼ø"
+}
+
+.bxl-meta:before {
+    content: "ī¼§"
+}
+
+.bx-lemon:before {
+    content: "ī¼Ø"
+}
+
+.bxs-lemon:before {
+    content: "ī¼©"
+}
+
+.bx-cricket-ball:before {
+    content: "ī¼"
+}
+
+.bx-baguette:before {
+    content: "ī¼¨"
+}
+
+.bx-bowl-hot:before {
+    content: "ī¼ˇ"
+}
+
+.bx-bowl-rice:before {
+    content: "ī¼¸"
+}
+
+.bx-cable-car:before {
+    content: "ī¼"
+}
+
+.bx-candles:before {
+    content: "ī¼‘"
+}
+
+.bx-circle-half:before {
+    content: "ī¼’"
+}
+
+.bx-circle-quarter:before {
+    content: "ī¼“"
+}
+
+.bx-circle-three-quarter:before {
+    content: "ī¼”"
+}
+
+.bx-cross:before {
+    content: "ī¼•"
+}
+
+.bx-fork:before {
+    content: "ī¼–"
+}
+
+.bx-knife:before {
+    content: "ī¼—"
+}
+
+.bx-money-withdraw:before {
+    content: "ī¼"
+}
+
+.bx-popsicle:before {
+    content: "ī¼™"
+}
+
+.bx-scatter-chart:before {
+    content: "ī¼"
+}
+
+.bxs-baguette:before {
+    content: "ī¼›"
+}
+
+.bxs-bowl-hot:before {
+    content: "ī¼"
+}
+
+.bxs-bowl-rice:before {
+    content: "ī¼¯"
+}
+
+.bxs-cable-car:before {
+    content: "ī¼˛"
+}
+
+.bxs-circle-half:before {
+    content: "ī¼"
+}
+
+.bxs-circle-quarter:before {
+    content: "ī¼ "
+}
+
+.bxs-circle-three-quarter:before {
+    content: "ī¼�"
+}
+
+.bxs-cricket-ball:before {
+    content: "ī¼¢"
+}
+
+.bxs-invader:before {
+    content: "ī¼£"
+}
+
+.bx-male-female:before {
+    content: "ī¼¤"
+}
+
+.bxs-popsicle:before {
+    content: "ī¼�"
+}
+
+.bxs-tree-alt:before {
+    content: "ī¼¦"
+}
+
+.bxl-venmo:before {
+    content: "ī¤€"
+}
+
+.bxl-upwork:before {
+    content: "ī¤"
+}
+
+.bxl-netlify:before {
+    content: "ī¤‚"
+}
+
+.bxl-java:before {
+    content: "ī¤"
+}
+
+.bxl-heroku:before {
+    content: "ī¤„"
+}
+
+.bxl-go-lang:before {
+    content: "ī¤…"
+}
+
+.bxl-gmail:before {
+    content: "ī¤†"
+}
+
+.bxl-flask:before {
+    content: "ī¤‡"
+}
+
+.bxl-99designs:before {
+    content: "ī¤"
+}
+
+.bxl-500px:before {
+    content: "ī¤‰"
+}
+
+.bxl-adobe:before {
+    content: "ī¤"
+}
+
+.bxl-airbnb:before {
+    content: "ī¤‹"
+}
+
+.bxl-algolia:before {
+    content: "ī¤"
+}
+
+.bxl-amazon:before {
+    content: "ī¤¨"
+}
+
+.bxl-android:before {
+    content: "ī¤ˇ"
+}
+
+.bxl-angular:before {
+    content: "ī¤¸"
+}
+
+.bxl-apple:before {
+    content: "ī¤"
+}
+
+.bxl-audible:before {
+    content: "ī¤‘"
+}
+
+.bxl-aws:before {
+    content: "ī¤’"
+}
+
+.bxl-baidu:before {
+    content: "ī¤“"
+}
+
+.bxl-behance:before {
+    content: "ī¤”"
+}
+
+.bxl-bing:before {
+    content: "ī¤•"
+}
+
+.bxl-bitcoin:before {
+    content: "ī¤–"
+}
+
+.bxl-blender:before {
+    content: "ī¤—"
+}
+
+.bxl-blogger:before {
+    content: "ī¤"
+}
+
+.bxl-bootstrap:before {
+    content: "ī¤™"
+}
+
+.bxl-chrome:before {
+    content: "ī¤"
+}
+
+.bxl-codepen:before {
+    content: "ī¤›"
+}
+
+.bxl-c-plus-plus:before {
+    content: "ī¤"
+}
+
+.bxl-creative-commons:before {
+    content: "ī¤¯"
+}
+
+.bxl-css3:before {
+    content: "ī¤˛"
+}
+
+.bxl-dailymotion:before {
+    content: "ī¤"
+}
+
+.bxl-deviantart:before {
+    content: "ī¤ "
+}
+
+.bxl-dev-to:before {
+    content: "ī¤�"
+}
+
+.bxl-digg:before {
+    content: "ī¤¢"
+}
+
+.bxl-digitalocean:before {
+    content: "ī¤£"
+}
+
+.bxl-discord:before {
+    content: "ī¤¤"
+}
+
+.bxl-discord-alt:before {
+    content: "ī¤�"
+}
+
+.bxl-discourse:before {
+    content: "ī¤¦"
+}
+
+.bxl-django:before {
+    content: "ī¤§"
+}
+
+.bxl-docker:before {
+    content: "ī¤Ø"
+}
+
+.bxl-dribbble:before {
+    content: "ī¤©"
+}
+
+.bxl-dropbox:before {
+    content: "ī¤Ŗ"
+}
+
+.bxl-drupal:before {
+    content: "ī¤«"
+}
+
+.bxl-ebay:before {
+    content: "ī¤¬"
+}
+
+.bxl-edge:before {
+    content: "ī¤­"
+}
+
+.bxl-etsy:before {
+    content: "ī¤®"
+}
+
+.bxl-facebook:before {
+    content: "ī¤Æ"
+}
+
+.bxl-facebook-circle:before {
+    content: "ī¤°"
+}
+
+.bxl-facebook-square:before {
+    content: "ī¤±"
+}
+
+.bxl-figma:before {
+    content: "ī¤²"
+}
+
+.bxl-firebase:before {
+    content: "ī¤³"
+}
+
+.bxl-firefox:before {
+    content: "ī¤´"
+}
+
+.bxl-flickr:before {
+    content: "ī¤µ"
+}
+
+.bxl-flickr-square:before {
+    content: "ī¤¶"
+}
+
+.bxl-flutter:before {
+    content: "ī¤·"
+}
+
+.bxl-foursquare:before {
+    content: "ī¤ø"
+}
+
+.bxl-git:before {
+    content: "ī¤¹"
+}
+
+.bxl-github:before {
+    content: "ī¤ŗ"
+}
+
+.bxl-gitlab:before {
+    content: "ī¤»"
+}
+
+.bxl-google:before {
+    content: "ī¤¼"
+}
+
+.bxl-google-cloud:before {
+    content: "ī¤½"
+}
+
+.bxl-google-plus:before {
+    content: "ī¤¾"
+}
+
+.bxl-google-plus-circle:before {
+    content: "ī¤æ"
+}
+
+.bxl-html5:before {
+    content: "ī�€"
+}
+
+.bxl-imdb:before {
+    content: "ī�"
+}
+
+.bxl-instagram:before {
+    content: "ī�‚"
+}
+
+.bxl-instagram-alt:before {
+    content: "ī�"
+}
+
+.bxl-internet-explorer:before {
+    content: "ī�„"
+}
+
+.bxl-invision:before {
+    content: "ī�…"
+}
+
+.bxl-javascript:before {
+    content: "ī�†"
+}
+
+.bxl-joomla:before {
+    content: "ī�‡"
+}
+
+.bxl-jquery:before {
+    content: "ī�"
+}
+
+.bxl-jsfiddle:before {
+    content: "ī�‰"
+}
+
+.bxl-kickstarter:before {
+    content: "ī�"
+}
+
+.bxl-kubernetes:before {
+    content: "ī�‹"
+}
+
+.bxl-less:before {
+    content: "ī�"
+}
+
+.bxl-linkedin:before {
+    content: "ī�¨"
+}
+
+.bxl-linkedin-square:before {
+    content: "ī�ˇ"
+}
+
+.bxl-magento:before {
+    content: "ī�¸"
+}
+
+.bxl-mailchimp:before {
+    content: "ī�"
+}
+
+.bxl-markdown:before {
+    content: "ī�‘"
+}
+
+.bxl-mastercard:before {
+    content: "ī�’"
+}
+
+.bxl-mastodon:before {
+    content: "ī�“"
+}
+
+.bxl-medium:before {
+    content: "ī�”"
+}
+
+.bxl-medium-old:before {
+    content: "ī�•"
+}
+
+.bxl-medium-square:before {
+    content: "ī�–"
+}
+
+.bxl-messenger:before {
+    content: "ī�—"
+}
+
+.bxl-microsoft:before {
+    content: "ī�"
+}
+
+.bxl-microsoft-teams:before {
+    content: "ī�™"
+}
+
+.bxl-nodejs:before {
+    content: "ī�"
+}
+
+.bxl-ok-ru:before {
+    content: "ī�›"
+}
+
+.bxl-opera:before {
+    content: "ī�"
+}
+
+.bxl-patreon:before {
+    content: "ī�¯"
+}
+
+.bxl-paypal:before {
+    content: "ī�˛"
+}
+
+.bxl-periscope:before {
+    content: "ī�"
+}
+
+.bxl-php:before {
+    content: "ī� "
+}
+
+.bxl-pinterest:before {
+    content: "ī��"
+}
+
+.bxl-pinterest-alt:before {
+    content: "ī�¢"
+}
+
+.bxl-play-store:before {
+    content: "ī�£"
+}
+
+.bxl-pocket:before {
+    content: "ī�¤"
+}
+
+.bxl-product-hunt:before {
+    content: "ī��"
+}
+
+.bxl-python:before {
+    content: "ī�¦"
+}
+
+.bxl-quora:before {
+    content: "ī�§"
+}
+
+.bxl-react:before {
+    content: "ī�Ø"
+}
+
+.bxl-redbubble:before {
+    content: "ī�©"
+}
+
+.bxl-reddit:before {
+    content: "ī�Ŗ"
+}
+
+.bxl-redux:before {
+    content: "ī�«"
+}
+
+.bxl-sass:before {
+    content: "ī�¬"
+}
+
+.bxl-shopify:before {
+    content: "ī�­"
+}
+
+.bxl-sketch:before {
+    content: "ī�®"
+}
+
+.bxl-skype:before {
+    content: "ī�Æ"
+}
+
+.bxl-slack:before {
+    content: "ī�°"
+}
+
+.bxl-slack-old:before {
+    content: "ī�±"
+}
+
+.bxl-snapchat:before {
+    content: "ī�²"
+}
+
+.bxl-soundcloud:before {
+    content: "ī�³"
+}
+
+.bxl-spotify:before {
+    content: "ī�´"
+}
+
+.bxl-spring-boot:before {
+    content: "ī�µ"
+}
+
+.bxl-squarespace:before {
+    content: "ī�¶"
+}
+
+.bxl-stack-overflow:before {
+    content: "ī�·"
+}
+
+.bxl-steam:before {
+    content: "ī�ø"
+}
+
+.bxl-stripe:before {
+    content: "ī�¹"
+}
+
+.bxl-tailwind-css:before {
+    content: "ī�ŗ"
+}
+
+.bxl-telegram:before {
+    content: "ī�»"
+}
+
+.bxl-tiktok:before {
+    content: "ī�¼"
+}
+
+.bxl-trello:before {
+    content: "ī�½"
+}
+
+.bxl-trip-advisor:before {
+    content: "ī�¾"
+}
+
+.bxl-tumblr:before {
+    content: "ī�æ"
+}
+
+.bxl-tux:before {
+    content: "ī¦€"
+}
+
+.bxl-twitch:before {
+    content: "ī¦"
+}
+
+.bxl-twitter:before {
+    content: "ī¦‚"
+}
+
+.bxl-unity:before {
+    content: "ī¦"
+}
+
+.bxl-unsplash:before {
+    content: "ī¦„"
+}
+
+.bxl-vimeo:before {
+    content: "ī¦…"
+}
+
+.bxl-visa:before {
+    content: "ī¦†"
+}
+
+.bxl-visual-studio:before {
+    content: "ī¦‡"
+}
+
+.bxl-vk:before {
+    content: "ī¦"
+}
+
+.bxl-vuejs:before {
+    content: "ī¦‰"
+}
+
+.bxl-whatsapp:before {
+    content: "ī¦"
+}
+
+.bxl-whatsapp-square:before {
+    content: "ī¦‹"
+}
+
+.bxl-wikipedia:before {
+    content: "ī¦"
+}
+
+.bxl-windows:before {
+    content: "ī¦¨"
+}
+
+.bxl-wix:before {
+    content: "ī¦ˇ"
+}
+
+.bxl-wordpress:before {
+    content: "ī¦¸"
+}
+
+.bxl-yahoo:before {
+    content: "ī¦"
+}
+
+.bxl-yelp:before {
+    content: "ī¦‘"
+}
+
+.bxl-youtube:before {
+    content: "ī¦’"
+}
+
+.bxl-zoom:before {
+    content: "ī¦“"
+}
+
+.bx-collapse-alt:before {
+    content: "ī¦”"
+}
+
+.bx-collapse-horizontal:before {
+    content: "ī¦•"
+}
+
+.bx-collapse-vertical:before {
+    content: "ī¦–"
+}
+
+.bx-expand-horizontal:before {
+    content: "ī¦—"
+}
+
+.bx-expand-vertical:before {
+    content: "ī¦"
+}
+
+.bx-injection:before {
+    content: "ī¦™"
+}
+
+.bx-leaf:before {
+    content: "ī¦"
+}
+
+.bx-math:before {
+    content: "ī¦›"
+}
+
+.bx-party:before {
+    content: "ī¦"
+}
+
+.bx-abacus:before {
+    content: "ī¦¯"
+}
+
+.bx-accessibility:before {
+    content: "ī¦˛"
+}
+
+.bx-add-to-queue:before {
+    content: "ī¦"
+}
+
+.bx-adjust:before {
+    content: "ī¦ "
+}
+
+.bx-alarm:before {
+    content: "ī¦�"
+}
+
+.bx-alarm-add:before {
+    content: "ī¦¢"
+}
+
+.bx-alarm-exclamation:before {
+    content: "ī¦£"
+}
+
+.bx-alarm-off:before {
+    content: "ī¦¤"
+}
+
+.bx-alarm-snooze:before {
+    content: "ī¦�"
+}
+
+.bx-album:before {
+    content: "ī¦¦"
+}
+
+.bx-align-justify:before {
+    content: "ī¦§"
+}
+
+.bx-align-left:before {
+    content: "ī¦Ø"
+}
+
+.bx-align-middle:before {
+    content: "ī¦©"
+}
+
+.bx-align-right:before {
+    content: "ī¦Ŗ"
+}
+
+.bx-analyse:before {
+    content: "ī¦«"
+}
+
+.bx-anchor:before {
+    content: "ī¦¬"
+}
+
+.bx-angry:before {
+    content: "ī¦­"
+}
+
+.bx-aperture:before {
+    content: "ī¦®"
+}
+
+.bx-arch:before {
+    content: "ī¦Æ"
+}
+
+.bx-archive:before {
+    content: "ī¦°"
+}
+
+.bx-archive-in:before {
+    content: "ī¦±"
+}
+
+.bx-archive-out:before {
+    content: "ī¦²"
+}
+
+.bx-area:before {
+    content: "ī¦³"
+}
+
+.bx-arrow-back:before {
+    content: "ī¦´"
+}
+
+.bx-arrow-from-bottom:before {
+    content: "ī¦µ"
+}
+
+.bx-arrow-from-left:before {
+    content: "ī¦¶"
+}
+
+.bx-arrow-from-right:before {
+    content: "ī¦·"
+}
+
+.bx-arrow-from-top:before {
+    content: "ī¦ø"
+}
+
+.bx-arrow-to-bottom:before {
+    content: "ī¦¹"
+}
+
+.bx-arrow-to-left:before {
+    content: "ī¦ŗ"
+}
+
+.bx-arrow-to-right:before {
+    content: "ī¦»"
+}
+
+.bx-arrow-to-top:before {
+    content: "ī¦¼"
+}
+
+.bx-at:before {
+    content: "ī¦½"
+}
+
+.bx-atom:before {
+    content: "ī¦¾"
+}
+
+.bx-award:before {
+    content: "ī¦æ"
+}
+
+.bx-badge:before {
+    content: "ī§€"
+}
+
+.bx-badge-check:before {
+    content: "ī§"
+}
+
+.bx-ball:before {
+    content: "ī§‚"
+}
+
+.bx-band-aid:before {
+    content: "ī§"
+}
+
+.bx-bar-chart:before {
+    content: "ī§„"
+}
+
+.bx-bar-chart-alt:before {
+    content: "ī§…"
+}
+
+.bx-bar-chart-alt-2:before {
+    content: "ī§†"
+}
+
+.bx-bar-chart-square:before {
+    content: "ī§‡"
+}
+
+.bx-barcode:before {
+    content: "ī§"
+}
+
+.bx-barcode-reader:before {
+    content: "ī§‰"
+}
+
+.bx-baseball:before {
+    content: "ī§"
+}
+
+.bx-basket:before {
+    content: "ī§‹"
+}
+
+.bx-basketball:before {
+    content: "ī§"
+}
+
+.bx-bath:before {
+    content: "ī§¨"
+}
+
+.bx-battery:before {
+    content: "ī§ˇ"
+}
+
+.bx-bed:before {
+    content: "ī§¸"
+}
+
+.bx-been-here:before {
+    content: "ī§"
+}
+
+.bx-beer:before {
+    content: "ī§‘"
+}
+
+.bx-bell:before {
+    content: "ī§’"
+}
+
+.bx-bell-minus:before {
+    content: "ī§“"
+}
+
+.bx-bell-off:before {
+    content: "ī§”"
+}
+
+.bx-bell-plus:before {
+    content: "ī§•"
+}
+
+.bx-bible:before {
+    content: "ī§–"
+}
+
+.bx-bitcoin:before {
+    content: "ī§—"
+}
+
+.bx-blanket:before {
+    content: "ī§"
+}
+
+.bx-block:before {
+    content: "ī§™"
+}
+
+.bx-bluetooth:before {
+    content: "ī§"
+}
+
+.bx-body:before {
+    content: "ī§›"
+}
+
+.bx-bold:before {
+    content: "ī§"
+}
+
+.bx-bolt-circle:before {
+    content: "ī§¯"
+}
+
+.bx-bomb:before {
+    content: "ī§˛"
+}
+
+.bx-bone:before {
+    content: "ī§"
+}
+
+.bx-bong:before {
+    content: "ī§ "
+}
+
+.bx-book:before {
+    content: "ī§�"
+}
+
+.bx-book-add:before {
+    content: "ī§¢"
+}
+
+.bx-book-alt:before {
+    content: "ī§£"
+}
+
+.bx-book-bookmark:before {
+    content: "ī§¤"
+}
+
+.bx-book-content:before {
+    content: "ī§�"
+}
+
+.bx-book-heart:before {
+    content: "ī§¦"
+}
+
+.bx-bookmark:before {
+    content: "ī§§"
+}
+
+.bx-bookmark-alt:before {
+    content: "ī§Ø"
+}
+
+.bx-bookmark-alt-minus:before {
+    content: "ī§©"
+}
+
+.bx-bookmark-alt-plus:before {
+    content: "ī§Ŗ"
+}
+
+.bx-bookmark-heart:before {
+    content: "ī§«"
+}
+
+.bx-bookmark-minus:before {
+    content: "ī§¬"
+}
+
+.bx-bookmark-plus:before {
+    content: "ī§­"
+}
+
+.bx-bookmarks:before {
+    content: "ī§®"
+}
+
+.bx-book-open:before {
+    content: "ī§Æ"
+}
+
+.bx-book-reader:before {
+    content: "ī§°"
+}
+
+.bx-border-all:before {
+    content: "ī§±"
+}
+
+.bx-border-bottom:before {
+    content: "ī§²"
+}
+
+.bx-border-inner:before {
+    content: "ī§³"
+}
+
+.bx-border-left:before {
+    content: "ī§´"
+}
+
+.bx-border-none:before {
+    content: "ī§µ"
+}
+
+.bx-border-outer:before {
+    content: "ī§¶"
+}
+
+.bx-border-radius:before {
+    content: "ī§·"
+}
+
+.bx-border-right:before {
+    content: "ī§ø"
+}
+
+.bx-border-top:before {
+    content: "ī§¹"
+}
+
+.bx-bot:before {
+    content: "ī§ŗ"
+}
+
+.bx-bowling-ball:before {
+    content: "ī§»"
+}
+
+.bx-box:before {
+    content: "ī§¼"
+}
+
+.bx-bracket:before {
+    content: "ī§½"
+}
+
+.bx-braille:before {
+    content: "ī§¾"
+}
+
+.bx-brain:before {
+    content: "ī§æ"
+}
+
+.bx-briefcase:before {
+    content: "īØ€"
+}
+
+.bx-briefcase-alt:before {
+    content: "īØ"
+}
+
+.bx-briefcase-alt-2:before {
+    content: "īØ‚"
+}
+
+.bx-brightness:before {
+    content: "īØ"
+}
+
+.bx-brightness-half:before {
+    content: "īØ„"
+}
+
+.bx-broadcast:before {
+    content: "īØ…"
+}
+
+.bx-brush:before {
+    content: "īØ†"
+}
+
+.bx-brush-alt:before {
+    content: "īØ‡"
+}
+
+.bx-bug:before {
+    content: "īØ"
+}
+
+.bx-bug-alt:before {
+    content: "īØ‰"
+}
+
+.bx-building:before {
+    content: "īØ"
+}
+
+.bx-building-house:before {
+    content: "īØ‹"
+}
+
+.bx-buildings:before {
+    content: "īØ"
+}
+
+.bx-bulb:before {
+    content: "īØ¨"
+}
+
+.bx-bullseye:before {
+    content: "īØˇ"
+}
+
+.bx-buoy:before {
+    content: "īØ¸"
+}
+
+.bx-bus:before {
+    content: "īØ"
+}
+
+.bx-bus-school:before {
+    content: "īØ‘"
+}
+
+.bx-cabinet:before {
+    content: "īØ’"
+}
+
+.bx-cake:before {
+    content: "īØ“"
+}
+
+.bx-calculator:before {
+    content: "īØ”"
+}
+
+.bx-calendar:before {
+    content: "īØ•"
+}
+
+.bx-calendar-alt:before {
+    content: "īØ–"
+}
+
+.bx-calendar-check:before {
+    content: "īØ—"
+}
+
+.bx-calendar-edit:before {
+    content: "īØ"
+}
+
+.bx-calendar-event:before {
+    content: "īØ™"
+}
+
+.bx-calendar-exclamation:before {
+    content: "īØ"
+}
+
+.bx-calendar-heart:before {
+    content: "īØ›"
+}
+
+.bx-calendar-minus:before {
+    content: "īØ"
+}
+
+.bx-calendar-plus:before {
+    content: "īØ¯"
+}
+
+.bx-calendar-star:before {
+    content: "īØ˛"
+}
+
+.bx-calendar-week:before {
+    content: "īØ"
+}
+
+.bx-calendar-x:before {
+    content: "īØ "
+}
+
+.bx-camera:before {
+    content: "īØ�"
+}
+
+.bx-camera-home:before {
+    content: "īØ¢"
+}
+
+.bx-camera-movie:before {
+    content: "īØ£"
+}
+
+.bx-camera-off:before {
+    content: "īØ¤"
+}
+
+.bx-capsule:before {
+    content: "īØ�"
+}
+
+.bx-captions:before {
+    content: "īØ¦"
+}
+
+.bx-car:before {
+    content: "īØ§"
+}
+
+.bx-card:before {
+    content: "īØØ"
+}
+
+.bx-caret-down:before {
+    content: "īØ©"
+}
+
+.bx-caret-down-circle:before {
+    content: "īØŖ"
+}
+
+.bx-caret-down-square:before {
+    content: "īØ«"
+}
+
+.bx-caret-left:before {
+    content: "īØ¬"
+}
+
+.bx-caret-left-circle:before {
+    content: "īØ­"
+}
+
+.bx-caret-left-square:before {
+    content: "īØ®"
+}
+
+.bx-caret-right:before {
+    content: "īØÆ"
+}
+
+.bx-caret-right-circle:before {
+    content: "īØ°"
+}
+
+.bx-caret-right-square:before {
+    content: "īØ±"
+}
+
+.bx-caret-up:before {
+    content: "īØ²"
+}
+
+.bx-caret-up-circle:before {
+    content: "īØ³"
+}
+
+.bx-caret-up-square:before {
+    content: "īØ´"
+}
+
+.bx-carousel:before {
+    content: "īØµ"
+}
+
+.bx-cart:before {
+    content: "īØ¶"
+}
+
+.bx-cart-alt:before {
+    content: "īØ·"
+}
+
+.bx-cast:before {
+    content: "īØø"
+}
+
+.bx-category:before {
+    content: "īØ¹"
+}
+
+.bx-category-alt:before {
+    content: "īØŗ"
+}
+
+.bx-cctv:before {
+    content: "īØ»"
+}
+
+.bx-certification:before {
+    content: "īØ¼"
+}
+
+.bx-chair:before {
+    content: "īØ½"
+}
+
+.bx-chalkboard:before {
+    content: "īØ¾"
+}
+
+.bx-chart:before {
+    content: "īØæ"
+}
+
+.bx-chat:before {
+    content: "ī©€"
+}
+
+.bx-check:before {
+    content: "ī©"
+}
+
+.bx-checkbox:before {
+    content: "ī©‚"
+}
+
+.bx-checkbox-checked:before {
+    content: "ī©"
+}
+
+.bx-checkbox-minus:before {
+    content: "ī©„"
+}
+
+.bx-checkbox-square:before {
+    content: "ī©…"
+}
+
+.bx-check-circle:before {
+    content: "ī©†"
+}
+
+.bx-check-double:before {
+    content: "ī©‡"
+}
+
+.bx-check-shield:before {
+    content: "ī©"
+}
+
+.bx-check-square:before {
+    content: "ī©‰"
+}
+
+.bx-chevron-down:before {
+    content: "ī©"
+}
+
+.bx-chevron-down-circle:before {
+    content: "ī©‹"
+}
+
+.bx-chevron-down-square:before {
+    content: "ī©"
+}
+
+.bx-chevron-left:before {
+    content: "ī©¨"
+}
+
+.bx-chevron-left-circle:before {
+    content: "ī©ˇ"
+}
+
+.bx-chevron-left-square:before {
+    content: "ī©¸"
+}
+
+.bx-chevron-right:before {
+    content: "ī©"
+}
+
+.bx-chevron-right-circle:before {
+    content: "ī©‘"
+}
+
+.bx-chevron-right-square:before {
+    content: "ī©’"
+}
+
+.bx-chevrons-down:before {
+    content: "ī©“"
+}
+
+.bx-chevrons-left:before {
+    content: "ī©”"
+}
+
+.bx-chevrons-right:before {
+    content: "ī©•"
+}
+
+.bx-chevrons-up:before {
+    content: "ī©–"
+}
+
+.bx-chevron-up:before {
+    content: "ī©—"
+}
+
+.bx-chevron-up-circle:before {
+    content: "ī©"
+}
+
+.bx-chevron-up-square:before {
+    content: "ī©™"
+}
+
+.bx-chip:before {
+    content: "ī©"
+}
+
+.bx-church:before {
+    content: "ī©›"
+}
+
+.bx-circle:before {
+    content: "ī©"
+}
+
+.bx-clinic:before {
+    content: "ī©¯"
+}
+
+.bx-clipboard:before {
+    content: "ī©˛"
+}
+
+.bx-closet:before {
+    content: "ī©"
+}
+
+.bx-cloud:before {
+    content: "ī© "
+}
+
+.bx-cloud-download:before {
+    content: "ī©�"
+}
+
+.bx-cloud-drizzle:before {
+    content: "ī©¢"
+}
+
+.bx-cloud-lightning:before {
+    content: "ī©£"
+}
+
+.bx-cloud-light-rain:before {
+    content: "ī©¤"
+}
+
+.bx-cloud-rain:before {
+    content: "ī©�"
+}
+
+.bx-cloud-snow:before {
+    content: "ī©¦"
+}
+
+.bx-cloud-upload:before {
+    content: "ī©§"
+}
+
+.bx-code:before {
+    content: "ī©Ø"
+}
+
+.bx-code-alt:before {
+    content: "ī©©"
+}
+
+.bx-code-block:before {
+    content: "ī©Ŗ"
+}
+
+.bx-code-curly:before {
+    content: "ī©«"
+}
+
+.bx-coffee:before {
+    content: "ī©¬"
+}
+
+.bx-coffee-togo:before {
+    content: "ī©­"
+}
+
+.bx-cog:before {
+    content: "ī©®"
+}
+
+.bx-coin:before {
+    content: "ī©Æ"
+}
+
+.bx-coin-stack:before {
+    content: "ī©°"
+}
+
+.bx-collapse:before {
+    content: "ī©±"
+}
+
+.bx-collection:before {
+    content: "ī©²"
+}
+
+.bx-color-fill:before {
+    content: "ī©³"
+}
+
+.bx-columns:before {
+    content: "ī©´"
+}
+
+.bx-command:before {
+    content: "ī©µ"
+}
+
+.bx-comment:before {
+    content: "ī©¶"
+}
+
+.bx-comment-add:before {
+    content: "ī©·"
+}
+
+.bx-comment-check:before {
+    content: "ī©ø"
+}
+
+.bx-comment-detail:before {
+    content: "ī©¹"
+}
+
+.bx-comment-dots:before {
+    content: "ī©ŗ"
+}
+
+.bx-comment-edit:before {
+    content: "ī©»"
+}
+
+.bx-comment-error:before {
+    content: "ī©¼"
+}
+
+.bx-comment-minus:before {
+    content: "ī©½"
+}
+
+.bx-comment-x:before {
+    content: "ī©¾"
+}
+
+.bx-compass:before {
+    content: "ī©æ"
+}
+
+.bx-confused:before {
+    content: "īŖ€"
+}
+
+.bx-conversation:before {
+    content: "īŖ"
+}
+
+.bx-cookie:before {
+    content: "īŖ‚"
+}
+
+.bx-cool:before {
+    content: "īŖ"
+}
+
+.bx-copy:before {
+    content: "īŖ„"
+}
+
+.bx-copy-alt:before {
+    content: "īŖ…"
+}
+
+.bx-copyright:before {
+    content: "īŖ†"
+}
+
+.bx-credit-card:before {
+    content: "īŖ‡"
+}
+
+.bx-credit-card-alt:before {
+    content: "īŖ"
+}
+
+.bx-credit-card-front:before {
+    content: "īŖ‰"
+}
+
+.bx-crop:before {
+    content: "īŖ"
+}
+
+.bx-crosshair:before {
+    content: "īŖ‹"
+}
+
+.bx-crown:before {
+    content: "īŖ"
+}
+
+.bx-cube:before {
+    content: "īŖ¨"
+}
+
+.bx-cube-alt:before {
+    content: "īŖˇ"
+}
+
+.bx-cuboid:before {
+    content: "īŖ¸"
+}
+
+.bx-current-location:before {
+    content: "īŖ"
+}
+
+.bx-customize:before {
+    content: "īŖ‘"
+}
+
+.bx-cut:before {
+    content: "īŖ’"
+}
+
+.bx-cycling:before {
+    content: "īŖ“"
+}
+
+.bx-cylinder:before {
+    content: "īŖ”"
+}
+
+.bx-data:before {
+    content: "īŖ•"
+}
+
+.bx-desktop:before {
+    content: "īŖ–"
+}
+
+.bx-detail:before {
+    content: "īŖ—"
+}
+
+.bx-devices:before {
+    content: "īŖ"
+}
+
+.bx-dialpad:before {
+    content: "īŖ™"
+}
+
+.bx-dialpad-alt:before {
+    content: "īŖ"
+}
+
+.bx-diamond:before {
+    content: "īŖ›"
+}
+
+.bx-dice-1:before {
+    content: "īŖ"
+}
+
+.bx-dice-2:before {
+    content: "īŖ¯"
+}
+
+.bx-dice-3:before {
+    content: "īŖ˛"
+}
+
+.bx-dice-4:before {
+    content: "īŖ"
+}
+
+.bx-dice-5:before {
+    content: "īŖ "
+}
+
+.bx-dice-6:before {
+    content: "īŖ�"
+}
+
+.bx-directions:before {
+    content: "īŖ¢"
+}
+
+.bx-disc:before {
+    content: "īŖ£"
+}
+
+.bx-dish:before {
+    content: "īŖ¤"
+}
+
+.bx-dislike:before {
+    content: "īŖ�"
+}
+
+.bx-dizzy:before {
+    content: "īŖ¦"
+}
+
+.bx-dna:before {
+    content: "īŖ§"
+}
+
+.bx-dock-bottom:before {
+    content: "īŖØ"
+}
+
+.bx-dock-left:before {
+    content: "īŖ©"
+}
+
+.bx-dock-right:before {
+    content: "īŖŖ"
+}
+
+.bx-dock-top:before {
+    content: "īŖ«"
+}
+
+.bx-dollar:before {
+    content: "īŖ¬"
+}
+
+.bx-dollar-circle:before {
+    content: "īŖ­"
+}
+
+.bx-donate-blood:before {
+    content: "īŖ®"
+}
+
+.bx-donate-heart:before {
+    content: "īŖÆ"
+}
+
+.bx-door-open:before {
+    content: "īŖ°"
+}
+
+.bx-dots-horizontal:before {
+    content: "īŖ±"
+}
+
+.bx-dots-horizontal-rounded:before {
+    content: "īŖ²"
+}
+
+.bx-dots-vertical:before {
+    content: "īŖ³"
+}
+
+.bx-dots-vertical-rounded:before {
+    content: "īŖ´"
+}
+
+.bx-doughnut-chart:before {
+    content: "īŖµ"
+}
+
+.bx-down-arrow:before {
+    content: "īŖ¶"
+}
+
+.bx-down-arrow-alt:before {
+    content: "īŖ·"
+}
+
+.bx-down-arrow-circle:before {
+    content: "īŖø"
+}
+
+.bx-download:before {
+    content: "īŖ¹"
+}
+
+.bx-downvote:before {
+    content: "īŖŗ"
+}
+
+.bx-drink:before {
+    content: "īŖ»"
+}
+
+.bx-droplet:before {
+    content: "īŖ¼"
+}
+
+.bx-dumbbell:before {
+    content: "īŖ½"
+}
+
+.bx-duplicate:before {
+    content: "īŖ¾"
+}
+
+.bx-edit:before {
+    content: "īŖæ"
+}
+
+.bx-edit-alt:before {
+    content: "ī«€"
+}
+
+.bx-envelope:before {
+    content: "ī«"
+}
+
+.bx-envelope-open:before {
+    content: "ī«‚"
+}
+
+.bx-equalizer:before {
+    content: "ī«"
+}
+
+.bx-eraser:before {
+    content: "ī«„"
+}
+
+.bx-error:before {
+    content: "ī«…"
+}
+
+.bx-error-alt:before {
+    content: "ī«†"
+}
+
+.bx-error-circle:before {
+    content: "ī«‡"
+}
+
+.bx-euro:before {
+    content: "ī«"
+}
+
+.bx-exclude:before {
+    content: "ī«‰"
+}
+
+.bx-exit:before {
+    content: "ī«"
+}
+
+.bx-exit-fullscreen:before {
+    content: "ī«‹"
+}
+
+.bx-expand:before {
+    content: "ī«"
+}
+
+.bx-expand-alt:before {
+    content: "ī«¨"
+}
+
+.bx-export:before {
+    content: "ī«ˇ"
+}
+
+.bx-extension:before {
+    content: "ī«¸"
+}
+
+.bx-face:before {
+    content: "ī«"
+}
+
+.bx-fast-forward:before {
+    content: "ī«‘"
+}
+
+.bx-fast-forward-circle:before {
+    content: "ī«’"
+}
+
+.bx-female:before {
+    content: "ī«“"
+}
+
+.bx-female-sign:before {
+    content: "ī«”"
+}
+
+.bx-file:before {
+    content: "ī«•"
+}
+
+.bx-file-blank:before {
+    content: "ī«–"
+}
+
+.bx-file-find:before {
+    content: "ī«—"
+}
+
+.bx-film:before {
+    content: "ī«"
+}
+
+.bx-filter:before {
+    content: "ī«™"
+}
+
+.bx-filter-alt:before {
+    content: "ī«"
+}
+
+.bx-fingerprint:before {
+    content: "ī«›"
+}
+
+.bx-first-aid:before {
+    content: "ī«"
+}
+
+.bx-first-page:before {
+    content: "ī«¯"
+}
+
+.bx-flag:before {
+    content: "ī«˛"
+}
+
+.bx-folder:before {
+    content: "ī«"
+}
+
+.bx-folder-minus:before {
+    content: "ī« "
+}
+
+.bx-folder-open:before {
+    content: "ī«�"
+}
+
+.bx-folder-plus:before {
+    content: "ī«¢"
+}
+
+.bx-font:before {
+    content: "ī«£"
+}
+
+.bx-font-color:before {
+    content: "ī«¤"
+}
+
+.bx-font-family:before {
+    content: "ī«�"
+}
+
+.bx-font-size:before {
+    content: "ī«¦"
+}
+
+.bx-food-menu:before {
+    content: "ī«§"
+}
+
+.bx-food-tag:before {
+    content: "ī«Ø"
+}
+
+.bx-football:before {
+    content: "ī«©"
+}
+
+.bx-fridge:before {
+    content: "ī«Ŗ"
+}
+
+.bx-fullscreen:before {
+    content: "ī««"
+}
+
+.bx-game:before {
+    content: "ī«¬"
+}
+
+.bx-gas-pump:before {
+    content: "ī«­"
+}
+
+.bx-ghost:before {
+    content: "ī«®"
+}
+
+.bx-gift:before {
+    content: "ī«Æ"
+}
+
+.bx-git-branch:before {
+    content: "ī«°"
+}
+
+.bx-git-commit:before {
+    content: "ī«±"
+}
+
+.bx-git-compare:before {
+    content: "ī«²"
+}
+
+.bx-git-merge:before {
+    content: "ī«³"
+}
+
+.bx-git-pull-request:before {
+    content: "ī«´"
+}
+
+.bx-git-repo-forked:before {
+    content: "ī«µ"
+}
+
+.bx-glasses:before {
+    content: "ī«¶"
+}
+
+.bx-glasses-alt:before {
+    content: "ī«·"
+}
+
+.bx-globe:before {
+    content: "ī«ø"
+}
+
+.bx-globe-alt:before {
+    content: "ī«¹"
+}
+
+.bx-grid:before {
+    content: "ī«ŗ"
+}
+
+.bx-grid-alt:before {
+    content: "ī«»"
+}
+
+.bx-grid-horizontal:before {
+    content: "ī«¼"
+}
+
+.bx-grid-small:before {
+    content: "ī«½"
+}
+
+.bx-grid-vertical:before {
+    content: "ī«¾"
+}
+
+.bx-group:before {
+    content: "ī«æ"
+}
+
+.bx-handicap:before {
+    content: "ī¬€"
+}
+
+.bx-happy:before {
+    content: "ī¬"
+}
+
+.bx-happy-alt:before {
+    content: "ī¬‚"
+}
+
+.bx-happy-beaming:before {
+    content: "ī¬"
+}
+
+.bx-happy-heart-eyes:before {
+    content: "ī¬„"
+}
+
+.bx-hash:before {
+    content: "ī¬…"
+}
+
+.bx-hdd:before {
+    content: "ī¬†"
+}
+
+.bx-heading:before {
+    content: "ī¬‡"
+}
+
+.bx-headphone:before {
+    content: "ī¬"
+}
+
+.bx-health:before {
+    content: "ī¬‰"
+}
+
+.bx-heart:before {
+    content: "ī¬"
+}
+
+.bx-heart-circle:before {
+    content: "ī¬‹"
+}
+
+.bx-heart-square:before {
+    content: "ī¬"
+}
+
+.bx-help-circle:before {
+    content: "ī¬¨"
+}
+
+.bx-hide:before {
+    content: "ī¬ˇ"
+}
+
+.bx-highlight:before {
+    content: "ī¬¸"
+}
+
+.bx-history:before {
+    content: "ī¬"
+}
+
+.bx-hive:before {
+    content: "ī¬‘"
+}
+
+.bx-home:before {
+    content: "ī¬’"
+}
+
+.bx-home-alt:before {
+    content: "ī¬“"
+}
+
+.bx-home-circle:before {
+    content: "ī¬”"
+}
+
+.bx-home-heart:before {
+    content: "ī¬•"
+}
+
+.bx-home-smile:before {
+    content: "ī¬–"
+}
+
+.bx-horizontal-center:before {
+    content: "ī¬—"
+}
+
+.bx-hotel:before {
+    content: "ī¬"
+}
+
+.bx-hourglass:before {
+    content: "ī¬™"
+}
+
+.bx-id-card:before {
+    content: "ī¬"
+}
+
+.bx-image:before {
+    content: "ī¬›"
+}
+
+.bx-image-add:before {
+    content: "ī¬"
+}
+
+.bx-image-alt:before {
+    content: "ī¬¯"
+}
+
+.bx-images:before {
+    content: "ī¬˛"
+}
+
+.bx-import:before {
+    content: "ī¬"
+}
+
+.bx-infinite:before {
+    content: "ī¬ "
+}
+
+.bx-info-circle:before {
+    content: "ī¬�"
+}
+
+.bx-info-square:before {
+    content: "ī¬¢"
+}
+
+.bx-intersect:before {
+    content: "ī¬£"
+}
+
+.bx-italic:before {
+    content: "ī¬¤"
+}
+
+.bx-joystick:before {
+    content: "ī¬�"
+}
+
+.bx-joystick-alt:before {
+    content: "ī¬¦"
+}
+
+.bx-joystick-button:before {
+    content: "ī¬§"
+}
+
+.bx-key:before {
+    content: "ī¬Ø"
+}
+
+.bx-label:before {
+    content: "ī¬©"
+}
+
+.bx-landscape:before {
+    content: "ī¬Ŗ"
+}
+
+.bx-laptop:before {
+    content: "ī¬«"
+}
+
+.bx-last-page:before {
+    content: "ī¬¬"
+}
+
+.bx-laugh:before {
+    content: "ī¬­"
+}
+
+.bx-layer:before {
+    content: "ī¬®"
+}
+
+.bx-layer-minus:before {
+    content: "ī¬Æ"
+}
+
+.bx-layer-plus:before {
+    content: "ī¬°"
+}
+
+.bx-layout:before {
+    content: "ī¬±"
+}
+
+.bx-left-arrow:before {
+    content: "ī¬²"
+}
+
+.bx-left-arrow-alt:before {
+    content: "ī¬³"
+}
+
+.bx-left-arrow-circle:before {
+    content: "ī¬´"
+}
+
+.bx-left-down-arrow-circle:before {
+    content: "ī¬µ"
+}
+
+.bx-left-indent:before {
+    content: "ī¬¶"
+}
+
+.bx-left-top-arrow-circle:before {
+    content: "ī¬·"
+}
+
+.bx-library:before {
+    content: "ī¬ø"
+}
+
+.bx-like:before {
+    content: "ī¬¹"
+}
+
+.bx-line-chart:before {
+    content: "ī¬ŗ"
+}
+
+.bx-line-chart-down:before {
+    content: "ī¬»"
+}
+
+.bx-link:before {
+    content: "ī¬¼"
+}
+
+.bx-link-alt:before {
+    content: "ī¬½"
+}
+
+.bx-link-external:before {
+    content: "ī¬¾"
+}
+
+.bx-lira:before {
+    content: "ī¬æ"
+}
+
+.bx-list-check:before {
+    content: "ī­€"
+}
+
+.bx-list-minus:before {
+    content: "ī­"
+}
+
+.bx-list-ol:before {
+    content: "ī­‚"
+}
+
+.bx-list-plus:before {
+    content: "ī­"
+}
+
+.bx-list-ul:before {
+    content: "ī­„"
+}
+
+.bx-loader:before {
+    content: "ī­…"
+}
+
+.bx-loader-alt:before {
+    content: "ī­†"
+}
+
+.bx-loader-circle:before {
+    content: "ī­‡"
+}
+
+.bx-location-plus:before {
+    content: "ī­"
+}
+
+.bx-lock:before {
+    content: "ī­‰"
+}
+
+.bx-lock-alt:before {
+    content: "ī­"
+}
+
+.bx-lock-open:before {
+    content: "ī­‹"
+}
+
+.bx-lock-open-alt:before {
+    content: "ī­"
+}
+
+.bx-log-in:before {
+    content: "ī­¨"
+}
+
+.bx-log-in-circle:before {
+    content: "ī­ˇ"
+}
+
+.bx-log-out:before {
+    content: "ī­¸"
+}
+
+.bx-log-out-circle:before {
+    content: "ī­"
+}
+
+.bx-low-vision:before {
+    content: "ī­‘"
+}
+
+.bx-magnet:before {
+    content: "ī­’"
+}
+
+.bx-mail-send:before {
+    content: "ī­“"
+}
+
+.bx-male:before {
+    content: "ī­”"
+}
+
+.bx-male-sign:before {
+    content: "ī­•"
+}
+
+.bx-map:before {
+    content: "ī­–"
+}
+
+.bx-map-alt:before {
+    content: "ī­—"
+}
+
+.bx-map-pin:before {
+    content: "ī­"
+}
+
+.bx-mask:before {
+    content: "ī­™"
+}
+
+.bx-medal:before {
+    content: "ī­"
+}
+
+.bx-meh:before {
+    content: "ī­›"
+}
+
+.bx-meh-alt:before {
+    content: "ī­"
+}
+
+.bx-meh-blank:before {
+    content: "ī­¯"
+}
+
+.bx-memory-card:before {
+    content: "ī­˛"
+}
+
+.bx-menu:before {
+    content: "ī­"
+}
+
+.bx-menu-alt-left:before {
+    content: "ī½›"
+}
+
+.bx-menu-alt-right:before {
+    content: "ī­�"
+}
+
+.bx-merge:before {
+    content: "ī­¢"
+}
+
+.bx-message:before {
+    content: "ī­£"
+}
+
+.bx-message-add:before {
+    content: "ī­¤"
+}
+
+.bx-message-alt:before {
+    content: "ī­�"
+}
+
+.bx-message-alt-add:before {
+    content: "ī­¦"
+}
+
+.bx-message-alt-check:before {
+    content: "ī­§"
+}
+
+.bx-message-alt-detail:before {
+    content: "ī­Ø"
+}
+
+.bx-message-alt-dots:before {
+    content: "ī­©"
+}
+
+.bx-message-alt-edit:before {
+    content: "ī­Ŗ"
+}
+
+.bx-message-alt-error:before {
+    content: "ī­«"
+}
+
+.bx-message-alt-minus:before {
+    content: "ī­¬"
+}
+
+.bx-message-alt-x:before {
+    content: "ī­­"
+}
+
+.bx-message-check:before {
+    content: "ī­®"
+}
+
+.bx-message-detail:before {
+    content: "ī­Æ"
+}
+
+.bx-message-dots:before {
+    content: "ī­°"
+}
+
+.bx-message-edit:before {
+    content: "ī­±"
+}
+
+.bx-message-error:before {
+    content: "ī­²"
+}
+
+.bx-message-minus:before {
+    content: "ī­³"
+}
+
+.bx-message-rounded:before {
+    content: "ī­´"
+}
+
+.bx-message-rounded-add:before {
+    content: "ī­µ"
+}
+
+.bx-message-rounded-check:before {
+    content: "ī­¶"
+}
+
+.bx-message-rounded-detail:before {
+    content: "ī­·"
+}
+
+.bx-message-rounded-dots:before {
+    content: "ī­ø"
+}
+
+.bx-message-rounded-edit:before {
+    content: "ī½"
+}
+
+.bx-message-rounded-error:before {
+    content: "ī­ŗ"
+}
+
+.bx-message-rounded-minus:before {
+    content: "ī­»"
+}
+
+.bx-message-rounded-x:before {
+    content: "ī­¼"
+}
+
+.bx-message-square:before {
+    content: "ī­½"
+}
+
+.bx-message-square-add:before {
+    content: "ī­¾"
+}
+
+.bx-message-square-check:before {
+    content: "ī­æ"
+}
+
+.bx-message-square-detail:before {
+    content: "ī®€"
+}
+
+.bx-message-square-dots:before {
+    content: "ī®"
+}
+
+.bx-message-square-edit:before {
+    content: "ī®‚"
+}
+
+.bx-message-square-error:before {
+    content: "ī®"
+}
+
+.bx-message-square-minus:before {
+    content: "ī®„"
+}
+
+.bx-message-square-x:before {
+    content: "ī®…"
+}
+
+.bx-message-x:before {
+    content: "ī®†"
+}
+
+.bx-meteor:before {
+    content: "ī®‡"
+}
+
+.bx-microchip:before {
+    content: "ī®"
+}
+
+.bx-microphone:before {
+    content: "ī®‰"
+}
+
+.bx-microphone-off:before {
+    content: "ī®"
+}
+
+.bx-minus:before {
+    content: "ī®‹"
+}
+
+.bx-minus-back:before {
+    content: "ī®"
+}
+
+.bx-minus-circle:before {
+    content: "ī®¨"
+}
+
+.bx-minus-front:before {
+    content: "ī®ˇ"
+}
+
+.bx-mobile:before {
+    content: "ī®¸"
+}
+
+.bx-mobile-alt:before {
+    content: "ī®"
+}
+
+.bx-mobile-landscape:before {
+    content: "ī®‘"
+}
+
+.bx-mobile-vibration:before {
+    content: "ī½¯"
+}
+
+.bx-money:before {
+    content: "ī®“"
+}
+
+.bx-moon:before {
+    content: "ī®”"
+}
+
+.bx-mouse:before {
+    content: "ī®•"
+}
+
+.bx-mouse-alt:before {
+    content: "ī®–"
+}
+
+.bx-move:before {
+    content: "ī®—"
+}
+
+.bx-move-horizontal:before {
+    content: "ī®"
+}
+
+.bx-move-vertical:before {
+    content: "ī®™"
+}
+
+.bx-movie:before {
+    content: "ī®"
+}
+
+.bx-movie-play:before {
+    content: "ī®›"
+}
+
+.bx-music:before {
+    content: "ī®"
+}
+
+.bx-navigation:before {
+    content: "ī®¯"
+}
+
+.bx-network-chart:before {
+    content: "ī®˛"
+}
+
+.bx-news:before {
+    content: "ī®"
+}
+
+.bx-no-entry:before {
+    content: "ī® "
+}
+
+.bx-note:before {
+    content: "ī®�"
+}
+
+.bx-notepad:before {
+    content: "ī®¢"
+}
+
+.bx-notification:before {
+    content: "ī®£"
+}
+
+.bx-notification-off:before {
+    content: "ī®¤"
+}
+
+.bx-outline:before {
+    content: "ī®�"
+}
+
+.bx-package:before {
+    content: "ī®¦"
+}
+
+.bx-paint:before {
+    content: "ī®§"
+}
+
+.bx-paint-roll:before {
+    content: "ī®Ø"
+}
+
+.bx-palette:before {
+    content: "ī®©"
+}
+
+.bx-paperclip:before {
+    content: "ī®Ŗ"
+}
+
+.bx-paper-plane:before {
+    content: "ī½�"
+}
+
+.bx-paragraph:before {
+    content: "ī®¬"
+}
+
+.bx-paste:before {
+    content: "ī®­"
+}
+
+.bx-pause:before {
+    content: "ī®®"
+}
+
+.bx-pause-circle:before {
+    content: "ī®Æ"
+}
+
+.bx-pen:before {
+    content: "ī®°"
+}
+
+.bx-pencil:before {
+    content: "ī®±"
+}
+
+.bx-phone:before {
+    content: "ī®²"
+}
+
+.bx-phone-call:before {
+    content: "ī®³"
+}
+
+.bx-phone-incoming:before {
+    content: "ī®´"
+}
+
+.bx-phone-off:before {
+    content: "ī®µ"
+}
+
+.bx-phone-outgoing:before {
+    content: "ī®¶"
+}
+
+.bx-photo-album:before {
+    content: "ī®·"
+}
+
+.bx-pie-chart:before {
+    content: "ī®ø"
+}
+
+.bx-pie-chart-alt:before {
+    content: "ī®¹"
+}
+
+.bx-pie-chart-alt-2:before {
+    content: "ī®ŗ"
+}
+
+.bx-pin:before {
+    content: "ī®»"
+}
+
+.bx-planet:before {
+    content: "ī®¼"
+}
+
+.bx-play:before {
+    content: "ī®½"
+}
+
+.bx-play-circle:before {
+    content: "ī®¾"
+}
+
+.bx-plug:before {
+    content: "ī®æ"
+}
+
+.bx-plus:before {
+    content: "īÆ€"
+}
+
+.bx-plus-circle:before {
+    content: "īÆ"
+}
+
+.bx-plus-medical:before {
+    content: "īÆ‚"
+}
+
+.bx-podcast:before {
+    content: "īÆ"
+}
+
+.bx-pointer:before {
+    content: "ī½˛"
+}
+
+.bx-poll:before {
+    content: "īÆ…"
+}
+
+.bx-polygon:before {
+    content: "īÆ†"
+}
+
+.bx-pound:before {
+    content: "īÆ‡"
+}
+
+.bx-power-off:before {
+    content: "īÆ"
+}
+
+.bx-printer:before {
+    content: "īÆ‰"
+}
+
+.bx-pulse:before {
+    content: "īÆ"
+}
+
+.bx-purchase-tag:before {
+    content: "īÆ‹"
+}
+
+.bx-purchase-tag-alt:before {
+    content: "īÆ"
+}
+
+.bx-pyramid:before {
+    content: "īÆ¨"
+}
+
+.bx-qr:before {
+    content: "īÆˇ"
+}
+
+.bx-qr-scan:before {
+    content: "īÆ¸"
+}
+
+.bx-question-mark:before {
+    content: "īÆ"
+}
+
+.bx-radar:before {
+    content: "īÆ‘"
+}
+
+.bx-radio:before {
+    content: "īÆ’"
+}
+
+.bx-radio-circle:before {
+    content: "īÆ“"
+}
+
+.bx-radio-circle-marked:before {
+    content: "īÆ”"
+}
+
+.bx-receipt:before {
+    content: "īÆ•"
+}
+
+.bx-rectangle:before {
+    content: "īÆ–"
+}
+
+.bx-recycle:before {
+    content: "īÆ—"
+}
+
+.bx-redo:before {
+    content: "īÆ"
+}
+
+.bx-refresh:before {
+    content: "īÆ™"
+}
+
+.bx-registered:before {
+    content: "īÆ"
+}
+
+.bx-rename:before {
+    content: "īÆ›"
+}
+
+.bx-repeat:before {
+    content: "īÆ"
+}
+
+.bx-reply:before {
+    content: "ī½"
+}
+
+.bx-reply-all:before {
+    content: "īÆ˛"
+}
+
+.bx-repost:before {
+    content: "īÆ"
+}
+
+.bx-reset:before {
+    content: "īÆ "
+}
+
+.bx-restaurant:before {
+    content: "īÆ�"
+}
+
+.bx-revision:before {
+    content: "īÆ¢"
+}
+
+.bx-rewind:before {
+    content: "īÆ£"
+}
+
+.bx-rewind-circle:before {
+    content: "īÆ¤"
+}
+
+.bx-right-arrow:before {
+    content: "īÆ�"
+}
+
+.bx-right-arrow-alt:before {
+    content: "īÆ¦"
+}
+
+.bx-right-arrow-circle:before {
+    content: "īÆ§"
+}
+
+.bx-right-down-arrow-circle:before {
+    content: "īÆØ"
+}
+
+.bx-right-indent:before {
+    content: "īÆ©"
+}
+
+.bx-right-top-arrow-circle:before {
+    content: "īÆŖ"
+}
+
+.bx-rocket:before {
+    content: "īÆ«"
+}
+
+.bx-rotate-left:before {
+    content: "īÆ¬"
+}
+
+.bx-rotate-right:before {
+    content: "īÆ­"
+}
+
+.bx-rss:before {
+    content: "īÆ®"
+}
+
+.bx-ruble:before {
+    content: "īÆÆ"
+}
+
+.bx-ruler:before {
+    content: "īÆ°"
+}
+
+.bx-run:before {
+    content: "īÆ±"
+}
+
+.bx-rupee:before {
+    content: "īÆ²"
+}
+
+.bx-sad:before {
+    content: "īÆ³"
+}
+
+.bx-save:before {
+    content: "īÆ´"
+}
+
+.bx-scan:before {
+    content: "īÆµ"
+}
+
+.bx-screenshot:before {
+    content: "ī½ "
+}
+
+.bx-search:before {
+    content: "īÆ·"
+}
+
+.bx-search-alt:before {
+    content: "īÆø"
+}
+
+.bx-search-alt-2:before {
+    content: "īÆ¹"
+}
+
+.bx-selection:before {
+    content: "īÆŗ"
+}
+
+.bx-select-multiple:before {
+    content: "īÆ»"
+}
+
+.bx-send:before {
+    content: "īÆ¼"
+}
+
+.bx-server:before {
+    content: "īÆ½"
+}
+
+.bx-shape-circle:before {
+    content: "īÆ¾"
+}
+
+.bx-shape-polygon:before {
+    content: "īÆæ"
+}
+
+.bx-shape-square:before {
+    content: "ī°€"
+}
+
+.bx-shape-triangle:before {
+    content: "ī°"
+}
+
+.bx-share:before {
+    content: "ī°‚"
+}
+
+.bx-share-alt:before {
+    content: "ī°"
+}
+
+.bx-shekel:before {
+    content: "ī°„"
+}
+
+.bx-shield:before {
+    content: "ī°…"
+}
+
+.bx-shield-alt:before {
+    content: "ī°†"
+}
+
+.bx-shield-alt-2:before {
+    content: "ī°‡"
+}
+
+.bx-shield-quarter:before {
+    content: "ī°"
+}
+
+.bx-shield-x:before {
+    content: "ī°‰"
+}
+
+.bx-shocked:before {
+    content: "ī°"
+}
+
+.bx-shopping-bag:before {
+    content: "ī°‹"
+}
+
+.bx-show:before {
+    content: "ī°"
+}
+
+.bx-show-alt:before {
+    content: "ī°¨"
+}
+
+.bx-shuffle:before {
+    content: "ī°ˇ"
+}
+
+.bx-sidebar:before {
+    content: "ī°¸"
+}
+
+.bx-sitemap:before {
+    content: "ī°"
+}
+
+.bx-skip-next:before {
+    content: "ī°‘"
+}
+
+.bx-skip-next-circle:before {
+    content: "ī°’"
+}
+
+.bx-skip-previous:before {
+    content: "ī°“"
+}
+
+.bx-skip-previous-circle:before {
+    content: "ī°”"
+}
+
+.bx-sleepy:before {
+    content: "ī°•"
+}
+
+.bx-slider:before {
+    content: "ī°–"
+}
+
+.bx-slider-alt:before {
+    content: "ī°—"
+}
+
+.bx-slideshow:before {
+    content: "ī°"
+}
+
+.bx-smile:before {
+    content: "ī°™"
+}
+
+.bx-sort:before {
+    content: "ī°"
+}
+
+.bx-sort-alt-2:before {
+    content: "ī°›"
+}
+
+.bx-sort-a-z:before {
+    content: "ī°"
+}
+
+.bx-sort-down:before {
+    content: "ī°¯"
+}
+
+.bx-sort-up:before {
+    content: "ī°˛"
+}
+
+.bx-sort-z-a:before {
+    content: "ī°"
+}
+
+.bx-spa:before {
+    content: "ī° "
+}
+
+.bx-space-bar:before {
+    content: "ī°�"
+}
+
+.bx-speaker:before {
+    content: "ī°¢"
+}
+
+.bx-spray-can:before {
+    content: "ī°£"
+}
+
+.bx-spreadsheet:before {
+    content: "ī°¤"
+}
+
+.bx-square:before {
+    content: "ī°�"
+}
+
+.bx-square-rounded:before {
+    content: "ī°¦"
+}
+
+.bx-star:before {
+    content: "ī°§"
+}
+
+.bx-station:before {
+    content: "ī°Ø"
+}
+
+.bx-stats:before {
+    content: "ī°©"
+}
+
+.bx-sticker:before {
+    content: "ī°Ŗ"
+}
+
+.bx-stop:before {
+    content: "ī°«"
+}
+
+.bx-stop-circle:before {
+    content: "ī°¬"
+}
+
+.bx-stopwatch:before {
+    content: "ī°­"
+}
+
+.bx-store:before {
+    content: "ī°®"
+}
+
+.bx-store-alt:before {
+    content: "ī°Æ"
+}
+
+.bx-street-view:before {
+    content: "ī°°"
+}
+
+.bx-strikethrough:before {
+    content: "ī°±"
+}
+
+.bx-subdirectory-left:before {
+    content: "ī°²"
+}
+
+.bx-subdirectory-right:before {
+    content: "ī°³"
+}
+
+.bx-sun:before {
+    content: "ī°´"
+}
+
+.bx-support:before {
+    content: "ī°µ"
+}
+
+.bx-swim:before {
+    content: "ī°¶"
+}
+
+.bx-sync:before {
+    content: "ī°·"
+}
+
+.bx-tab:before {
+    content: "ī°ø"
+}
+
+.bx-table:before {
+    content: "ī°¹"
+}
+
+.bx-tachometer:before {
+    content: "ī°ŗ"
+}
+
+.bx-tag:before {
+    content: "ī°»"
+}
+
+.bx-tag-alt:before {
+    content: "ī°¼"
+}
+
+.bx-target-lock:before {
+    content: "ī°½"
+}
+
+.bx-task:before {
+    content: "ī°¾"
+}
+
+.bx-task-x:before {
+    content: "ī°æ"
+}
+
+.bx-taxi:before {
+    content: "ī±€"
+}
+
+.bx-tennis-ball:before {
+    content: "ī±"
+}
+
+.bx-terminal:before {
+    content: "ī±‚"
+}
+
+.bx-test-tube:before {
+    content: "ī±"
+}
+
+.bx-text:before {
+    content: "ī±„"
+}
+
+.bx-time:before {
+    content: "ī±…"
+}
+
+.bx-time-five:before {
+    content: "ī±†"
+}
+
+.bx-timer:before {
+    content: "ī±‡"
+}
+
+.bx-tired:before {
+    content: "ī±"
+}
+
+.bx-toggle-left:before {
+    content: "ī±‰"
+}
+
+.bx-toggle-right:before {
+    content: "ī±"
+}
+
+.bx-tone:before {
+    content: "ī±‹"
+}
+
+.bx-traffic-cone:before {
+    content: "ī±"
+}
+
+.bx-train:before {
+    content: "ī±¨"
+}
+
+.bx-transfer:before {
+    content: "ī±ˇ"
+}
+
+.bx-transfer-alt:before {
+    content: "ī±¸"
+}
+
+.bx-trash:before {
+    content: "ī±"
+}
+
+.bx-trash-alt:before {
+    content: "ī±‘"
+}
+
+.bx-trending-down:before {
+    content: "ī±’"
+}
+
+.bx-trending-up:before {
+    content: "ī±“"
+}
+
+.bx-trim:before {
+    content: "ī±”"
+}
+
+.bx-trip:before {
+    content: "ī±•"
+}
+
+.bx-trophy:before {
+    content: "ī±–"
+}
+
+.bx-tv:before {
+    content: "ī±—"
+}
+
+.bx-underline:before {
+    content: "ī±"
+}
+
+.bx-undo:before {
+    content: "ī±™"
+}
+
+.bx-unite:before {
+    content: "ī±"
+}
+
+.bx-unlink:before {
+    content: "ī±›"
+}
+
+.bx-up-arrow:before {
+    content: "ī±"
+}
+
+.bx-up-arrow-alt:before {
+    content: "ī±¯"
+}
+
+.bx-up-arrow-circle:before {
+    content: "ī±˛"
+}
+
+.bx-upload:before {
+    content: "ī±"
+}
+
+.bx-upside-down:before {
+    content: "ī± "
+}
+
+.bx-upvote:before {
+    content: "ī±�"
+}
+
+.bx-usb:before {
+    content: "ī±¢"
+}
+
+.bx-user:before {
+    content: "ī±£"
+}
+
+.bx-user-check:before {
+    content: "ī±¤"
+}
+
+.bx-user-circle:before {
+    content: "ī±�"
+}
+
+.bx-user-minus:before {
+    content: "ī±¦"
+}
+
+.bx-user-pin:before {
+    content: "ī±§"
+}
+
+.bx-user-plus:before {
+    content: "ī±Ø"
+}
+
+.bx-user-voice:before {
+    content: "ī±©"
+}
+
+.bx-user-x:before {
+    content: "ī±Ŗ"
+}
+
+.bx-vector:before {
+    content: "ī±«"
+}
+
+.bx-vertical-center:before {
+    content: "ī±¬"
+}
+
+.bx-vial:before {
+    content: "ī±­"
+}
+
+.bx-video:before {
+    content: "ī±®"
+}
+
+.bx-video-off:before {
+    content: "ī±Æ"
+}
+
+.bx-video-plus:before {
+    content: "ī±°"
+}
+
+.bx-video-recording:before {
+    content: "ī±±"
+}
+
+.bx-voicemail:before {
+    content: "ī±²"
+}
+
+.bx-volume:before {
+    content: "ī±³"
+}
+
+.bx-volume-full:before {
+    content: "ī±´"
+}
+
+.bx-volume-low:before {
+    content: "ī±µ"
+}
+
+.bx-volume-mute:before {
+    content: "ī±¶"
+}
+
+.bx-walk:before {
+    content: "ī±·"
+}
+
+.bx-wallet:before {
+    content: "ī±ø"
+}
+
+.bx-wallet-alt:before {
+    content: "ī±¹"
+}
+
+.bx-water:before {
+    content: "ī±ŗ"
+}
+
+.bx-webcam:before {
+    content: "ī±»"
+}
+
+.bx-wifi:before {
+    content: "ī±¼"
+}
+
+.bx-wifi-0:before {
+    content: "ī±½"
+}
+
+.bx-wifi-1:before {
+    content: "ī±¾"
+}
+
+.bx-wifi-2:before {
+    content: "ī±æ"
+}
+
+.bx-wifi-off:before {
+    content: "ī²€"
+}
+
+.bx-wind:before {
+    content: "ī²"
+}
+
+.bx-window:before {
+    content: "ī²‚"
+}
+
+.bx-window-alt:before {
+    content: "ī²"
+}
+
+.bx-window-close:before {
+    content: "ī²„"
+}
+
+.bx-window-open:before {
+    content: "ī²…"
+}
+
+.bx-windows:before {
+    content: "ī²†"
+}
+
+.bx-wine:before {
+    content: "ī²‡"
+}
+
+.bx-wink-smile:before {
+    content: "ī²"
+}
+
+.bx-wink-tongue:before {
+    content: "ī²‰"
+}
+
+.bx-won:before {
+    content: "ī²"
+}
+
+.bx-world:before {
+    content: "ī²‹"
+}
+
+.bx-wrench:before {
+    content: "ī²"
+}
+
+.bx-x:before {
+    content: "ī²¨"
+}
+
+.bx-x-circle:before {
+    content: "ī²ˇ"
+}
+
+.bx-yen:before {
+    content: "ī²¸"
+}
+
+.bx-zoom-in:before {
+    content: "ī²"
+}
+
+.bx-zoom-out:before {
+    content: "ī²‘"
+}
+
+.bxs-party:before {
+    content: "ī²’"
+}
+
+.bxs-hot:before {
+    content: "ī²“"
+}
+
+.bxs-droplet:before {
+    content: "ī²”"
+}
+
+.bxs-cat:before {
+    content: "ī²•"
+}
+
+.bxs-dog:before {
+    content: "ī²–"
+}
+
+.bxs-injection:before {
+    content: "ī²—"
+}
+
+.bxs-leaf:before {
+    content: "ī²"
+}
+
+.bxs-add-to-queue:before {
+    content: "ī²™"
+}
+
+.bxs-adjust:before {
+    content: "ī²"
+}
+
+.bxs-adjust-alt:before {
+    content: "ī²›"
+}
+
+.bxs-alarm:before {
+    content: "ī²"
+}
+
+.bxs-alarm-add:before {
+    content: "ī²¯"
+}
+
+.bxs-alarm-exclamation:before {
+    content: "ī²˛"
+}
+
+.bxs-alarm-off:before {
+    content: "ī²"
+}
+
+.bxs-alarm-snooze:before {
+    content: "ī² "
+}
+
+.bxs-album:before {
+    content: "ī²�"
+}
+
+.bxs-ambulance:before {
+    content: "ī²¢"
+}
+
+.bxs-analyse:before {
+    content: "ī²£"
+}
+
+.bxs-angry:before {
+    content: "ī²¤"
+}
+
+.bxs-arch:before {
+    content: "ī²�"
+}
+
+.bxs-archive:before {
+    content: "ī²¦"
+}
+
+.bxs-archive-in:before {
+    content: "ī²§"
+}
+
+.bxs-archive-out:before {
+    content: "ī²Ø"
+}
+
+.bxs-area:before {
+    content: "ī²©"
+}
+
+.bxs-arrow-from-bottom:before {
+    content: "ī²Ŗ"
+}
+
+.bxs-arrow-from-left:before {
+    content: "ī²«"
+}
+
+.bxs-arrow-from-right:before {
+    content: "ī²¬"
+}
+
+.bxs-arrow-from-top:before {
+    content: "ī²­"
+}
+
+.bxs-arrow-to-bottom:before {
+    content: "ī²®"
+}
+
+.bxs-arrow-to-left:before {
+    content: "ī²Æ"
+}
+
+.bxs-arrow-to-right:before {
+    content: "ī²°"
+}
+
+.bxs-arrow-to-top:before {
+    content: "ī²±"
+}
+
+.bxs-award:before {
+    content: "ī²²"
+}
+
+.bxs-baby-carriage:before {
+    content: "ī²³"
+}
+
+.bxs-backpack:before {
+    content: "ī²´"
+}
+
+.bxs-badge:before {
+    content: "ī²µ"
+}
+
+.bxs-badge-check:before {
+    content: "ī²¶"
+}
+
+.bxs-badge-dollar:before {
+    content: "ī²·"
+}
+
+.bxs-ball:before {
+    content: "ī²ø"
+}
+
+.bxs-band-aid:before {
+    content: "ī²¹"
+}
+
+.bxs-bank:before {
+    content: "ī²ŗ"
+}
+
+.bxs-bar-chart-alt-2:before {
+    content: "ī²»"
+}
+
+.bxs-bar-chart-square:before {
+    content: "ī²¼"
+}
+
+.bxs-barcode:before {
+    content: "ī²½"
+}
+
+.bxs-baseball:before {
+    content: "ī²¾"
+}
+
+.bxs-basket:before {
+    content: "ī²æ"
+}
+
+.bxs-basketball:before {
+    content: "ī³€"
+}
+
+.bxs-bath:before {
+    content: "ī³"
+}
+
+.bxs-battery:before {
+    content: "ī³‚"
+}
+
+.bxs-battery-charging:before {
+    content: "ī³"
+}
+
+.bxs-battery-full:before {
+    content: "ī³„"
+}
+
+.bxs-battery-low:before {
+    content: "ī³…"
+}
+
+.bxs-bed:before {
+    content: "ī³†"
+}
+
+.bxs-been-here:before {
+    content: "ī³‡"
+}
+
+.bxs-beer:before {
+    content: "ī³"
+}
+
+.bxs-bell:before {
+    content: "ī³‰"
+}
+
+.bxs-bell-minus:before {
+    content: "ī³"
+}
+
+.bxs-bell-off:before {
+    content: "ī³‹"
+}
+
+.bxs-bell-plus:before {
+    content: "ī³"
+}
+
+.bxs-bell-ring:before {
+    content: "ī³¨"
+}
+
+.bxs-bible:before {
+    content: "ī³ˇ"
+}
+
+.bxs-binoculars:before {
+    content: "ī³¸"
+}
+
+.bxs-blanket:before {
+    content: "ī³"
+}
+
+.bxs-bolt:before {
+    content: "ī³‘"
+}
+
+.bxs-bolt-circle:before {
+    content: "ī³’"
+}
+
+.bxs-bomb:before {
+    content: "ī³“"
+}
+
+.bxs-bone:before {
+    content: "ī³”"
+}
+
+.bxs-bong:before {
+    content: "ī³•"
+}
+
+.bxs-book:before {
+    content: "ī³–"
+}
+
+.bxs-book-add:before {
+    content: "ī³—"
+}
+
+.bxs-book-alt:before {
+    content: "ī³"
+}
+
+.bxs-book-bookmark:before {
+    content: "ī³™"
+}
+
+.bxs-book-content:before {
+    content: "ī³"
+}
+
+.bxs-book-heart:before {
+    content: "ī³›"
+}
+
+.bxs-bookmark:before {
+    content: "ī³"
+}
+
+.bxs-bookmark-alt:before {
+    content: "ī³¯"
+}
+
+.bxs-bookmark-alt-minus:before {
+    content: "ī³˛"
+}
+
+.bxs-bookmark-alt-plus:before {
+    content: "ī³"
+}
+
+.bxs-bookmark-heart:before {
+    content: "ī³ "
+}
+
+.bxs-bookmark-minus:before {
+    content: "ī³�"
+}
+
+.bxs-bookmark-plus:before {
+    content: "ī³¢"
+}
+
+.bxs-bookmarks:before {
+    content: "ī³£"
+}
+
+.bxs-bookmark-star:before {
+    content: "ī³¤"
+}
+
+.bxs-book-open:before {
+    content: "ī³�"
+}
+
+.bxs-book-reader:before {
+    content: "ī³¦"
+}
+
+.bxs-bot:before {
+    content: "ī³§"
+}
+
+.bxs-bowling-ball:before {
+    content: "ī³Ø"
+}
+
+.bxs-box:before {
+    content: "ī³©"
+}
+
+.bxs-brain:before {
+    content: "ī³Ŗ"
+}
+
+.bxs-briefcase:before {
+    content: "ī³«"
+}
+
+.bxs-briefcase-alt:before {
+    content: "ī³¬"
+}
+
+.bxs-briefcase-alt-2:before {
+    content: "ī³­"
+}
+
+.bxs-brightness:before {
+    content: "ī³®"
+}
+
+.bxs-brightness-half:before {
+    content: "ī³Æ"
+}
+
+.bxs-brush:before {
+    content: "ī³°"
+}
+
+.bxs-brush-alt:before {
+    content: "ī³±"
+}
+
+.bxs-bug:before {
+    content: "ī³²"
+}
+
+.bxs-bug-alt:before {
+    content: "ī³³"
+}
+
+.bxs-building:before {
+    content: "ī³´"
+}
+
+.bxs-building-house:before {
+    content: "ī³µ"
+}
+
+.bxs-buildings:before {
+    content: "ī³¶"
+}
+
+.bxs-bulb:before {
+    content: "ī³·"
+}
+
+.bxs-bullseye:before {
+    content: "ī³ø"
+}
+
+.bxs-buoy:before {
+    content: "ī³¹"
+}
+
+.bxs-bus:before {
+    content: "ī³ŗ"
+}
+
+.bxs-business:before {
+    content: "ī³»"
+}
+
+.bxs-bus-school:before {
+    content: "ī³¼"
+}
+
+.bxs-cabinet:before {
+    content: "ī³½"
+}
+
+.bxs-cake:before {
+    content: "ī³¾"
+}
+
+.bxs-calculator:before {
+    content: "ī³æ"
+}
+
+.bxs-calendar:before {
+    content: "ī´€"
+}
+
+.bxs-calendar-alt:before {
+    content: "ī´"
+}
+
+.bxs-calendar-check:before {
+    content: "ī´‚"
+}
+
+.bxs-calendar-edit:before {
+    content: "ī´"
+}
+
+.bxs-calendar-event:before {
+    content: "ī´„"
+}
+
+.bxs-calendar-exclamation:before {
+    content: "ī´…"
+}
+
+.bxs-calendar-heart:before {
+    content: "ī´†"
+}
+
+.bxs-calendar-minus:before {
+    content: "ī´‡"
+}
+
+.bxs-calendar-plus:before {
+    content: "ī´"
+}
+
+.bxs-calendar-star:before {
+    content: "ī´‰"
+}
+
+.bxs-calendar-week:before {
+    content: "ī´"
+}
+
+.bxs-calendar-x:before {
+    content: "ī´‹"
+}
+
+.bxs-camera:before {
+    content: "ī´"
+}
+
+.bxs-camera-home:before {
+    content: "ī´¨"
+}
+
+.bxs-camera-movie:before {
+    content: "ī´ˇ"
+}
+
+.bxs-camera-off:before {
+    content: "ī´¸"
+}
+
+.bxs-camera-plus:before {
+    content: "ī´"
+}
+
+.bxs-capsule:before {
+    content: "ī´‘"
+}
+
+.bxs-captions:before {
+    content: "ī´’"
+}
+
+.bxs-car:before {
+    content: "ī´“"
+}
+
+.bxs-car-battery:before {
+    content: "ī´”"
+}
+
+.bxs-car-crash:before {
+    content: "ī´•"
+}
+
+.bxs-card:before {
+    content: "ī´–"
+}
+
+.bxs-caret-down-circle:before {
+    content: "ī´—"
+}
+
+.bxs-caret-down-square:before {
+    content: "ī´"
+}
+
+.bxs-caret-left-circle:before {
+    content: "ī´™"
+}
+
+.bxs-caret-left-square:before {
+    content: "ī´"
+}
+
+.bxs-caret-right-circle:before {
+    content: "ī´›"
+}
+
+.bxs-caret-right-square:before {
+    content: "ī´"
+}
+
+.bxs-caret-up-circle:before {
+    content: "ī´¯"
+}
+
+.bxs-caret-up-square:before {
+    content: "ī´˛"
+}
+
+.bxs-car-garage:before {
+    content: "ī´"
+}
+
+.bxs-car-mechanic:before {
+    content: "ī´ "
+}
+
+.bxs-carousel:before {
+    content: "ī´�"
+}
+
+.bxs-cart:before {
+    content: "ī´¢"
+}
+
+.bxs-cart-add:before {
+    content: "ī´£"
+}
+
+.bxs-cart-alt:before {
+    content: "ī´¤"
+}
+
+.bxs-cart-download:before {
+    content: "ī´�"
+}
+
+.bxs-car-wash:before {
+    content: "ī´¦"
+}
+
+.bxs-category:before {
+    content: "ī´§"
+}
+
+.bxs-category-alt:before {
+    content: "ī´Ø"
+}
+
+.bxs-cctv:before {
+    content: "ī´©"
+}
+
+.bxs-certification:before {
+    content: "ī´Ŗ"
+}
+
+.bxs-chalkboard:before {
+    content: "ī´«"
+}
+
+.bxs-chart:before {
+    content: "ī´¬"
+}
+
+.bxs-chat:before {
+    content: "ī´­"
+}
+
+.bxs-checkbox:before {
+    content: "ī´®"
+}
+
+.bxs-checkbox-checked:before {
+    content: "ī´Æ"
+}
+
+.bxs-checkbox-minus:before {
+    content: "ī´°"
+}
+
+.bxs-check-circle:before {
+    content: "ī´±"
+}
+
+.bxs-check-shield:before {
+    content: "ī´²"
+}
+
+.bxs-check-square:before {
+    content: "ī´³"
+}
+
+.bxs-chess:before {
+    content: "ī´´"
+}
+
+.bxs-chevron-down:before {
+    content: "ī´µ"
+}
+
+.bxs-chevron-down-circle:before {
+    content: "ī´¶"
+}
+
+.bxs-chevron-down-square:before {
+    content: "ī´·"
+}
+
+.bxs-chevron-left:before {
+    content: "ī´ø"
+}
+
+.bxs-chevron-left-circle:before {
+    content: "ī´¹"
+}
+
+.bxs-chevron-left-square:before {
+    content: "ī´ŗ"
+}
+
+.bxs-chevron-right:before {
+    content: "ī´»"
+}
+
+.bxs-chevron-right-circle:before {
+    content: "ī´¼"
+}
+
+.bxs-chevron-right-square:before {
+    content: "ī´½"
+}
+
+.bxs-chevrons-down:before {
+    content: "ī´¾"
+}
+
+.bxs-chevrons-left:before {
+    content: "ī´æ"
+}
+
+.bxs-chevrons-right:before {
+    content: "īµ€"
+}
+
+.bxs-chevrons-up:before {
+    content: "īµ"
+}
+
+.bxs-chevron-up:before {
+    content: "īµ‚"
+}
+
+.bxs-chevron-up-circle:before {
+    content: "īµ"
+}
+
+.bxs-chevron-up-square:before {
+    content: "īµ„"
+}
+
+.bxs-chip:before {
+    content: "īµ…"
+}
+
+.bxs-church:before {
+    content: "īµ†"
+}
+
+.bxs-circle:before {
+    content: "īµ‡"
+}
+
+.bxs-city:before {
+    content: "īµ"
+}
+
+.bxs-clinic:before {
+    content: "īµ‰"
+}
+
+.bxs-cloud:before {
+    content: "īµ"
+}
+
+.bxs-cloud-download:before {
+    content: "īµ‹"
+}
+
+.bxs-cloud-lightning:before {
+    content: "īµ"
+}
+
+.bxs-cloud-rain:before {
+    content: "īµ¨"
+}
+
+.bxs-cloud-upload:before {
+    content: "īµˇ"
+}
+
+.bxs-coffee:before {
+    content: "īµ¸"
+}
+
+.bxs-coffee-alt:before {
+    content: "īµ"
+}
+
+.bxs-coffee-togo:before {
+    content: "īµ‘"
+}
+
+.bxs-cog:before {
+    content: "īµ’"
+}
+
+.bxs-coin:before {
+    content: "īµ“"
+}
+
+.bxs-coin-stack:before {
+    content: "īµ”"
+}
+
+.bxs-collection:before {
+    content: "īµ•"
+}
+
+.bxs-color-fill:before {
+    content: "īµ–"
+}
+
+.bxs-comment:before {
+    content: "īµ—"
+}
+
+.bxs-comment-add:before {
+    content: "īµ"
+}
+
+.bxs-comment-check:before {
+    content: "īµ™"
+}
+
+.bxs-comment-detail:before {
+    content: "īµ"
+}
+
+.bxs-comment-dots:before {
+    content: "īµ›"
+}
+
+.bxs-comment-edit:before {
+    content: "īµ"
+}
+
+.bxs-comment-error:before {
+    content: "īµ¯"
+}
+
+.bxs-comment-minus:before {
+    content: "īµ˛"
+}
+
+.bxs-comment-x:before {
+    content: "īµ"
+}
+
+.bxs-compass:before {
+    content: "īµ "
+}
+
+.bxs-component:before {
+    content: "īµ�"
+}
+
+.bxs-confused:before {
+    content: "īµ¢"
+}
+
+.bxs-contact:before {
+    content: "īµ£"
+}
+
+.bxs-conversation:before {
+    content: "īµ¤"
+}
+
+.bxs-cookie:before {
+    content: "īµ�"
+}
+
+.bxs-cool:before {
+    content: "īµ¦"
+}
+
+.bxs-copy:before {
+    content: "īµ§"
+}
+
+.bxs-copy-alt:before {
+    content: "īµØ"
+}
+
+.bxs-copyright:before {
+    content: "īµ©"
+}
+
+.bxs-coupon:before {
+    content: "īµŖ"
+}
+
+.bxs-credit-card:before {
+    content: "īµ«"
+}
+
+.bxs-credit-card-alt:before {
+    content: "īµ¬"
+}
+
+.bxs-credit-card-front:before {
+    content: "īµ­"
+}
+
+.bxs-crop:before {
+    content: "īµ®"
+}
+
+.bxs-crown:before {
+    content: "īµÆ"
+}
+
+.bxs-cube:before {
+    content: "īµ°"
+}
+
+.bxs-cube-alt:before {
+    content: "īµ±"
+}
+
+.bxs-cuboid:before {
+    content: "īµ²"
+}
+
+.bxs-customize:before {
+    content: "īµ³"
+}
+
+.bxs-cylinder:before {
+    content: "īµ´"
+}
+
+.bxs-dashboard:before {
+    content: "īµµ"
+}
+
+.bxs-data:before {
+    content: "īµ¶"
+}
+
+.bxs-detail:before {
+    content: "īµ·"
+}
+
+.bxs-devices:before {
+    content: "īµø"
+}
+
+.bxs-diamond:before {
+    content: "īµ¹"
+}
+
+.bxs-dice-1:before {
+    content: "īµŗ"
+}
+
+.bxs-dice-2:before {
+    content: "īµ»"
+}
+
+.bxs-dice-3:before {
+    content: "īµ¼"
+}
+
+.bxs-dice-4:before {
+    content: "īµ½"
+}
+
+.bxs-dice-5:before {
+    content: "īµ¾"
+}
+
+.bxs-dice-6:before {
+    content: "īµæ"
+}
+
+.bxs-direction-left:before {
+    content: "ī¶€"
+}
+
+.bxs-direction-right:before {
+    content: "ī¶"
+}
+
+.bxs-directions:before {
+    content: "ī¶‚"
+}
+
+.bxs-disc:before {
+    content: "ī¶"
+}
+
+.bxs-discount:before {
+    content: "ī¶„"
+}
+
+.bxs-dish:before {
+    content: "ī¶…"
+}
+
+.bxs-dislike:before {
+    content: "ī¶†"
+}
+
+.bxs-dizzy:before {
+    content: "ī¶‡"
+}
+
+.bxs-dock-bottom:before {
+    content: "ī¶"
+}
+
+.bxs-dock-left:before {
+    content: "ī¶‰"
+}
+
+.bxs-dock-right:before {
+    content: "ī¶"
+}
+
+.bxs-dock-top:before {
+    content: "ī¶‹"
+}
+
+.bxs-dollar-circle:before {
+    content: "ī¶"
+}
+
+.bxs-donate-blood:before {
+    content: "ī¶¨"
+}
+
+.bxs-donate-heart:before {
+    content: "ī¶ˇ"
+}
+
+.bxs-door-open:before {
+    content: "ī¶¸"
+}
+
+.bxs-doughnut-chart:before {
+    content: "ī¶"
+}
+
+.bxs-down-arrow:before {
+    content: "ī¶‘"
+}
+
+.bxs-down-arrow-alt:before {
+    content: "ī¶’"
+}
+
+.bxs-down-arrow-circle:before {
+    content: "ī¶“"
+}
+
+.bxs-down-arrow-square:before {
+    content: "ī¶”"
+}
+
+.bxs-download:before {
+    content: "ī¶•"
+}
+
+.bxs-downvote:before {
+    content: "ī¶–"
+}
+
+.bxs-drink:before {
+    content: "ī¶—"
+}
+
+.bxs-droplet-half:before {
+    content: "ī¶"
+}
+
+.bxs-dryer:before {
+    content: "ī¶™"
+}
+
+.bxs-duplicate:before {
+    content: "ī¶"
+}
+
+.bxs-edit:before {
+    content: "ī¶›"
+}
+
+.bxs-edit-alt:before {
+    content: "ī¶"
+}
+
+.bxs-edit-location:before {
+    content: "ī¶¯"
+}
+
+.bxs-eject:before {
+    content: "ī¶˛"
+}
+
+.bxs-envelope:before {
+    content: "ī¶"
+}
+
+.bxs-envelope-open:before {
+    content: "ī¶ "
+}
+
+.bxs-eraser:before {
+    content: "ī¶�"
+}
+
+.bxs-error:before {
+    content: "ī¶¢"
+}
+
+.bxs-error-alt:before {
+    content: "ī¶£"
+}
+
+.bxs-error-circle:before {
+    content: "ī¶¤"
+}
+
+.bxs-ev-station:before {
+    content: "ī¶�"
+}
+
+.bxs-exit:before {
+    content: "ī¶¦"
+}
+
+.bxs-extension:before {
+    content: "ī¶§"
+}
+
+.bxs-eyedropper:before {
+    content: "ī¶Ø"
+}
+
+.bxs-face:before {
+    content: "ī¶©"
+}
+
+.bxs-face-mask:before {
+    content: "ī¶Ŗ"
+}
+
+.bxs-factory:before {
+    content: "ī¶«"
+}
+
+.bxs-fast-forward-circle:before {
+    content: "ī¶¬"
+}
+
+.bxs-file:before {
+    content: "ī¶­"
+}
+
+.bxs-file-archive:before {
+    content: "ī¶®"
+}
+
+.bxs-file-blank:before {
+    content: "ī¶Æ"
+}
+
+.bxs-file-css:before {
+    content: "ī¶°"
+}
+
+.bxs-file-doc:before {
+    content: "ī¶±"
+}
+
+.bxs-file-export:before {
+    content: "ī¶²"
+}
+
+.bxs-file-find:before {
+    content: "ī¶³"
+}
+
+.bxs-file-gif:before {
+    content: "ī¶´"
+}
+
+.bxs-file-html:before {
+    content: "ī¶µ"
+}
+
+.bxs-file-image:before {
+    content: "ī¶¶"
+}
+
+.bxs-file-import:before {
+    content: "ī¶·"
+}
+
+.bxs-file-jpg:before {
+    content: "ī¶ø"
+}
+
+.bxs-file-js:before {
+    content: "ī¶¹"
+}
+
+.bxs-file-json:before {
+    content: "ī¶ŗ"
+}
+
+.bxs-file-md:before {
+    content: "ī¶»"
+}
+
+.bxs-file-pdf:before {
+    content: "ī¶¼"
+}
+
+.bxs-file-plus:before {
+    content: "ī¶½"
+}
+
+.bxs-file-png:before {
+    content: "ī¶¾"
+}
+
+.bxs-file-txt:before {
+    content: "ī¶æ"
+}
+
+.bxs-film:before {
+    content: "ī·€"
+}
+
+.bxs-filter-alt:before {
+    content: "ī·"
+}
+
+.bxs-first-aid:before {
+    content: "ī·‚"
+}
+
+.bxs-flag:before {
+    content: "ī·"
+}
+
+.bxs-flag-alt:before {
+    content: "ī·„"
+}
+
+.bxs-flag-checkered:before {
+    content: "ī·…"
+}
+
+.bxs-flame:before {
+    content: "ī·†"
+}
+
+.bxs-flask:before {
+    content: "ī·‡"
+}
+
+.bxs-florist:before {
+    content: "ī·"
+}
+
+.bxs-folder:before {
+    content: "ī·‰"
+}
+
+.bxs-folder-minus:before {
+    content: "ī·"
+}
+
+.bxs-folder-open:before {
+    content: "ī·‹"
+}
+
+.bxs-folder-plus:before {
+    content: "ī·"
+}
+
+.bxs-food-menu:before {
+    content: "ī·¨"
+}
+
+.bxs-fridge:before {
+    content: "ī·ˇ"
+}
+
+.bxs-game:before {
+    content: "ī·¸"
+}
+
+.bxs-gas-pump:before {
+    content: "ī·"
+}
+
+.bxs-ghost:before {
+    content: "ī·‘"
+}
+
+.bxs-gift:before {
+    content: "ī·’"
+}
+
+.bxs-graduation:before {
+    content: "ī·“"
+}
+
+.bxs-grid:before {
+    content: "ī·”"
+}
+
+.bxs-grid-alt:before {
+    content: "ī·•"
+}
+
+.bxs-group:before {
+    content: "ī·–"
+}
+
+.bxs-guitar-amp:before {
+    content: "ī·—"
+}
+
+.bxs-hand:before {
+    content: "ī·"
+}
+
+.bxs-hand-down:before {
+    content: "ī·™"
+}
+
+.bxs-hand-left:before {
+    content: "ī·"
+}
+
+.bxs-hand-right:before {
+    content: "ī·›"
+}
+
+.bxs-hand-up:before {
+    content: "ī·"
+}
+
+.bxs-happy:before {
+    content: "ī·¯"
+}
+
+.bxs-happy-alt:before {
+    content: "ī·˛"
+}
+
+.bxs-happy-beaming:before {
+    content: "ī·"
+}
+
+.bxs-happy-heart-eyes:before {
+    content: "ī· "
+}
+
+.bxs-hdd:before {
+    content: "ī·�"
+}
+
+.bxs-heart:before {
+    content: "ī·¢"
+}
+
+.bxs-heart-circle:before {
+    content: "ī·£"
+}
+
+.bxs-heart-square:before {
+    content: "ī·¤"
+}
+
+.bxs-help-circle:before {
+    content: "ī·�"
+}
+
+.bxs-hide:before {
+    content: "ī·¦"
+}
+
+.bxs-home:before {
+    content: "ī·§"
+}
+
+.bxs-home-circle:before {
+    content: "ī·Ø"
+}
+
+.bxs-home-heart:before {
+    content: "ī·©"
+}
+
+.bxs-home-smile:before {
+    content: "ī·Ŗ"
+}
+
+.bxs-hotel:before {
+    content: "ī·«"
+}
+
+.bxs-hourglass:before {
+    content: "ī·¬"
+}
+
+.bxs-hourglass-bottom:before {
+    content: "ī·­"
+}
+
+.bxs-hourglass-top:before {
+    content: "ī·®"
+}
+
+.bxs-id-card:before {
+    content: "ī·Æ"
+}
+
+.bxs-image:before {
+    content: "ī·°"
+}
+
+.bxs-image-add:before {
+    content: "ī·±"
+}
+
+.bxs-image-alt:before {
+    content: "ī·²"
+}
+
+.bxs-inbox:before {
+    content: "ī·³"
+}
+
+.bxs-info-circle:before {
+    content: "ī·´"
+}
+
+.bxs-info-square:before {
+    content: "ī·µ"
+}
+
+.bxs-institution:before {
+    content: "ī·¶"
+}
+
+.bxs-joystick:before {
+    content: "ī··"
+}
+
+.bxs-joystick-alt:before {
+    content: "ī·ø"
+}
+
+.bxs-joystick-button:before {
+    content: "ī·¹"
+}
+
+.bxs-key:before {
+    content: "ī·ŗ"
+}
+
+.bxs-keyboard:before {
+    content: "ī·»"
+}
+
+.bxs-label:before {
+    content: "ī·¼"
+}
+
+.bxs-landmark:before {
+    content: "ī·½"
+}
+
+.bxs-landscape:before {
+    content: "ī·¾"
+}
+
+.bxs-laugh:before {
+    content: "ī·æ"
+}
+
+.bxs-layer:before {
+    content: "īø€"
+}
+
+.bxs-layer-minus:before {
+    content: "īø"
+}
+
+.bxs-layer-plus:before {
+    content: "īø‚"
+}
+
+.bxs-layout:before {
+    content: "īø"
+}
+
+.bxs-left-arrow:before {
+    content: "īø„"
+}
+
+.bxs-left-arrow-alt:before {
+    content: "īø…"
+}
+
+.bxs-left-arrow-circle:before {
+    content: "īø†"
+}
+
+.bxs-left-arrow-square:before {
+    content: "īø‡"
+}
+
+.bxs-left-down-arrow-circle:before {
+    content: "īø"
+}
+
+.bxs-left-top-arrow-circle:before {
+    content: "īø‰"
+}
+
+.bxs-like:before {
+    content: "īø"
+}
+
+.bxs-location-plus:before {
+    content: "īø‹"
+}
+
+.bxs-lock:before {
+    content: "īø"
+}
+
+.bxs-lock-alt:before {
+    content: "īø¨"
+}
+
+.bxs-lock-open:before {
+    content: "īøˇ"
+}
+
+.bxs-lock-open-alt:before {
+    content: "īø¸"
+}
+
+.bxs-log-in:before {
+    content: "īø"
+}
+
+.bxs-log-in-circle:before {
+    content: "īø‘"
+}
+
+.bxs-log-out:before {
+    content: "īø’"
+}
+
+.bxs-log-out-circle:before {
+    content: "īø“"
+}
+
+.bxs-low-vision:before {
+    content: "īø”"
+}
+
+.bxs-magic-wand:before {
+    content: "īø•"
+}
+
+.bxs-magnet:before {
+    content: "īø–"
+}
+
+.bxs-map:before {
+    content: "īø—"
+}
+
+.bxs-map-alt:before {
+    content: "īø"
+}
+
+.bxs-map-pin:before {
+    content: "īø™"
+}
+
+.bxs-mask:before {
+    content: "īø"
+}
+
+.bxs-medal:before {
+    content: "īø›"
+}
+
+.bxs-megaphone:before {
+    content: "īø"
+}
+
+.bxs-meh:before {
+    content: "īø¯"
+}
+
+.bxs-meh-alt:before {
+    content: "īø˛"
+}
+
+.bxs-meh-blank:before {
+    content: "īø"
+}
+
+.bxs-memory-card:before {
+    content: "īø "
+}
+
+.bxs-message:before {
+    content: "īø�"
+}
+
+.bxs-message-add:before {
+    content: "īø¢"
+}
+
+.bxs-message-alt:before {
+    content: "īø£"
+}
+
+.bxs-message-alt-add:before {
+    content: "īø¤"
+}
+
+.bxs-message-alt-check:before {
+    content: "īø�"
+}
+
+.bxs-message-alt-detail:before {
+    content: "īø¦"
+}
+
+.bxs-message-alt-dots:before {
+    content: "īø§"
+}
+
+.bxs-message-alt-edit:before {
+    content: "īøØ"
+}
+
+.bxs-message-alt-error:before {
+    content: "īø©"
+}
+
+.bxs-message-alt-minus:before {
+    content: "īøŖ"
+}
+
+.bxs-message-alt-x:before {
+    content: "īø«"
+}
+
+.bxs-message-check:before {
+    content: "īø¬"
+}
+
+.bxs-message-detail:before {
+    content: "īø­"
+}
+
+.bxs-message-dots:before {
+    content: "īø®"
+}
+
+.bxs-message-edit:before {
+    content: "īøÆ"
+}
+
+.bxs-message-error:before {
+    content: "īø°"
+}
+
+.bxs-message-minus:before {
+    content: "īø±"
+}
+
+.bxs-message-rounded:before {
+    content: "īø²"
+}
+
+.bxs-message-rounded-add:before {
+    content: "īø³"
+}
+
+.bxs-message-rounded-check:before {
+    content: "īø´"
+}
+
+.bxs-message-rounded-detail:before {
+    content: "īøµ"
+}
+
+.bxs-message-rounded-dots:before {
+    content: "īø¶"
+}
+
+.bxs-message-rounded-edit:before {
+    content: "īø·"
+}
+
+.bxs-message-rounded-error:before {
+    content: "īøø"
+}
+
+.bxs-message-rounded-minus:before {
+    content: "īø¹"
+}
+
+.bxs-message-rounded-x:before {
+    content: "īøŗ"
+}
+
+.bxs-message-square:before {
+    content: "īø»"
+}
+
+.bxs-message-square-add:before {
+    content: "īø¼"
+}
+
+.bxs-message-square-check:before {
+    content: "īø½"
+}
+
+.bxs-message-square-detail:before {
+    content: "īø¾"
+}
+
+.bxs-message-square-dots:before {
+    content: "īøæ"
+}
+
+.bxs-message-square-edit:before {
+    content: "ī¹€"
+}
+
+.bxs-message-square-error:before {
+    content: "ī¹"
+}
+
+.bxs-message-square-minus:before {
+    content: "ī¹‚"
+}
+
+.bxs-message-square-x:before {
+    content: "ī¹"
+}
+
+.bxs-message-x:before {
+    content: "ī¹„"
+}
+
+.bxs-meteor:before {
+    content: "ī¹…"
+}
+
+.bxs-microchip:before {
+    content: "ī¹†"
+}
+
+.bxs-microphone:before {
+    content: "ī¹‡"
+}
+
+.bxs-microphone-alt:before {
+    content: "ī¹"
+}
+
+.bxs-microphone-off:before {
+    content: "ī¹‰"
+}
+
+.bxs-minus-circle:before {
+    content: "ī¹"
+}
+
+.bxs-minus-square:before {
+    content: "ī¹‹"
+}
+
+.bxs-mobile:before {
+    content: "ī¹"
+}
+
+.bxs-mobile-vibration:before {
+    content: "ī¹¨"
+}
+
+.bxs-moon:before {
+    content: "ī¹ˇ"
+}
+
+.bxs-mouse:before {
+    content: "ī¹¸"
+}
+
+.bxs-mouse-alt:before {
+    content: "ī¹"
+}
+
+.bxs-movie:before {
+    content: "ī¹‘"
+}
+
+.bxs-movie-play:before {
+    content: "ī¹’"
+}
+
+.bxs-music:before {
+    content: "ī¹“"
+}
+
+.bxs-navigation:before {
+    content: "ī¹”"
+}
+
+.bxs-network-chart:before {
+    content: "ī¹•"
+}
+
+.bxs-news:before {
+    content: "ī¹–"
+}
+
+.bxs-no-entry:before {
+    content: "ī¹—"
+}
+
+.bxs-note:before {
+    content: "ī¹"
+}
+
+.bxs-notepad:before {
+    content: "ī¹™"
+}
+
+.bxs-notification:before {
+    content: "ī¹"
+}
+
+.bxs-notification-off:before {
+    content: "ī¹›"
+}
+
+.bxs-offer:before {
+    content: "ī¹"
+}
+
+.bxs-package:before {
+    content: "ī¹¯"
+}
+
+.bxs-paint:before {
+    content: "ī¹˛"
+}
+
+.bxs-paint-roll:before {
+    content: "ī¹"
+}
+
+.bxs-palette:before {
+    content: "ī¹ "
+}
+
+.bxs-paper-plane:before {
+    content: "ī¹�"
+}
+
+.bxs-parking:before {
+    content: "ī¹¢"
+}
+
+.bxs-paste:before {
+    content: "ī¹£"
+}
+
+.bxs-pen:before {
+    content: "ī¹¤"
+}
+
+.bxs-pencil:before {
+    content: "ī¹�"
+}
+
+.bxs-phone:before {
+    content: "ī¹¦"
+}
+
+.bxs-phone-call:before {
+    content: "ī¹§"
+}
+
+.bxs-phone-incoming:before {
+    content: "ī¹Ø"
+}
+
+.bxs-phone-off:before {
+    content: "ī¹©"
+}
+
+.bxs-phone-outgoing:before {
+    content: "ī¹Ŗ"
+}
+
+.bxs-photo-album:before {
+    content: "ī¹«"
+}
+
+.bxs-piano:before {
+    content: "ī¹¬"
+}
+
+.bxs-pie-chart:before {
+    content: "ī¹­"
+}
+
+.bxs-pie-chart-alt:before {
+    content: "ī¹®"
+}
+
+.bxs-pie-chart-alt-2:before {
+    content: "ī¹Æ"
+}
+
+.bxs-pin:before {
+    content: "ī¹°"
+}
+
+.bxs-pizza:before {
+    content: "ī¹±"
+}
+
+.bxs-plane:before {
+    content: "ī¹²"
+}
+
+.bxs-plane-alt:before {
+    content: "ī¹³"
+}
+
+.bxs-plane-land:before {
+    content: "ī¹´"
+}
+
+.bxs-planet:before {
+    content: "ī¹µ"
+}
+
+.bxs-plane-take-off:before {
+    content: "ī¹¶"
+}
+
+.bxs-playlist:before {
+    content: "ī¹·"
+}
+
+.bxs-plug:before {
+    content: "ī¹ø"
+}
+
+.bxs-plus-circle:before {
+    content: "ī¹¹"
+}
+
+.bxs-plus-square:before {
+    content: "ī¹ŗ"
+}
+
+.bxs-pointer:before {
+    content: "ī¹»"
+}
+
+.bxs-polygon:before {
+    content: "ī¹¼"
+}
+
+.bxs-printer:before {
+    content: "ī¹½"
+}
+
+.bxs-purchase-tag:before {
+    content: "ī¹¾"
+}
+
+.bxs-purchase-tag-alt:before {
+    content: "ī¹æ"
+}
+
+.bxs-pyramid:before {
+    content: "īŗ€"
+}
+
+.bxs-quote-alt-left:before {
+    content: "īŗ"
+}
+
+.bxs-quote-alt-right:before {
+    content: "īŗ‚"
+}
+
+.bxs-quote-left:before {
+    content: "īŗ"
+}
+
+.bxs-quote-right:before {
+    content: "īŗ„"
+}
+
+.bxs-quote-single-left:before {
+    content: "īŗ…"
+}
+
+.bxs-quote-single-right:before {
+    content: "īŗ†"
+}
+
+.bxs-radiation:before {
+    content: "īŗ‡"
+}
+
+.bxs-radio:before {
+    content: "īŗ"
+}
+
+.bxs-receipt:before {
+    content: "īŗ‰"
+}
+
+.bxs-rectangle:before {
+    content: "īŗ"
+}
+
+.bxs-registered:before {
+    content: "īŗ‹"
+}
+
+.bxs-rename:before {
+    content: "īŗ"
+}
+
+.bxs-report:before {
+    content: "īŗ¨"
+}
+
+.bxs-rewind-circle:before {
+    content: "īŗˇ"
+}
+
+.bxs-right-arrow:before {
+    content: "īŗ¸"
+}
+
+.bxs-right-arrow-alt:before {
+    content: "īŗ"
+}
+
+.bxs-right-arrow-circle:before {
+    content: "īŗ‘"
+}
+
+.bxs-right-arrow-square:before {
+    content: "īŗ’"
+}
+
+.bxs-right-down-arrow-circle:before {
+    content: "īŗ“"
+}
+
+.bxs-right-top-arrow-circle:before {
+    content: "īŗ”"
+}
+
+.bxs-rocket:before {
+    content: "īŗ•"
+}
+
+.bxs-ruler:before {
+    content: "īŗ–"
+}
+
+.bxs-sad:before {
+    content: "īŗ—"
+}
+
+.bxs-save:before {
+    content: "īŗ"
+}
+
+.bxs-school:before {
+    content: "īŗ™"
+}
+
+.bxs-search:before {
+    content: "īŗ"
+}
+
+.bxs-search-alt-2:before {
+    content: "īŗ›"
+}
+
+.bxs-select-multiple:before {
+    content: "īŗ"
+}
+
+.bxs-send:before {
+    content: "īŗ¯"
+}
+
+.bxs-server:before {
+    content: "īŗ˛"
+}
+
+.bxs-shapes:before {
+    content: "īŗ"
+}
+
+.bxs-share:before {
+    content: "īŗ "
+}
+
+.bxs-share-alt:before {
+    content: "īŗ�"
+}
+
+.bxs-shield:before {
+    content: "īŗ¢"
+}
+
+.bxs-shield-alt-2:before {
+    content: "īŗ£"
+}
+
+.bxs-shield-x:before {
+    content: "īŗ¤"
+}
+
+.bxs-ship:before {
+    content: "īŗ�"
+}
+
+.bxs-shocked:before {
+    content: "īŗ¦"
+}
+
+.bxs-shopping-bag:before {
+    content: "īŗ§"
+}
+
+.bxs-shopping-bag-alt:before {
+    content: "īŗØ"
+}
+
+.bxs-shopping-bags:before {
+    content: "īŗ©"
+}
+
+.bxs-show:before {
+    content: "īŗŖ"
+}
+
+.bxs-skip-next-circle:before {
+    content: "īŗ«"
+}
+
+.bxs-skip-previous-circle:before {
+    content: "īŗ¬"
+}
+
+.bxs-skull:before {
+    content: "īŗ­"
+}
+
+.bxs-sleepy:before {
+    content: "īŗ®"
+}
+
+.bxs-slideshow:before {
+    content: "īŗÆ"
+}
+
+.bxs-smile:before {
+    content: "īŗ°"
+}
+
+.bxs-sort-alt:before {
+    content: "īŗ±"
+}
+
+.bxs-spa:before {
+    content: "īŗ²"
+}
+
+.bxs-speaker:before {
+    content: "īŗ³"
+}
+
+.bxs-spray-can:before {
+    content: "īŗ´"
+}
+
+.bxs-spreadsheet:before {
+    content: "īŗµ"
+}
+
+.bxs-square:before {
+    content: "īŗ¶"
+}
+
+.bxs-square-rounded:before {
+    content: "īŗ·"
+}
+
+.bxs-star:before {
+    content: "īŗø"
+}
+
+.bxs-star-half:before {
+    content: "īŗ¹"
+}
+
+.bxs-sticker:before {
+    content: "īŗŗ"
+}
+
+.bxs-stopwatch:before {
+    content: "īŗ»"
+}
+
+.bxs-store:before {
+    content: "īŗ¼"
+}
+
+.bxs-store-alt:before {
+    content: "īŗ½"
+}
+
+.bxs-sun:before {
+    content: "īŗ¾"
+}
+
+.bxs-tachometer:before {
+    content: "īŗæ"
+}
+
+.bxs-tag:before {
+    content: "ī»€"
+}
+
+.bxs-tag-alt:before {
+    content: "ī»"
+}
+
+.bxs-tag-x:before {
+    content: "ī»‚"
+}
+
+.bxs-taxi:before {
+    content: "ī»"
+}
+
+.bxs-tennis-ball:before {
+    content: "ī»„"
+}
+
+.bxs-terminal:before {
+    content: "ī»…"
+}
+
+.bxs-thermometer:before {
+    content: "ī»†"
+}
+
+.bxs-time:before {
+    content: "ī»‡"
+}
+
+.bxs-time-five:before {
+    content: "ī»"
+}
+
+.bxs-timer:before {
+    content: "ī»‰"
+}
+
+.bxs-tired:before {
+    content: "ī»"
+}
+
+.bxs-toggle-left:before {
+    content: "ī»‹"
+}
+
+.bxs-toggle-right:before {
+    content: "ī»"
+}
+
+.bxs-tone:before {
+    content: "ī»¨"
+}
+
+.bxs-torch:before {
+    content: "ī»ˇ"
+}
+
+.bxs-to-top:before {
+    content: "ī»¸"
+}
+
+.bxs-traffic:before {
+    content: "ī»"
+}
+
+.bxs-traffic-barrier:before {
+    content: "ī»‘"
+}
+
+.bxs-traffic-cone:before {
+    content: "ī»’"
+}
+
+.bxs-train:before {
+    content: "ī»“"
+}
+
+.bxs-trash:before {
+    content: "ī»”"
+}
+
+.bxs-trash-alt:before {
+    content: "ī»•"
+}
+
+.bxs-tree:before {
+    content: "ī»–"
+}
+
+.bxs-trophy:before {
+    content: "ī»—"
+}
+
+.bxs-truck:before {
+    content: "ī»"
+}
+
+.bxs-t-shirt:before {
+    content: "ī»™"
+}
+
+.bxs-tv:before {
+    content: "ī»"
+}
+
+.bxs-up-arrow:before {
+    content: "ī»›"
+}
+
+.bxs-up-arrow-alt:before {
+    content: "ī»"
+}
+
+.bxs-up-arrow-circle:before {
+    content: "ī»¯"
+}
+
+.bxs-up-arrow-square:before {
+    content: "ī»˛"
+}
+
+.bxs-upside-down:before {
+    content: "ī»"
+}
+
+.bxs-upvote:before {
+    content: "ī» "
+}
+
+.bxs-user:before {
+    content: "ī»�"
+}
+
+.bxs-user-account:before {
+    content: "ī»¢"
+}
+
+.bxs-user-badge:before {
+    content: "ī»£"
+}
+
+.bxs-user-check:before {
+    content: "ī»¤"
+}
+
+.bxs-user-circle:before {
+    content: "ī»�"
+}
+
+.bxs-user-detail:before {
+    content: "ī»¦"
+}
+
+.bxs-user-minus:before {
+    content: "ī»§"
+}
+
+.bxs-user-pin:before {
+    content: "ī»Ø"
+}
+
+.bxs-user-plus:before {
+    content: "ī»©"
+}
+
+.bxs-user-rectangle:before {
+    content: "ī»Ŗ"
+}
+
+.bxs-user-voice:before {
+    content: "ī»«"
+}
+
+.bxs-user-x:before {
+    content: "ī»¬"
+}
+
+.bxs-vector:before {
+    content: "ī»­"
+}
+
+.bxs-vial:before {
+    content: "ī»®"
+}
+
+.bxs-video:before {
+    content: "ī»Æ"
+}
+
+.bxs-video-off:before {
+    content: "ī»°"
+}
+
+.bxs-video-plus:before {
+    content: "ī»±"
+}
+
+.bxs-video-recording:before {
+    content: "ī»²"
+}
+
+.bxs-videos:before {
+    content: "ī»³"
+}
+
+.bxs-virus:before {
+    content: "ī»´"
+}
+
+.bxs-virus-block:before {
+    content: "ī»µ"
+}
+
+.bxs-volume:before {
+    content: "ī»¶"
+}
+
+.bxs-volume-full:before {
+    content: "ī»·"
+}
+
+.bxs-volume-low:before {
+    content: "ī»ø"
+}
+
+.bxs-volume-mute:before {
+    content: "ī»¹"
+}
+
+.bxs-wallet:before {
+    content: "ī»ŗ"
+}
+
+.bxs-wallet-alt:before {
+    content: "ī»»"
+}
+
+.bxs-washer:before {
+    content: "ī»¼"
+}
+
+.bxs-watch:before {
+    content: "ī»½"
+}
+
+.bxs-watch-alt:before {
+    content: "ī»¾"
+}
+
+.bxs-webcam:before {
+    content: "ī»æ"
+}
+
+.bxs-widget:before {
+    content: "ī¼€"
+}
+
+.bxs-window-alt:before {
+    content: "ī¼"
+}
+
+.bxs-wine:before {
+    content: "ī¼‚"
+}
+
+.bxs-wink-smile:before {
+    content: "ī¼"
+}
+
+.bxs-wink-tongue:before {
+    content: "ī¼„"
+}
+
+.bxs-wrench:before {
+    content: "ī¼…"
+}
+
+.bxs-x-circle:before {
+    content: "ī¼†"
+}
+
+.bxs-x-square:before {
+    content: "ī¼‡"
+}
+
+.bxs-yin-yang:before {
+    content: "ī¼"
+}
+
+.bxs-zap:before {
+    content: "ī¼‰"
+}
+
+.bxs-zoom-in:before {
+    content: "ī¼"
+}
+
+.bxs-zoom-out:before {
+    content: "ī¼‹"
+}

@@ -1,0 +1,239 @@
+﻿@page "/RabbitTaskRead"
+@using Application.ServiceContract
+@using MWSMan.Core.Model.Events
+@using Model.ApplicationModels
+@using Model.PresentationModels
+@using MD.PersianDateTime
+@using Model.PublicModels
+@inject IRabbitTaskService RabbitTaskService
+@inject IList<ServerSelected> serverSelecteds
+@inject CenterEvent centerEvent
+@inject ISend sendService
+@inject NavigationManager Navigation
+
+@rendermode InteractiveServer
+@attribute [StreamRendering]
+
+<style>
+
+    body {
+        display: block
+    }
+
+    .search-panel {
+        width: 90%;
+        margin: 20px 120px auto;
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 16px;
+        border: 1px solid #dfe3e6;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, .04);
+    }
+
+    .info-item {
+        display: flex;
+        align-items: center;
+        min-height: 52px;
+        padding: 12px 16px;
+        background: #f1f3f5;
+        border-radius: 10px;
+        border: 1px solid #e9ecef;
+        overflow: hidden;
+    }
+
+    .title {
+        min-width: 90px;
+        font-weight: 600;
+        color: #495057;
+    }
+
+    .value {
+        flex: 1;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    .action-panel {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 12px;
+        padding-right: 15px;
+        border-right: 1px solid #e9ecef;
+    }
+
+    .action-panel-grid {
+        height: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        padding-right: 15px;
+        border-right: 1px solid #e9ecef;
+        align-content: center;
+    }
+
+        .action-panel-grid .btn {
+            height: 40px;
+            font-size: 13px;
+        }
+
+</style>
+
+
+
+
+@foreach (var item in RabbitTasks)
+{
+    <div dir="rtl" class="search-panel">
+        <div class="row g-0">
+
+            <!-- اطلاعات -->
+            <div class="col-lg-10 pe-lg-3">
+
+                <div class="row g-3">
+
+                    <div class="col-lg-3 col-md-6">
+                        <div class="info-item">
+                            <span class="value">@item.TaskName</span>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6">
+                        <div class="info-item">
+                            <span class="title">پردازشگر :</span>
+                            <span class="value">@item.rabbitConsumerRequestHub.ProcessorName</span>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6">
+                        <div class="info-item">
+                            <span class="title">تاریخ شروع :</span>
+                            <span class="value">@item.FromPersianDate</span>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6">
+                        <div class="info-item">
+                            <span class="title">تاریخ پایان :</span>
+                            <span class="value">@item.ToPersianDate</span>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6">
+                        <div class="info-item">
+                            <span class="title">وضعیت آخرین اجرا :    </span>
+                            <span class="value">@(GetLastStatus(item)?"👍":"👎")</span>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6">
+                        <div class="info-item">
+                            <span class="title"> نوع :</span>
+                            <span class="value">@(item.rabbitConsumerRequestHub.IsTransactional ? "درخواست" : "پیام")</span>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6">
+                        <div class="info-item">
+                            <span class="title">وضعیت :</span>
+                            <span class="value">@((!item.StopForce && DateTime.Compare(item.ToDateTime, DockerStaticDateTime.NowDateTime) == 1) ? "فعال" : "غیر فعال")</span>
+                        </div>
+                    </div>
+                     <div class="col-lg-3 col-md-6">
+                        <div class="info-item" style="padding:0;padding-right:20px">
+                            <input type="button" class="btn" @onclick="()=>ShowServer(item)" value="  لیست سرور ها " />
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- عملیات -->
+            <div class="col-lg-2">
+                <div class="action-panel-grid">
+
+                    <button @onclick="() => MakeChangeOnTaskStatus(item)" class="btn btn-primary btn-sm">
+                        @(item.StopForce?"فعال" : "غیر فعال")
+                    </button>
+
+                    <button @onclick='() => Navigation.NavigateTo($"/RabbitTaskCreate/{item.Id}")' class="btn btn-secondary btn-sm">
+                        ویرایش
+                    </button>
+
+                    <button @onclick="(e)=>RunTaskJustInTime(item)" class="btn btn-warning btn-sm">
+                        @dict.GetValueOrDefault(item.Id)
+                    </button>
+
+                    <button @onclick="()=>DateExtension(item)" class="btn btn-danger btn-sm">
+                        تمدید 10 روزه
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+}
+
+
+
+
+
+@code {
+    public IEnumerable<RabbitTasks> RabbitTasks { get; set; } = new List<RabbitTasks>();
+    bool ShowAlert = false;
+    string AlertMessage = "";
+
+    Dictionary<int, string> dict = new();
+
+    protected async override Task OnInitializedAsync()
+    {
+        var result = await RabbitTaskService.ReadAllAsync(p => p.rabbitConsumerRequestHub,p=>p.RabbitTaskServerss);
+        if (!result.IsSuccess)
+        {
+            AlertMessage = result.ErrMsg;
+            ShowAlert = true;
+            StateHasChanged();
+        }
+
+        foreach (var item in result.Data)
+        {
+            dict.Add(item.Id, "اجرا");
+        }
+        RabbitTasks = result.Data ?? new List<RabbitTasks>();
+    }
+    private bool GetLastStatus(RabbitTasks task)
+    {
+        RabbitTaskServers lastServer = task.RabbitTaskServerss.Where(t=>!t.ServerName.ToLower().Contains("rabbit"))?.OrderBy(prop => prop.LastStartDate)?.Last();
+        return (lastServer.LastId == lastServer.LastCorrectSendId || lastServer.LastId is null);
+    }
+    private void ShowServer(RabbitTasks task)
+    {
+        serverSelecteds.ToList().ForEach(p => p.isSelected = false);
+        serverSelecteds.ToList().ForEach(p => p.isSelected = (task.RabbitTaskServerss.Select(s => s.ServerName.ToLower()).Contains(p.serverInfo.ServerName.ToLower())));
+        centerEvent.ServerEventCaller();
+
+    }
+    private async Task MakeChangeOnTaskStatus(RabbitTasks tasks)
+    {
+        tasks.StopForce = !tasks.StopForce;
+        await RabbitTaskService.UpdateAsync(tasks);
+        StateHasChanged();
+    }
+    private async Task RunTaskJustInTime(RabbitTasks tasks)
+    {
+        await sendService.RunTask(tasks,true);
+        dict.Remove(tasks.Id);
+        dict.Add(tasks.Id, "اجرا شد");
+        StateHasChanged();
+    }
+    private async Task DateExtension(RabbitTasks tasks)
+    {
+        var date = PersianDateTime.Parse(tasks.ToPersianDate);
+        tasks.ToPersianDate = date.AddDays(10).ToShortDateString();
+        await RabbitTaskService.UpdateAsync(tasks);
+        StateHasChanged();
+
+    }
+}

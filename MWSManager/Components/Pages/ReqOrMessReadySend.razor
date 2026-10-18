@@ -1,0 +1,247 @@
+﻿@page "/ReqOrMessReadySend/{ReqOrMess:int}"
+@using Application.ServiceContract
+@using MWSMan.Core.Infrastructure.Extenssion
+@using MWSMan.Core.Model.Events
+@using MWSMan.Core.Persistence.StaticConfiguration
+@using Model.ApplicationModels
+@using Model.PresentationModels
+@using Persistence
+@using System.Threading.Tasks
+@rendermode InteractiveServer
+@inject IJSRuntime js
+@inject IMinooOperationConfiguration operationConfiguration
+@inject IList<ServerSelected> ServerSelecteds
+@inject CenterEvent CenterEvent
+@inject IRequestHubService requestHubService
+@inject ISend sendService
+
+<title>ارسال @(ReqOrMess is RequestOrMessageEnum.Message ? "پیام" : "درخواست") آماده</title>
+<!-- Bootstrap 5 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+
+<style>
+   /*  body {
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #f8f9fa;
+        font-family: Tahoma, sans-serif;
+    } */
+
+    .form-container {
+        background: #ffffff7a;
+        border-radius: 10px;
+        padding: 30px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        max-width: 600px;
+        width: 85%;
+        min-width: 500px;
+        direction: rtl;
+        overflow: hidden;
+        transform: scale(1.2);
+        transform-origin: center;
+        margin-left: 12%;
+    }
+
+    .parameters-container {
+        max-height: 320px;
+        overflow-y: auto;
+        margin-bottom: 15px;
+        padding-right: 5px;
+    }
+
+    .form-row {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 10px;
+        margin-top: 5px;
+    }
+
+        .form-row input, .form-row select {
+            flex: 1;
+        }
+
+    .submit-btn {
+        display: block;
+        margin: 5px auto;
+        /* width: 120px; */
+    }
+
+    /* Scrollbar خوشگل */
+    .parameters-container::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .parameters-container::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 4px;
+    }
+
+    .parameters-container::-webkit-scrollbar-thumb {
+        background: #007bff;
+        border-radius: 4px;
+    }
+
+        .parameters-container::-webkit-scrollbar-thumb:hover {
+            background: #0056b3;
+        }
+
+    .remove-btn {
+        background: transparent;
+        border: none;
+        color: red;
+        font-size: 18px;
+        cursor: pointer;
+    }
+
+    .parameters-container {
+        scrollbar-width: none;
+    }
+
+        .parameters-container::-webkit-scrollbar {
+            display: none;
+        }
+
+    /* Shadow بالا و پایین فرم اصلی */
+    .form-container {
+        box-shadow: 0 -10px 15px rgba(0,0,0,.05), 0 10px 20px rgba(0,0,0,.15);
+    }
+
+    .invalid {
+        border: 2px solid red !important;
+    }
+
+</style>
+
+
+@if (ShowAlert)
+{
+    <div style="margin-left:11%;z-index:100;max-width: 500px;" class="alert alert-success alert-dismissible fade show" role="alert">
+        @AlertMessage
+        <button type="button" class="btn-close" @onclick="() => ShowAlert = false"></button>
+    </div>
+}
+
+
+
+
+<div class="form-container">
+    <!-- اولین ردیف: select -->
+    <div class="form-row mb-3 d-block">
+        <label class="col-form-label">نام @(ReqOrMess is RequestOrMessageEnum.Message ? "پیام" : "درخواست") :</label>
+        <select id="nameSelect" class="form-select" @onchange="ChangeReqName">
+            <option value="">انتخاب کنید</option>
+
+            @foreach (var item in ReqOrMessageRedyList)
+            {
+                <option value="@item.Id">@item.RequestName</option>
+            }
+
+
+        </select>
+        <label class="col-form-label mt-1">نام تابع اجرا @(ReqOrMess is RequestOrMessageEnum.Message ? "پیام" : "درخواست") :</label>
+        <input id="nameSelect" class="form-control" @bind="ReqOrMessageProccessorName" disabled />
+ 
+    </div>
+
+    <button type="button" class="btn btn-primary submit-btn" @onclick="() => SendRequestAsync()">ارسال به سرور های انتخابی </button>
+</div>
+
+@code {
+
+
+    public class ParameterInput
+    {
+        public string Name { get; set; } = "";
+        public string Value { get; set; } = "";
+    }
+    [Parameter]
+    public RequestOrMessageEnum ReqOrMess { get; set; }
+
+    IEnumerable<RabbitConsumerRequestHub>? ReqOrMessageRedyList = new List<RabbitConsumerRequestHub>();
+    RabbitConsumerRequestHub ReqOrMessageReadySelected;
+
+    string ReqOrMessageProccessorName;
+
+    bool ShowAlert = false;
+    string AlertMessage = "";
+
+
+    protected async override Task OnParametersSetAsync()
+    {
+        var result = await requestHubService.ReadAllAsync(p => (p.IsTransactional && ReqOrMess is RequestOrMessageEnum.Request) || (!p.IsTransactional && ReqOrMess is RequestOrMessageEnum.Message));
+        if (!result.IsSuccess)
+        {
+            AlertMessage = "مشکلی در فراخوانی دیتا وجود دارد " + result.ErrMsg ?? "";
+            ShowAlert = true;
+            return;
+        }
+        ReqOrMessageRedyList = result.Data;
+    }
+    // protected override async Task OnInitializedAsync()
+    // {
+    //     // if (ReqOrMessageRedyList is null || ReqOrMessageRedyList.Count() == 0)
+    //     // {
+    //         var result = await requestHubService.ReadAllAsync(p=>(p.IsTransactional && ReqOrMess is RequestOrMessageEnum.Request)||(!p.IsTransactional && ReqOrMess is RequestOrMessageEnum.Message));
+    //         if (!result.IsSuccess)
+    //         {
+    //             AlertMessage = "مشکلی در فراخوانی دیتا وجود دارد " + result.ErrMsg ?? "";
+    //             ShowAlert = true;
+    //             return;
+    //         }
+    //         ReqOrMessageRedyList = result.Data;
+    //     // }
+
+    // }
+
+    private async Task SendRequestAsync()
+    {
+
+        if (!ServerSelecteds.Any(s => s.isSelected))
+        {
+            AlertMessage = "سروری انتخاب نشده است";
+            ShowAlert = true;
+            return;
+        }
+        else
+            ShowAlert = false;
+
+        if (string.IsNullOrEmpty(ReqOrMessageProccessorName))
+        {
+            AlertMessage = "نام نمیتواند خالی باشد ";
+            ShowAlert = true;
+            return;
+        }
+
+        if (string.IsNullOrEmpty(ReqOrMessageProccessorName))
+        {
+            return;
+        }
+        var requestParameters = ReqOrMessageReadySelected.Body.TooDictionary();
+
+        (IEnumerable<string> ReceiverName, string ProccessorName, IDictionary<string, object?> data, RequestOrMessageEnum requestOrMessageEnum) parm =
+        (ServerSelecteds.Where(p => p.isSelected).Select(_ => _.serverInfo.ServerName), ReqOrMessageProccessorName, requestParameters, ReqOrMess);
+
+
+        // await Task.WhenAll(sendService.SendAuto(parm));
+
+        await foreach (var item in sendService.SendAuto(ServerSelecteds.Where(p => p.isSelected).Select(_ => _.serverInfo.ServerName), ReqOrMessageProccessorName, requestParameters, ReqOrMess))
+        {
+            // CenterEvent.ServerEventCaller();
+        }
+    }
+    public void ChangeReqName(ChangeEventArgs e)
+    {
+        ReqOrMessageProccessorName = ReqOrMessageRedyList.First(p => p.Id == Convert.ToInt32(e.Value)).ProcessorName;
+        ReqOrMessageReadySelected = ReqOrMessageRedyList.First(p => p.Id == Convert.ToInt32(e.Value));
+        StateHasChanged();
+    }
+
+
+    // ServerSelecteds.TakeAllServerOn(ResponseState.Wait, p => p.isSelected);
+
+
+
+
+}

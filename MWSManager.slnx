@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/MWSMan.Core/">
+    <Project Path="Application/Application.csproj" />
+    <Project Path="Infrastructure/Infrastructure.csproj" />
+    <Project Path="Model/Model.csproj" />
+    <Project Path="Persistence/Persistence.csproj" />
+  </Folder>
+  <Project Path="docker-compose.dcproj">
+    <Build />
+  </Project>
+  <Project Path="MWSManager/MWSManager.csproj" />
+</Solution>

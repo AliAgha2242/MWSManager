@@ -1,0 +1,141 @@
+﻿
+
+
+
+<div dir="rtl" class="sidebar close">
+    <div class="logo-details">
+        @* <i class="bx bxl-c-plus-plus"></i> *@
+        <div class="home-content">
+            <i class="bx bx-menu"></i>
+            @* <span class="text">Drop Down Sidebar</span> *@
+        </div>
+        <span class="logo_name">MWSMan</span>
+    </div>
+    <ul class="nav-links">
+
+
+        <li>
+            <div class="iocn-link">
+                <a>
+                    <i class="bx bx-rss"></i>
+                    <span class="link_name"> درخواست</span>
+                </a>
+                <i class="bx bxs-chevron-down arrow"></i>
+            </div>
+            <ul class="sub-menu">
+                <li><NavLink href="/ReqOrMessCreateAndSend/10"> درخواست جدید</NavLink></li>
+                <li><NavLink href="/ReqOrMessReadySend/10">ارسال درخواست آماده</NavLink></li>
+                <li><NavLink href="/ReqOrMessEditDelete/10">حذف و ویرایش درخواست</NavLink></li>
+            </ul>
+        </li>
+
+        <li>
+            <div class="iocn-link">
+                <a>
+                    <i class="bx bx-message"></i>
+                    <span class="link_name">پیام</span>
+                </a>
+                <i class="bx bxs-chevron-down arrow"></i>
+            </div>
+            <ul class="sub-menu">
+                @* <li><a class="link_name" href="#">پیام</a></li> *@
+                <li><NavLink href="/ReqOrMessCreateAndSend/20">پیام جدید</NavLink></li>
+                <li><NavLink href="/ReqOrMessReadySend/20">ارسال پیام آماده</NavLink></li>
+                <li><NavLink href="/ReqOrMessEditDelete/20">حذف و ویرایش پیام</NavLink></li>
+                @* <li><a href="#">Card Design</a></li> *@
+            </ul>
+        </li>
+        <li>
+            <div class="iocn-link">
+                <a>
+                    <i class="bx bx-time"></i>
+                    <span class="link_name">زمان بندی</span>
+                </a>
+                <i class="bx bxs-chevron-down arrow"></i>
+            </div>
+            <ul class="sub-menu">
+                <li><a class="link_name" href="#">زمان بندی</a></li>
+                <li><a href="/RabbitTaskCreate">ایجاد زمان بندی</a></li>
+                <li><a href="/RabbitTaskRead">لیست زمان بندی ها</a></li>
+
+                @* <li><a href="/RabbitTaskRead">ویرایش زمان بندی</a></li> *@
+
+            </ul>
+        </li>
+        @* <li>
+            <div class="iocn-link">
+                <a>
+                    <i class="bx bx-collection"></i>
+                    <span class="link_name">نقاط پایان</span>
+                </a>
+                <i class="bx bxs-chevron-down arrow"></i>
+            </div>
+            <ul class="sub-menu">
+                <li><a class="link_name" href="#">نقاط پایان</a></li>
+                <li><a href="#">لیست نقاط پایان</a></li>
+                <li><a href="#">بدنه نقاط پایان</a></li>
+            </ul>
+        </li> *@
+       @*  <li>
+            <div class="iocn-link">
+                <a>
+                    <i class="bx bxs-message-rounded"></i>
+                    <span class="link_name">ربیت</span>
+                </a>
+                <i class="bx bxs-chevron-down arrow"></i>
+            </div>
+            <ul class="sub-menu">
+                <li><a class="link_name" href="#">ربیت</a></li>
+                <li><a href="#">مدیریت صف ها</a></li>
+                <li><a href="#">مدیریت اکسچنج ها</a></li>
+                <li><a href="#">مدیریت هاست ها</a></li>
+                <li><a href="#">مدیریت کاربران</a></li>
+            </ul>
+        </li> *@
+        <li>
+            <div class="iocn-link">
+                <a>
+                    <i class="bx bx-book-alt"></i>
+                    <span class="link_name">عملیات آماده</span>
+                </a>
+                <i class="bx bxs-chevron-down arrow"></i>
+            </div>
+            <ul class="sub-menu">
+                <li><a class="link_name" href="#">عملیات آماده</a></li>
+                <li><a href="/ReqOrMessReadyCreate/20">ایجاد پیام آماده</a></li>
+                <li><a href="/ReqOrMessReadyCreate/10">ایجاد درخواست آماده</a></li>
+                <li><a href="/SendAgainOnLogBase">ارسال درخواست یا پیام مجدد</a></li>
+
+            </ul>
+        </li>
+
+        <li>
+            <div class="profile-details">
+                <div class="profile-content">
+                    <img src="media/logo2 (002).png" alt="ProfileLogo" />
+                </div>
+                <div class="name-job">
+                    <div class="profile_name">هلدینگ صنعتی مینو</div>
+                    <div class="job">شرکت قاسم ایران</div>
+                </div>
+                <i class="bx bx-log-out"></i>
+            </div>
+        </li>
+    </ul>
+</div>
+<script>
+        let arrows = document.querySelectorAll(".arrow");
+    arrows.forEach((arrow) => {
+        arrow.addEventListener("click", (e) => {
+            let arrowParent = arrow.closest("li");
+            arrowParent.classList.toggle("showMenu");
+        });
+    });
+    let sidebar = document.querySelector(".sidebar");
+    let sidebarBtn = document.querySelector(".bx-menu");
+    sidebarBtn.addEventListener("click", () => {
+        sidebar.classList.toggle("close");
+    });
+
+</script>
+

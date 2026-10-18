@@ -1,0 +1,6 @@
+services:
+  mwsmanager:
+    image: ${DOCKER_REGISTRY-}mwsmanager
+    build:
+      context: .
+      dockerfile: MWSManager/Dockerfile

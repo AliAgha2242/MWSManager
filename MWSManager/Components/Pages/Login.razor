@@ -1,0 +1,96 @@
+﻿@page "/Login"
+@using System.Security.Principal
+@using System.Security.Claims
+@using Microsoft.AspNetCore.Authentication.Cookies
+@using Microsoft.AspNetCore.Http
+@inject NavigationManager nav
+@inject IHttpContextAccessor httpContext
+@layout EmptyLayout
+@inject HttpClient http
+@inject NavigationManager nav;
+@rendermode InteractiveServer
+
+
+<div class="align">
+
+    <div class="grid align__item">
+
+
+        <div class="register">
+
+            <div class="alert @Class" style="display:@display">
+                @MessageResult
+            </div>
+
+            <img src="@Assets["Media/logo2 (002).png"]" />
+
+
+            <div class="form">
+
+                <div class="form__field" style="margin-top:50px">
+                    <input type="text" placeholder="Anbar" @bind="UserName">
+                </div>
+
+                <div class="form__field">
+                    <input type="password" placeholder="••••••••••••" @bind="Password">
+                </div>
+
+                <div class="form__field">
+                    <input type="submit" @onclick="AuthLogin" value="ورود">
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>
+@code
+{
+    public string UserName = "Anbar";
+    public string Password = "RaAnbarUser";
+
+    public string MessageResult { get; set; } = "نام کاربری یا رمز عبور صحیح نیست";
+    public string Class { get; set; } = " alert-danger";
+    public string display { get; set; } = "none";
+    protected override void OnInitialized()
+    {
+        if (nav.Uri.Contains("Err=1"))
+        {
+            display = "block";
+
+        }
+        base.OnInitialized();
+    }
+
+    async Task AuthLogin()
+    {
+
+
+
+        (string UserName, string Password) res = new(UserName, Password);
+        // HttpRequestMessage req = new HttpRequestMessage(HttpMethod.Post, "http://localhost:5129/LoginApi");
+
+        // req.Headers.Add(nameof(UserName), UserName);
+        // req.Headers.Add(nameof(Password), Password);
+        // HttpResponseMessage response = await http.SendAsync(req);
+        // if (response.StatusCode == System.Net.HttpStatusCode.OK)
+        // {
+        //     nav.NavigateTo(@"/");
+        //     return;
+
+        // }
+
+
+
+
+        nav.NavigateTo($"/loginApi?UserName={UserName}&Password={Password}", true);
+
+
+
+
+
+    }
+}

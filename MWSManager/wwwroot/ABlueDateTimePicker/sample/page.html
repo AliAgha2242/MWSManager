@@ -1,0 +1,259 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title> ABluePersianDateTimePickerCore</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.0/css/bootstrap.min.css" />
+    <link href="../css/ABluePersianDateTimePicker.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.5.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.0/js/bootstrap.bundle.js"></script>
+    <script src="../js/ABluePersianDateTimePicker.js"></script>
+    <style>
+        .padding-right-0 {
+            padding-right: 0 !important;
+        }
+
+        .direction-right {
+            direction: rtl
+        }
+
+        .card-body {
+            text-align: justify !important;
+        }
+    </style>
+</head>
+<body dir="rtl">
+    <div dir="ltr" class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
+        <h5 class="my-0 mr-md-auto font-weight-normal"><strong>ABlue</strong> date time picker in ASP.NET Core.</h5>
+
+    </div>
+    <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center direction-right">
+        <h1 class="display-4">کامپوننت تاریخ شمسی</h1>
+        <p class="lead">تمامی قابلیت ها و اتربیوت های موجود در مدل های زیر برای شما بصورت سمپل استفاده شده !</p>
+    </div>
+    <div class="container">
+        <div class="card-deck mb-3 text-center">
+            <div class="card mb-4  box-shadow">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">انتخاب فقط تاریخ</h4>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled mt-3 mb-4 padding-right-0">
+                        <li>انتخاب تاریخ با نمایش اعداد فارسی</li>
+                        <li>فقط تاریخ</li>
+                        <li>example-date1</li>
+                    </ul>
+                    <br />
+                    <br />
+                    <br />
+                    <input type="text" data-name="example-date1" class="form-control" data-addminyear="10" data-addmaxyear="10" data-isgregorian="true"
+                           data-inline="false" data-abdatetimepicker="true" data-enabletimepicker="false" data-targetselector="[data-name='example-date1']"
+                           placeholder="انتخاب تاریخ " />
+
+                    <!--<div class="input-group-addon" data-disablebeforetoday="2" data-isgregorian="false"
+                           data-inline="false" data-abdatetimepicker="true" data-enabletimepicker="true" data-todate="true"
+                           data-targetselector="[data-name='end-date']" data-trigger="click" data-groupid="enddate">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </div>-->
+
+
+                </div>
+            </div>
+            <div class="card mb-4 box-shadow">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">انتخاب تاریخ و زمان</h4>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled mt-3 mb-4 padding-right-0">
+                        <li>انتخاب تاریخ با نمایش اعداد فارسی</li>
+                        <li>انتخاب زمان با نمایش اعداد فارسی</li>
+                        <li>تاریخ و زمان</li>
+                        <li>example-date2</li>
+                    </ul>
+                    <br />
+                    <br />
+
+                    <input type="text" data-name="example-date2" class="form-control" data-addminyear="10" data-addmaxyear="10" data-isgregorian="false"
+                           data-inline="false" data-abdatetimepicker="true" data-enabletimepicker="true" data-targetselector="[data-name='example-date2']" data-Placement="top" placeholder="انتخاب تاریخ و زمان" />
+
+                </div>
+            </div>
+            <div class="card mb-4 box-shadow">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">انتخاب فقط تاریخ</h4>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled mt-3 mb-4 padding-right-0">
+                        <li>انتخاب تاریخ با نمایش اعداد انگلیسی</li>
+                        <li>فقط تاریخ</li>
+                        <li>example-date3</li>
+                    </ul>
+                    <br />
+                    <br />
+                    <br />
+                    <input type="text" data-name="example-date3" class="form-control" data-addminyear="10" data-addmaxyear="10" ddata-isgregorian="false"
+                           data-inline="false" data-abdatetimepicker="true" data-englishnumber="true" data-targetselector="[data-name='example-date3']" placeholder="انتخاب تاریخ با اعداد انگلیسی" />
+
+
+                </div>
+            </div>
+
+
+        </div>
+        <div class="card-deck mb-3 text-center">
+            <div class="card mb-4 box-shadow">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">انتخاب تاریخ از امروز</h4>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled mt-3 mb-4 padding-right-0">
+                        <li>انتخاب تاریخ از امروز</li>
+                        <li>تاریخ</li>
+                        <li>example-date4</li>
+                    </ul>
+                    <br />
+                    <br />
+                    <br />
+                    <input type="text" data-name="example-date4" class="form-control" data-addminyear="10" data-addmaxyear="10" data-disablebeforetoday="true" data-isgregorian="false"
+                           data-inline="false" data-abdatetimepicker="true" data-englishnumber="true" data-targetselector="[data-name='example-date4']" placeholder="انتخاب تاریخ" />
+
+
+                </div>
+            </div>
+            <div class="card mb-4 box-shadow">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">انتخاب تاریخ تا تاریخ</h4>
+                </div>
+                <div class="card-body" style="text-align:justify">
+                    <ul class="list-unstyled mt-3 mb-4 padding-right-0">
+                        <li>انتخاب تاریخ از/تا</li>
+                        <li>برای فعال کردن این حالت باید از اتریبوت</li>
+                        <li> data-groupid در دو المنت تاریخ و مقدار یکسان استفاده شود</li>
+                        <li>ولیدیشن های مورد نیاز برای از / تا لحاظ شده</li>
+                        <li>تاریخ مبدا/از با اتریبوت data-fromdate="true" مشخص می شود</li>
+                        <li>تاریخ مقصد/یا با اتریبوت data-todate="true" مشخص می شود</li>
+                        <li>به عنوان مثال تاریخ مقصد از مبدا نمیتواند کوچکتر باشد</li>
+                        <li>example-date5</li>
+                    </ul>
+
+                    <input type="text" data-name="start-date" class="form-control" data-addminyear="10" data-addmaxyear="10" data-disablebeforetoday="true" data-isgregorian="false"
+                           data-inline="false" data-abdatetimepicker="true" data-groupid="1" data-enabletimepicker="false" data-fromdate="true" data-targetselector="[data-name='start-date']" placeholder="انتخاب تاریخ شروع" />
+                    <br />
+                    <input type="text" data-name="end-date" class="form-control" data-addminyear="10" data-addmaxyear="10" data-disablebeforetoday="true" data-isgregorian="false"
+                           data-inline="false" data-abdatetimepicker="true" data-groupid="1" data-enabletimepicker="false" data-todate="true" data-targetselector="[data-name='end-date']" placeholder="انتخاب تاریخ پایان" />
+
+
+
+                </div>
+            </div>
+            <div class="card mb-4 box-shadow">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">انتخاب تاریخ</h4>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled mt-3 mb-4">
+                        <li>انتخاب تاریخ با نمایش اعداد فارسی</li>
+                        <li>باز شدن کامپوننت در سمت راست input</li>
+                        <li>با اتریبوت data-placement</li>
+                        <li>با جهات top,left,right,bottom</li>
+                        <li>تاریخ</li>
+                        <li>example-date6</li>
+                    </ul>
+                    <br />
+                    <br />
+                    <br />
+
+
+                    <input type="text" data-name="example-date6" class="form-control" data-addminyear="10" data-addmaxyear="10" data-isgregorian="false"
+                           data-inline="false" data-abdatetimepicker="true" data-targetselector="[data-name='example-date6']" data-Placement="right" placeholder="انتخاب تاریخ" />
+
+                </div>
+            </div>
+
+        </div>
+        <div class="card-deck mb-3 text-center">
+            <div class="card mb-4 box-shadow">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">انتخاب تاریخ میلادی</h4>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled mt-3 mb-4 padding-right-0">
+                        <li>انتخاب تاریخ میلادی</li>
+                        <li>فقط تاریخ</li>
+                        <li>example-date7</li>
+                    </ul>
+                    <br />
+                    <br />
+                    <br />
+                    <input type="text" data-name="example-date7" class="form-control" data-addminyear="10" data-addmaxyear="10" data-isgregorian="true"
+                           data-inline="false" data-abdatetimepicker="true" data-enabletimepicker="false" data-targetselector="[data-name='example-date7']"
+                           placeholder="انتخاب تاریخ میلادی" />
+
+
+                </div>
+            </div>
+            <div class="card mb-4 box-shadow">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">انتخاب تاریخ میلادی</h4>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled mt-3 mb-4 padding-right-0">
+                        <li>انتخاب تاریخ میلادی</li>
+                        <li>فقط تاریخ</li>
+                        <li>example-date8</li>
+                    </ul>
+                    <br />
+                    <br />
+                    <br />
+                    <input type="text" data-name="example-date8" class="form-control" data-addminyear="10" data-addmaxyear="10" data-isgregorian="true"
+                           data-inline="false" data-abdatetimepicker="true" data-enabletimepicker="true" data-targetselector="[data-name='example-date8']"
+                           placeholder="انتخاب تاریخ و زمان میلادی" />
+
+
+                </div>
+            </div>
+            <div class="card mb-4 box-shadow">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">انتخاب تاریخ از امروز</h4>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled mt-3 mb-4 padding-right-0">
+                        <li>انتخاب تاریخ از امروز</li>
+                        <li>تاریخ</li>
+                        <li>example-date9</li>
+                    </ul>
+                    <br />
+                    <br />
+                    <br />
+                    <input type="text" data-name="example-date9" class="form-control" data-addminyear="10" data-addmaxyear="10" data-disablebeforetoday="true" data-isgregorian="true"
+                           data-inline="false" data-abdatetimepicker="true" data-englishnumber="true" data-targetselector="[data-name='example-date9']" placeholder="انتخاب تاریخ" />
+
+
+                </div>
+            </div>
+        </div>
+
+        <footer class="pt-4 my-md-5 pt-md-5 border-top">
+            <div class="row">
+                <div class="col-12 col-md">
+                    <img class="mb-2" src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg" alt="" width="24" height="24">
+                    <small class="d-block mb-3 text-muted">© 2020</small>
+                </div>
+
+                <div class="col-6 col-md">
+                    <h5>About</h5>
+                    <ul class="list-unstyled text-small">
+                        <li><a class="text-muted" href="https://t.me/FullStackDevsGroup">telegram group</a></li>
+                        <li><a class="text-muted" href="#">r.man.abi@gmail.com</a></li>
+                        <li><a class="text-muted" href="https://github.com/armanab/">github</a></li>
+
+                    </ul>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+
+</body>
+</html>

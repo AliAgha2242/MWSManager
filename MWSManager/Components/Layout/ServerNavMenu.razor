@@ -1,0 +1,112 @@
+﻿@using MWSMan.Core.Model.Events
+@using Model.PresentationModels
+@inject IList<ServerSelected> Servers
+@rendermode InteractiveServer
+@inject CenterEvent CenterEvent;
+
+
+<div class="sidebar " id="sidebar_Server">
+    <div class="logo-details">
+        @* <i class="bx bxl-c-plus-plus"></i> *@
+        <div class="home-content" style="width: 60px;padding-right: 65px;">
+            <i class="bx bx-menu " id="bx-menu_Server"></i>
+            @* <span class="text">Drop Down Sidebar</span> *@
+        </div>
+        <span class="logo_name">سرورها</span>
+    </div>
+    <div class="checkbox-list">
+        <label><input type="checkbox" @onchange="SelectAll">همه موارد</label>
+        @foreach (var item in Servers)
+        {
+            if (item.responseInfo.responseState is ResponseState.FinishWithError)
+                currentColor = errColor;
+            else if (item.responseInfo.responseState is ResponseState.Finish)
+                currentColor = successColor;
+            else
+                currentColor = normalColor;
+
+            <label style=" color:@currentColor"><InputCheckbox disabled="@(item.responseInfo.responseState is ResponseState.Wait)" @bind-Value="item.isSelected" /> @(item.serverInfo.ServerName.ToUpper() + (item.responseInfo.responseState is ResponseState.Wait ? " ... " : "")) </label>
+        }
+    </div>
+
+    <style>
+        .checkbox-list {
+            direction: rtl;
+            padding-right: 15px;
+            padding-top: 40px;
+            color: white;
+            overflow-y: auto;
+            max-height: 700px;
+            scrollbar-width: none;
+        }
+
+            .checkbox-list label {
+                display: flex;
+                align-items: center;
+                gap: 10px; /* فاصله بین چک‌باکس و متن */
+                margin-bottom: 12px; /* فاصله بین خطوط */
+                cursor: pointer;
+            }
+
+            .checkbox-list input[type="checkbox"] {
+                margin: 0;
+            }
+
+    </style>
+
+</div>
+<script>
+
+    var arrowsServer = document.querySelectorAll("#Server_arrow");
+    arrowsServer.forEach((arrow) => {
+        arrow.addEventListener("click", (e) => {
+            let arrowParent = arrow.closest("li");
+            arrowParent.classList.toggle("showMenu");
+        });
+    });
+    var sidebarServer = document.querySelector("#sidebar_Server");
+    var sidebarServerBtn = document.querySelector("#bx-menu_Server");
+    sidebarServerBtn.addEventListener("click", () => {
+        sidebarServer.classList.toggle("close");
+    });
+</script>
+@code {
+    string currentColor;
+    string successColor = "#aac858";
+    string normalColor = "aliceblue";
+    string errColor = "Red";
+    bool selectAllServer;
+
+    protected override void OnInitialized()
+    {
+        CenterEvent.MyCustomEvent += ChangeServerSelected;
+    }
+
+    // protected async override Task OnAfterRenderAsync(bool firstRender)
+    // {
+    //     CenterEvent.MyCustomEvent += ChangeServerSelected;
+    // }
+
+    public void SelectAll(ChangeEventArgs e)
+    {
+
+        foreach (var item in Servers)
+        {
+            item.isSelected = (bool)e.Value;
+        }
+        StateHasChanged();
+    }
+
+    public void ChangeServerSelected()
+    {
+        InvokeAsync(() =>
+        {
+            StateHasChanged();
+        });
+    }
+    public void Dispose()
+    {
+        CenterEvent.MyCustomEvent -= ChangeServerSelected;
+    }
+}
+

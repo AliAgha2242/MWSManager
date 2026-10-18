@@ -1,0 +1,191 @@
+﻿
+.ABlueDateTimePicker {
+    font-family: Tahoma;
+}
+
+.popover {
+    min-width: 370px;
+}
+
+.indexpicker {
+    z-index: 1000;
+}
+
+[data-name="ab-datetimepicker-popovercontent"] {
+    padding: 5px 6px;
+}
+
+    [data-name="ab-datetimepicker-popovercontent"] a[data-name="go-today"] {
+        /*color: #333;*/
+        width: 100%;
+        display: block;
+        text-decoration: none;
+    }
+
+[data-name="ab-datetimepicker-title"] {
+    direction: rtl;
+    text-align: center;
+    font-family: Tahoma;
+    font-size: 12px;
+}
+
+    [data-name="ab-datetimepicker-title"][data-isgregorian="true"] {
+        direction: ltr;
+    }
+
+/*[data-name="ab-persiandatetimepicker"] {
+   }*/
+
+[data-name="ab-persiandatetimepicker"] button {
+    font-size: 12px;
+}
+
+[data-name="ab-persiandatetimepicker"] table {
+    /*margin-bottom: 0;*/
+    direction: rtl;
+}
+
+[data-name="ab-persiandatetimepicker"][data-isgregorian="true"] table {
+    direction: ltr;
+}
+
+[data-name="ab-persiandatetimepicker"] table.table td {
+    text-align: center;
+    padding: 5px;
+    font-size: 14px;
+}
+
+[data-name="ab-persiandatetimepicker"]
+.table > tbody > tr > td,
+.table > tbody > tr > th,
+.table > tfoot > tr > td,
+.table > tfoot > tr > th,
+.table > thead > tr > td,
+.table > thead > tr > th {
+    vertical-align: middle;
+}
+
+
+[data-name="ab-persiandatetimepicker"] table[data-name="ab-persiandatetimepicker-timepicker"].table,
+[data-name="ab-persiandatetimepicker"] table[data-name="ab-persiandatetimepicker-headertable"].table {
+    width: 100%;
+    margin: 0 auto;
+    direction: ltr;
+}
+
+[data-name="ab-persiandatetimepicker"] table[data-name="ab-persiandatetimepicker-headertable"] .dropdown-menu[aria-labelledby="dropdownMenuPersianYear"] {
+    height: 200px;
+    overflow: auto;
+    font-size: 18px
+}
+
+[data-name="ab-persiandatetimepicker"] table[data-name="ab-persiandatetimepicker-headertable"] .dropdown-menu[aria-labelledby="dropdownMenuPersianMonths"] {
+    font-size: 16px
+}
+
+[data-name="ab-persiandatetimepicker"] table[data-name="ab-persiandatetimepicker-headertable"] .dropdown-menu li {
+    text-align: center;
+}
+
+[data-name="ab-persiandatetimepicker"] table[data-name="ab-persiandatetimepicker-timepicker"].table td,
+[data-name="ab-persiandatetimepicker"] table[data-name="ab-persiandatetimepicker-headertable"].table td {
+    text-align: center;
+    vertical-align: middle;
+    border: 0;
+}
+
+[data-name="ab-persiandatetimepicker-titlemonth"],
+[data-name="ab-persiandatetimepicker-titleyear"] {
+    width: 100%;
+    padding-top: 0;
+    padding-bottom: 0;
+    border: none;
+    font-weight: bold;
+    font-size: 18px
+}
+
+[aria-labelledby="dropdownMenuPersianmonths"] li > a,
+[aria-labelledby="dropdownMenuPersianyear"] li > a {
+    margin: 0;
+    padding: 0 10px 0 10px;
+    text-align: center;
+}
+
+[aria-labelledby="dropdownMenuPersianmonths"] .divider {
+    margin: 1px;
+    padding: 0;
+}
+
+[data-name="ab-persiandatetimepicker"] table.table tr[data-name="ab-persiandatetimepicker-weekdaysnames"] td {
+    font-size: 11px;
+    font-weight: bold;
+    padding: 0 2px;
+}
+
+[data-name="disabled-day"] {
+    color: #ccc;
+}
+
+[data-name="day"], [data-name="today"] {
+    cursor: pointer;
+    padding: 2px;
+}
+
+    [data-name="day"]:not([class^="text"]) {
+        color: #333;
+    }
+
+    [data-name="day"]:hover {
+        /*box-shadow: 3px 3px 15px 0px #aaaaaa;*/
+        background: #eee;
+        /*font-weight: bold;*/
+        /*border-radius: 4px;*/
+    }
+
+    [data-name="today"]:hover {
+        /*background: #ff8383;*/
+        /*box-shadow: 3px 3px 15px 0px #aaaaaa;*/
+    }
+
+[data-name="ab-persiandatetimepicker-timepicker"] [data-name="clock-hour"],
+[data-name="ab-persiandatetimepicker-timepicker"] [data-name="clock-minute"],
+[data-name="ab-persiandatetimepicker-timepicker"] [data-name="clock-second"] {
+    font-size: 12px;
+    width: 50px;
+    padding: 2px;
+    direction: ltr;
+    text-align: center;
+    height: auto;
+    display: inline-block;
+}
+
+.current-day {
+    background-color: #f2dede;
+    /*border-radius: 4px;*/
+}
+
+[data-name="ab-persiandatetimepicker"] table.table td.selected-day {
+    background-color: #ff0000;
+    /*border-radius: 4px;*/
+    color: #ffffff;
+}
+
+a[data-name="currentToday"] {
+    color: #ff0000;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+a:hover[data-name="currentToday"] {
+    color: #ff0000;
+    text-decoration: none;
+    padding-bottom: 1px;
+    border-bottom:1px solid;
+}
+
+[data-name="ab-persiandatetimepicker-nextyear"],
+[data-name="ab-persiandatetimepicker-previousyear"],
+[data-name="ab-persiandatetimepicker-previousmonth"],
+[data-name="ab-persiandatetimepicker-nextmonth"] {
+    cursor: pointer;
+}

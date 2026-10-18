@@ -1,0 +1,260 @@
+﻿@page "/ReqOrMessEditDelete/{ReqOrMess:int}"
+@using Application.ServiceContract
+@using MWSMan.Core.Infrastructure.Extenssion
+@using Model.ApplicationModels
+@using Persistence
+@rendermode InteractiveServer
+@attribute [StreamRendering]
+@inject IRequestHubService requestHubService
+@inject IJSRuntime js
+@inject NavigationManager Navigation
+
+<title>حذف و ویرایش @(ReqOrMess is RequestOrMessageEnum.Message ? "پیام" : "درخواست")</title>
+<!-- Bootstrap 5 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+
+<style>
+
+    body {
+        display: block
+    }
+
+    .search-panel {
+        width: 90%;
+        margin: 20px 120px auto;
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 16px;
+        border: 1px solid #dfe3e6;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, .04);
+    }
+
+    .info-item {
+        display: flex;
+        align-items: center;
+        min-height: 52px;
+        padding: 12px 16px;
+        background: #f1f3f5;
+        border-radius: 10px;
+        border: 1px solid #e9ecef;
+        overflow: hidden;
+    }
+
+    .title {
+        min-width: 90px;
+        font-weight: 600;
+        color: #495057;
+    }
+
+    .value {
+        flex: 1;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    .action-panel-grid {
+        height: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        padding-right: 15px;
+        border-right: 1px solid #e9ecef;
+        align-content: center;
+    }
+
+        .action-panel-grid .btn {
+            height: 40px;
+            font-size: 13px;
+        }
+
+    .detail-box {
+        margin-top: 12px;
+        padding: 12px 16px;
+        background: #ffffff;
+        border-radius: 10px;
+        border: 1px dashed #ced4da;
+    }
+
+    .empty-panel {
+        width: 90%;
+        margin: 20px 120px auto;
+        padding: 30px;
+        text-align: center;
+        color: #6c757d;
+        background: #f8f9fa;
+        border-radius: 16px;
+        border: 1px solid #dfe3e6;
+    }
+
+</style>
+
+
+@if (ShowAlert)
+{
+    <div dir="rtl" style="width:90%;margin:10px 120px auto;" class="alert @(AlertIsError ? "alert-danger" : "alert-success") alert-dismissible fade show" role="alert">
+        @AlertMessage
+        <button type="button" class="btn-close" @onclick="() => ShowAlert = false"></button>
+    </div>
+}
+
+@if (ReqOrMessList is not null && !ReqOrMessList.Any())
+{
+    <div dir="rtl" class="empty-panel">
+        هیچ @(ReqOrMess is RequestOrMessageEnum.Message ? "پیام" : "درخواست") آماده‌ای برای نمایش وجود ندارد.
+    </div>
+}
+
+@foreach (var item in ReqOrMessList ?? Enumerable.Empty<RabbitConsumerRequestHub>())
+{
+    <div dir="rtl" class="search-panel">
+        <div class="row g-0">
+
+            <!-- اطلاعات -->
+            <div class="col-lg-10 pe-lg-3">
+
+                <div class="row g-3">
+
+                    <div class="col-lg-4 col-md-6">
+                        <div class="info-item">
+                            <span class="title">نام :</span>
+                            <span class="value">@item.RequestName</span>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6">
+                        <div class="info-item">
+                            <span class="title">پردازشگر :</span>
+                            <span class="value">@item.ProcessorName</span>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6">
+                        <div class="info-item">
+                            <span class="title">نوع :</span>
+                            <span class="value">@(item.IsTransactional ? "درخواست" : "پیام")</span>
+                        </div>
+                    </div>
+
+                </div>
+
+                @if (ExpandedIds.Contains(item.Id))
+                {
+                    <div class="detail-box">
+                        <div><b>شناسه :</b> @item.Id</div>
+                        <div class="mt-2"><b>پارامترها :</b></div>
+                        @{
+                            var itemParams = GetParams(item);
+                        }
+                        @if (itemParams.Count == 0)
+                        {
+                            <div>پارامتری ثبت نشده است.</div>
+                        }
+                        else
+                        {
+                            <ul class="mb-0">
+                                @foreach (var p in itemParams)
+                                {
+                                    <li>@p.Key : @p.Value</li>
+                                }
+                            </ul>
+                        }
+                    </div>
+                }
+
+            </div>
+
+            <!-- عملیات -->
+            <div class="col-lg-2">
+                <div class="action-panel-grid">
+
+                    <button @onclick="() => ToggleDetail(item)" class="btn btn-warning btn-sm text-black">
+                        @(ExpandedIds.Contains(item.Id) ? "بستن جزئیات" : "جزئیات")
+                    </button>
+
+                    <button @onclick='() => Navigation.NavigateTo($"/ReqOrMessReadyCreate/{(int)ReqOrMess}/{item.Id}")' class="btn btn-primary btn-sm">
+                        ویرایش
+                    </button>
+
+                    <button @onclick="() => DeleteItemAsync(item)" class="btn btn-danger btn-sm">
+                        حذف
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+}
+
+
+@code {
+
+    [Parameter]
+    public RequestOrMessageEnum ReqOrMess { get; set; }
+
+    IEnumerable<RabbitConsumerRequestHub>? ReqOrMessList;
+    HashSet<int> ExpandedIds = new();
+    Dictionary<int, IDictionary<string, object?>> ParamsCache = new();
+
+    bool ShowAlert = false;
+    bool AlertIsError = false;
+    string AlertMessage = "";
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await LoadListAsync();
+    }
+
+    private async Task LoadListAsync()
+    {
+        var result = await requestHubService.ReadAllAsync(p => (p.IsTransactional && ReqOrMess is RequestOrMessageEnum.Request) || (!p.IsTransactional && ReqOrMess is RequestOrMessageEnum.Message));
+        if (!result.IsSuccess)
+        {
+            AlertMessage = "مشکلی در فراخوانی اطلاعات رخ داد. " + (result.ErrMsg ?? "");
+            AlertIsError = true;
+            ShowAlert = true;
+            return;
+        }
+        ReqOrMessList = result.Data ?? new List<RabbitConsumerRequestHub>();
+        ParamsCache.Clear();
+    }
+
+    private IDictionary<string, object?> GetParams(RabbitConsumerRequestHub item)
+    {
+        if (!ParamsCache.TryGetValue(item.Id, out var dict))
+        {
+            dict = item.Body?.TooDictionary() ?? new Dictionary<string, object?>();
+            ParamsCache[item.Id] = dict;
+        }
+        return dict;
+    }
+
+    private void ToggleDetail(RabbitConsumerRequestHub item)
+    {
+        if (!ExpandedIds.Add(item.Id))
+            ExpandedIds.Remove(item.Id);
+        StateHasChanged();
+    }
+
+    private async Task DeleteItemAsync(RabbitConsumerRequestHub item)
+    {
+        bool confirmed = await js.InvokeAsync<bool>("confirm", $"آیا از حذف «{item.RequestName}» مطمئن هستید؟");
+        if (!confirmed)
+            return;
+
+        var result = await requestHubService.DeleteAsync(item.Id);
+        if (!result.IsSuccess)
+        {
+            AlertMessage = "حذف با خطا مواجه شد. " + (result.ErrMsg ?? "");
+            AlertIsError = true;
+            ShowAlert = true;
+            return;
+        }
+
+        AlertMessage = "حذف با موفقیت انجام شد.";
+        AlertIsError = false;
+        ShowAlert = true;
+        ExpandedIds.Remove(item.Id);
+        await LoadListAsync();
+        StateHasChanged();
+    }
+}

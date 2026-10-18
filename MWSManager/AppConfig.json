@@ -1,0 +1,152 @@
+{
+  "Rabbit": {
+    "ServerName": "Rabbit-srv",
+    "ServerIp": "172.16.5.39",
+    "ServerPort": 5672,
+    "ServerApiRabbitPort": 15672,
+    "ServerApiRabbitSSLPort": 15671,
+    "ServerSSLPort": 5671,
+    "AutoRecoveryConnection": true,
+    "IntervalRecoveryConnectionSecond": 20,
+    "MaxRetries": 5,
+    "WaitSecondRetries": 20,
+    "DbName": "Rabbit",
+    "SqlUserName": "Rabbit",
+    "SqlPassword": "MIS_Rabbit",
+    "LogTableName": "RabbitConsumerLog",
+    "LogDetailTableName": "RabbitConsumerLogDetail",
+    "TimeOutMiliSecond": 30000,
+    "TrustServerCertificate": true,
+    "MultipleActiveResultSets": true,
+    "AdminVhostsName": "AdminMinoo",
+    "AdminVhostsPassword": "RabbitAdmin",
+    "SqlLoginType": 2,
+    "CrisisLevel": 2,
+    "ChangerServerAndDbNameView": "RaVw_ServerDatabaseInfo",
+    "VHostAdminUserName": "AdminMinoo",
+    "VHostAdminPassword": "RabbitAdmin",
+    "DeadLetterQueueName":"DeadLeterQueue",
+    "prefetchCount":1,
+    "MaxDelivery":5
+  },
+  "TransactionalSend": {"SharedPort": 5052,"TimeOutMiliSecond": 800000,"BodyLimitInByte" :  102400},
+  "MiddleApi": {
+    "AddressUrl": "http://172.16.5.39:5051/SendMessage"
+  },
+
+  "VHosts": {
+    "AnbarGroup" :  "Anbar"
+  },
+  "ServersInfo": [
+  {  "ServerName": "AGS",  "databaseName": "MIS",  "VahedeTejariSN": 22683.935,  "Ip": "172.16.1.164"},
+  {  "ServerName": "AHVAZS",  "databaseName": "MIS",  "VahedeTejariSN": 28.935,  "Ip": "172.16.0.45"},
+  {  "ServerName": "ARDEBILS",  "databaseName": "MIS",  "VahedeTejariSN": 34.935,  "Ip": "172.16.5.26"},
+  {  "ServerName": "ASP",  "databaseName": "GOD",  "VahedeTejariSN": 9.935,  "Ip": "172.16.6.10"},
+  {  "ServerName": "BABOLS",  "databaseName": "MIS",  "VahedeTejariSN": 23.935,  "Ip": "172.16.0.48"},
+  {  "ServerName": "BEAUTYS",  "databaseName": "MIS",  "VahedeTejariSN": 23063.935,  "Ip": "172.16.2.238"},
+  {  "ServerName": "BSC",  "databaseName": "MIS",  "VahedeTejariSN": 23211.935,  "Ip": "172.16.5.20"},
+  {  "ServerName": "CHASHNI",  "databaseName": "Mis",  "VahedeTejariSN": 230032.935,  "Ip": "10.8.2.4"},
+  {  "ServerName": "ESFEHANS",  "databaseName": "MIS_GHEsfehan",  "VahedeTejariSN": 26.935,  "Ip": "172.20.2.10"},
+  {  "ServerName": "GHFASA",  "databaseName": "MIS",  "VahedeTejariSN": 230027.935,  "Ip": "10.40.0.10"},
+  {  "ServerName": "GHKHS",  "databaseName": "MIS_GHK",  "VahedeTejariSN": 22675.935,  "Ip": "172.20.19.12"},
+  {  "ServerName": "GHOMS",  "databaseName": "MIS",  "VahedeTejariSN": 19.935,  "Ip": "172.16.0.40"},
+  {  "ServerName": "GORGANS",  "databaseName": "MIS",  "VahedeTejariSN": 35.935,  "Ip": "172.16.0.42"},
+  {  "ServerName": "HAMEDANS",  "databaseName": "MIS",  "VahedeTejariSN": 24.935,  "Ip": "172.16.5.41"},
+  {  "ServerName": "KBAM",  "databaseName": "MIS",  "VahedeTejariSN": 230036.935,  "Ip": "172.16.5.4"},
+  {  "ServerName": "KERMANSERVER",  "databaseName": "MIS",  "VahedeTejariSN": 29.935,  "Ip": "172.16.0.44"},
+  {  "ServerName": "KERMANSHAS",  "databaseName": "MIS",  "VahedeTejariSN": 30.935,  "Ip": "172.16.0.43"},
+  {  "ServerName": "KhoramdarehS",  "databaseName": "MIS",  "VahedeTejariSN": 20.935,  "Ip": "172.16.0.47"},
+  {  "ServerName": "KRS",  "databaseName": "MIS",  "VahedeTejariSN": 17.935,  "Ip": "172.16.0.53"},
+  {  "ServerName": "MashhadServer",  "databaseName": "MIS",  "VahedeTejariSN": 25.935,  "Ip": "172.20.3.10"},
+  {  "ServerName": "MINOOFFICES",  "databaseName": "MIS_GHK",  "VahedeTejariSN": 10.935,  "Ip": "172.16.2.27"},
+  {  "ServerName": "MINOOPLANTS",  "databaseName": "MIS_Minoo",  "VahedeTejariSN": 98.935,  "Ip": "10.240.10.2"},
+  {  "ServerName": "OROUMIEHS",  "databaseName": "MIS",  "VahedeTejariSN": 21.935,  "Ip": "172.16.5.31"},
+  {  "ServerName": "PARSDAROOS",  "databaseName": "MIS_Daroo",  "VahedeTejariSN": 7.935,  "Ip": "172.16.2.210"},
+  {  "ServerName": "PARSGOSTARS",  "databaseName": "MIS_ParsGostar",  "VahedeTejariSN": 22865.935,  "Ip": "172.16.2.21"},
+  {  "ServerName": "PAYVAND",  "databaseName": "MIS",  "VahedeTejariSN": 22858.935,  "Ip": "172.16.4.17"},
+  {  "ServerName": "QAZVINS",  "databaseName": "MIS",  "VahedeTejariSN": 15.935,  "Ip": "10.232.0.10"},
+  {  "ServerName": "RASHTS",  "databaseName": "MIS",  "VahedeTejariSN": 22.935,  "Ip": "172.16.2.17"},
+  {  "ServerName": "SADERAT",  "databaseName": "MIS",  "VahedeTejariSN": 21003.935,  "Ip": "172.16.3.58"},
+  {  "ServerName": "SALARY",  "databaseName": "MIS",  "VahedeTejariSN": 9.935,  "Ip": "172.16.2.5"},
+  {  "ServerName": "SEMNANS",  "databaseName": "MIS",  "VahedeTejariSN": 16.935,  "Ip": "172.16.0.41"},
+  {  "ServerName": "SHIRAZS",  "databaseName": "MIS",  "VahedeTejariSN": 27.935,  "Ip": "10.216.0.10"},
+  {  "ServerName": "STD",  "databaseName": "MIS",  "VahedeTejariSN": 44.935,  "Ip": "172.16.2.82"},
+  {  "ServerName": "TABRIZS",  "databaseName": "MIS",  "VahedeTejariSN": 32.935,  "Ip": "172.16.1.19"},
+  {  "ServerName": "TANDIS",  "databaseName": "MIS",  "VahedeTejariSN": 230031.935,  "Ip": "10.240.10.3"},
+  {  "ServerName": "TEH",  "databaseName": "MIS",  "VahedeTejariSN": 18.935,  "Ip": "172.16.1.161"},
+  {  "ServerName": "TEHDAROO",  "databaseName": "Mis",  "VahedeTejariSN": 23000.935,  "Ip": "172.16.2.26"},
+  {  "ServerName": "YAZDSERVER",  "databaseName": "MIS",  "VahedeTejariSN": 37.935,  "Ip": "172.20.11.10"},
+  {  "ServerName": "ZAHEDANPLANTS",  "databaseName": "MIS_ZAHEDAN",  "VahedeTejariSN": 8.935,  "Ip": "10.224.2.2"},
+  {  "ServerName": "ZAHEDANS",  "databaseName": "MIS",  "VahedeTejariSN": 31.935,  "Ip": "172.20.6.10"},
+  {  "ServerName": "CHOCOPARS",  "databaseName": "MIS_Chocopars",  "VahedeTejariSN": 41.935,  "Ip": "172.16.2.4"},
+  {  "ServerName": "BIS",  "databaseName": "Bid",  "VahedeTejariSN": 1.935,  "Ip": "172.16.1.155"},
+  {  "ServerName": "CDS",  "databaseName": "MIS_Ghasem",  "VahedeTejariSN": 9.935,  "Ip": "172.16.1.152"},
+  {  "ServerName": "CDSREPORT",  "databaseName": "MIS_Ghasem",  "VahedeTejariSN": 9.935,  "Ip": "172.16.3.12"},
+  {  "ServerName": "CASPIANS",  "databaseName": "MIS",  "VahedeTejariSN": 230004.935,  "Ip": "172.20.51.10"},
+  {  "ServerName": "BISHEH",  "databaseName": "MIS",  "VahedeTejariSN": 230034.935,  "Ip": "10.60.0.10"},
+  {  "ServerName": "Pars",  "databaseName": "MIS_Pars",  "VahedeTejariSN": 43.935,  "Ip": "172.16.1.190"},
+  {  "ServerName": "Rabbit-srv",  "databaseName": "Rabbit",  "VahedeTejariSN": 400.935,  "Ip": "172.16.5.39"},
+  {  "ServerName": "ApiAnbar",  "databaseName": "Rabbit",  "VahedeTejariSN": 600.935,  "Ip": "172.16.5.49"}
+  
+
+],
+
+
+"VHostApps" :[
+
+  { "VhostName": "Anbar","VhostAppName": "Anbar","VhostUserName": "AnbarUser","VhostPassword": "0505B1A1800FE3495D3C50E39096"},
+  { "VhostName": "Anbar","VhostAppName": "ProductionPlanning","VhostUserName": "AnbarUser","VhostPassword": "0505B1A1800FE3495D3C50E39096"},
+  { "VhostName": "Anbar","VhostAppName": "ProductionControl","VhostUserName": "AnbarUser","VhostPassword": "0505B1A1800FE3495D3C50E39096"},
+  { "VhostName": "Anbar","VhostAppName": "TestDll","VhostUserName": "AnbarUser","VhostPassword": "0505B1A1800FE3495D3C50E39096"},
+  { "VhostName": "Anbar","VhostAppName": "TestDllInV4.0","VhostUserName": "AnbarUser","VhostPassword": "0505B1A1800FE3495D3C50E39096"},
+  { "VhostName": "Anbar","VhostAppName": "Api_Anbar","VhostUserName": "AnbarUser","VhostPassword": "0505B1A1800FE3495D3C50E39096"},
+  { "VhostName": "Anbar","VhostAppName": "MWSManager","VhostUserName": "AnbarUser","VhostPassword": "0505B1A1800FE3495D3C50E39096"},
+  { "VhostName": "Anbar","VhostAppName": "RabbitMqConsumer","VhostUserName": "AnbarUser","VhostPassword": "0505B1A1800FE3495D3C50E39096"},
+  { "VhostName": "Anbar","VhostAppName": "Tester","VhostUserName": "AnbarUser","VhostPassword": "0505B1A1800FE3495D3C50E39096"}
+
+
+
+
+
+],
+"Messages":[
+  { "Id": 1,  "Title": "Create New Request", "Level": 3 },
+  { "Id": 2,  "Title": "Message Is Ready Send To Api", "Level": 3 },
+  { "Id": 3,  "Title": "Message is Recive In Api", "Level": 3 },
+  { "Id": 4,  "Title": "Connection To Rabbit Service Is Success", "Level": 3 },
+  { "Id": 5,  "Title": "Retry Connect To The RabbitService", "Level": 2 },
+  { "Id": 6,  "Title": "Props Is Ready To Send For Rabbit", "Level": 3 },
+  { "Id": 7,  "Title": "Send Message To The Rabbit Is Success", "Level": 3 },
+  { "Id": 8,  "Title": "Message Is Sended To Api", "Level": 3 },
+  { "Id": 9,  "Title": "Find All Dependency For Send To Rabbit", "Level": 3 },
+  { "Id": 10, "Title": "Message Is Recive In Consumer", "Level": 3 },
+  { "Id": 11, "Title": "Get Vhost And Bindings And Queues Is Success In Consumer", "Level": 3 },
+  { "Id": 12, "Title": "Start ConsumerService Is Begin", "Level": 3 },
+  { "Id": 13, "Title": "Start ConsumerService Is End", "Level": 3 },
+  { "Id": 14, "Title": "Message Processing Completed.", "Level": 3 },
+  { "Id": 15, "Title": "Request To Origins IN Transactional And Pass Authenticate", "Level": 3 },
+  { "Id": 16, "Title": "Request Is Reicve In Transactional An Begin Proccess", "Level": 3 },
+  { "Id": 17, "Title": "Stop Service In Clean Stop", "Level": 1 }
+],
+
+
+
+
+  "LogFileConfig":{
+    "AppFolder":{
+      "SenderAppFolder": "SenderLogFiles",
+      "ProducerAppFolder": "ProdcuerLogFiles",
+      "ConsumerAppFolder": "ConsumerLogFiles"
+    },
+    "PreFolder":"RabbitLog",
+    "ConsumersLogProvider":"3",
+    "SizeLimitInMegaByte":5
+  },
+
+  "FileVersion" : 1.7
+  
+
+
+
+
+}

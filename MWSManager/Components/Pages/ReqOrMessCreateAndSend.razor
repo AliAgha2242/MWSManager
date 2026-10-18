@@ -1,0 +1,263 @@
+﻿@page "/ReqOrMessCreateAndSend/{ReqOrMess:int}"
+@using Application.ServiceContract
+@using MWSMan.Core.Model.Events
+@using MWSMan.Core.Persistence.StaticConfiguration
+@using Model.PresentationModels
+@using Persistence
+@rendermode InteractiveServer
+@inject IJSRuntime js
+@inject IMinooOperationConfiguration operationConfiguration
+@inject IList<ServerSelected> ServerSelecteds
+@inject CenterEvent CenterEvent
+@inject ISend sendService
+
+
+
+
+
+
+
+
+
+
+
+
+<title>@(ReqOrMess is RequestOrMessageEnum.Message ? "پیام" : "درخواست") جدید </title>
+<!-- Bootstrap 5 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+
+<style>
+   /*  body {
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #f8f9fa;
+        font-family: Tahoma, sans-serif;
+    } */
+
+    .form-container {
+        background: #ffffff7a;
+        border-radius: 10px;
+        padding: 30px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        max-width: 600px;
+        width: 85%;
+        min-width: 500px;
+        direction: rtl;
+        overflow: hidden;
+        transform: scale(1.2);
+        transform-origin: center;
+        margin-left: 12%;
+    }
+
+    .parameters-container {
+        max-height: 320px;
+        overflow-y: auto;
+        margin-bottom: 15px;
+        padding-right: 5px;
+    }
+
+    .form-row {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 10px;
+        margin-top: 5px;
+    }
+
+        .form-row input, .form-row select {
+            flex: 1;
+        }
+
+    .submit-btn {
+        display: block;
+        margin: 5px auto;
+        /* width: 120px; */
+    }
+
+    /* Scrollbar خوشگل */
+    .parameters-container::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .parameters-container::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 4px;
+    }
+
+    .parameters-container::-webkit-scrollbar-thumb {
+        background: #007bff;
+        border-radius: 4px;
+    }
+
+        .parameters-container::-webkit-scrollbar-thumb:hover {
+            background: #0056b3;
+        }
+
+    .remove-btn {
+        background: transparent;
+        border: none;
+        color: red;
+        font-size: 18px;
+        cursor: pointer;
+    }
+
+    .parameters-container {
+        scrollbar-width: none;
+    }
+
+        .parameters-container::-webkit-scrollbar {
+            display: none;
+        }
+
+    /* Shadow بالا و پایین فرم اصلی */
+    .form-container {
+        box-shadow: 0 -10px 15px rgba(0,0,0,.05), 0 10px 20px rgba(0,0,0,.15);
+    }
+
+    .invalid {
+        border: 2px solid red !important;
+    }
+
+</style>
+
+
+@if (ShowAlert)
+{
+    <div style="margin-left:11%;z-index:100;max-width: 500px;" class="alert alert-success alert-dismissible fade show" role="alert">
+        @AlertMessage
+        <button type="button" class="btn-close" @onclick="() => ShowAlert = false"></button>
+    </div>
+}
+
+
+
+
+<div class="form-container">
+    <!-- اولین ردیف: select -->
+    <div class="form-row mb-3 d-block">
+        <label class="col-form-label mt-1">نام تابع اجرا @(ReqOrMess is RequestOrMessageEnum.Message ? "پیام" : "درخواست") :</label>
+        <select id="nameSelect" class="form-select" @bind="ReqOrMessageProccessorName">
+            <option value="">انتخاب کنید</option>
+
+            @foreach (var item in ReqOrMessageNames)
+            {
+                <option value="@item">@item</option>
+            }
+        </select>
+    </div>
+    <div id="parametersContainer" class="parameters-container">
+        @for (int i = 0; i < ParameterInputs.Count; i++)
+        {
+            var currentParameter = ParameterInputs[i];
+
+            <div class="form-row">
+                <input type="text" @bind="currentParameter.Name" placeholder="نام پارامتر" class="form-control param-name" />
+                <input type="text" @bind="currentParameter.Value" placeholder="مقدار پارامتر" class="form-control param-value"  />
+                <button type="button" class="btn-sm" style="background-color:red;color:white" @onclick="() => RemoveParameterRow(currentParameter)">✕</button>
+                <button type="button" class="btn-sm" style="background-color:lightgreen;color:blue" @onclick="() => AddParameterRow()">+</button>
+            </div>
+
+        }
+    </div>
+
+    <div class="mt-4">
+        <input @bind="textareaParamName" type="text" id="bigName" class="form-control mb-2" placeholder="نام پارامتر">
+
+        <textarea @bind="textareaParamValue" id="bigText" style="overflow-y: scroll;max-height:150px" class="form-control" rows="4" placeholder="مقدار پارامتر"></textarea>
+    </div>
+
+    <button type="button" class="btn btn-primary submit-btn" @onclick="() => SendAsync()">ایجاد به سرور های انتخابی </button>
+</div>
+
+@code {
+
+
+    public class ParameterInput
+    {
+
+        public string Name { get; set; } = "";
+        public string Value { get; set; } = "";
+    }
+    [Parameter]
+    public RequestOrMessageEnum ReqOrMess { get; set; }
+    public List<ParameterInput> ParameterInputs { get; set; } = new List<ParameterInput>();
+    List<string> ReqOrMessageProccessorNames;
+    List<string> ReqOrMessageNames;
+
+    string textareaParamName;
+    string textareaParamValue;
+
+
+
+    string ReqOrMessageProccessorName;
+
+    bool ShowAlert = false;
+    string AlertMessage = "";
+
+    protected async override Task OnInitializedAsync()
+    {
+        ReqOrMessageNames = operationConfiguration.GetAllMethods().Select(p => p.MethodName).ToList();
+        ParameterInputs.Add(new ParameterInput());
+    }
+
+
+
+    private async Task SendAsync()
+    {
+        if (string.IsNullOrEmpty(ReqOrMessageProccessorName))
+        {
+            return;
+        }
+        var requestParameters = new Dictionary<string, object>();
+        foreach (var param in ParameterInputs)
+        {
+
+            if (!string.IsNullOrWhiteSpace(param.Name) && !string.IsNullOrWhiteSpace(param.Value))
+            {
+                requestParameters.Add(param.Name, param.Value);
+            }
+        }
+
+        if (!string.IsNullOrEmpty(textareaParamName))
+        {
+            requestParameters.Add(textareaParamName, textareaParamValue);
+        }
+        await foreach (var item in sendService.SendAuto(ServerSelecteds.Where(p => p.isSelected).Select(_ => _.serverInfo.ServerName), ReqOrMessageProccessorName, requestParameters, ReqOrMess))
+        {
+            CenterEvent.ServerEventCaller();
+        }
+
+        // sendService.SendAutoParallelism(ServerSelecteds.Where(p => p.isSelected).Select(_ => _.serverInfo.ServerName), ReqOrMessageProccessorName, requestParameters, ReqOrMess); 
+
+
+    }
+    
+
+    private void AddParameterRow()
+    {
+        ParameterInputs.Add(new ParameterInput());
+    }
+
+
+    private void RemoveParameterRow(ParameterInput parameterToRemove)
+    {
+        if (ParameterInputs.Count >= 2)
+            ParameterInputs.Remove(parameterToRemove);
+
+    }
+    public Dictionary<string, string> GetParameterDictionary()
+    {
+        var parameterDict = new Dictionary<string, string>();
+        foreach (var paramInput in ParameterInputs)
+        {
+            if (!string.IsNullOrWhiteSpace(paramInput.Name) && !string.IsNullOrWhiteSpace(paramInput.Value))
+            {
+                parameterDict.Add(paramInput.Name, paramInput.Value);
+            }
+        }
+        return parameterDict;
+    }
+
+
+}

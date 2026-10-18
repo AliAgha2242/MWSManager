@@ -1,0 +1,49 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <base href="/" />
+    <ResourcePreloader />
+    
+    <link rel="stylesheet" href="@Assets["app.css"]" />
+    <link rel="stylesheet" href="@Assets["MWSManager.styles.css"]" />
+    <link rel="stylesheet" href="@Assets["lib/bootstrap/dist/css/bootstrap.min.css"]" />
+    <link rel="stylesheet" href="@Assets["app.css"]" />
+    <link href="https://lib.arvancloud.ir/boxicons/2.1.4/css/boxicons.min.css" rel="stylesheet" />
+    <link href="@Assets["lib/login.css"]" rel="stylesheet" />
+    <link href="@Assets["staticwebassets/datepicker.css"]" rel="stylesheet" />
+    <ImportMap />
+    <HeadOutlet />
+</head>
+
+<body>
+    <style>
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top:5px;
+            font-family: Tahoma, sans-serif;
+            overflow-x: hidden;
+            background-image: url('Background.png');
+            background-size : cover
+        }
+
+    </style>
+    <Routes @rendermode="new InteractiveServerRenderMode(prerender: false)" />
+    <ReconnectModal />
+    <script src="@Assets["_framework/blazor.web.js"]"></script>
+    <script src="@Assets["lib/bootstrap/dist/js/bootstrap.min.js"]"></script>
+    <script src="@Assets["lib/bootstrap/dist/js/bootstrap.bundle.min.js"]"></script>
+    <script src="@Assets["lib/bootstrap/dist/js/popper.min.js"]"></script>
+    <script src="@Assets["app.js"]"></script>
+    <script src="@Assets["staticwebassets/datepicker.min.js"]" type="text/javascript"></script>
+  
+
+</body>
+
+</html>
