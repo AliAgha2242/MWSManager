@@ -400,3 +400,78 @@
         display: none;
     }
 }
+
+
+/* Refined primary navigation */
+.sidebar {
+    background: linear-gradient(180deg, #18243d 0%, #101a2e 100%);
+    box-shadow: 0 10px 35px rgba(16, 26, 46, .16);
+    border-left: 1px solid rgba(255,255,255,.08);
+    transition: width .22s ease, box-shadow .22s ease;
+}
+.sidebar .logo-details {
+    padding: 0 0 0 8px;
+    border-bottom: 1px solid rgba(255,255,255,.09);
+}
+.sidebar .logo-details .logo_name {
+    color: #f8fafc;
+    letter-spacing: .02em;
+}
+.sidebar .nav-links {
+    padding-top: 18px;
+}
+.sidebar .nav-links li {
+    margin: 4px 8px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+.sidebar .nav-links li:hover {
+    background: rgba(255,255,255,.075);
+}
+.sidebar .nav-links li .iocn-link {
+    min-height: 48px;
+}
+.sidebar .nav-links li i {
+    color: #c5d2ef;
+}
+.sidebar .nav-links li ::deep a .link_name {
+    font-size: 15px;
+    font-weight: 500;
+    color: #eef2ff;
+}
+.sidebar .nav-links li .sub-menu {
+    background: rgba(6, 13, 27, .46);
+    padding: 8px 18px 12px 8px;
+    border-radius: 8px;
+}
+.sidebar .nav-links li .sub-menu ::deep a {
+    font-size: 13px;
+    line-height: 1.7;
+    padding: 7px 0;
+    color: #d7def0;
+    opacity: .82;
+}
+.sidebar .nav-links li .sub-menu ::deep a:hover,
+.sidebar .nav-links li ::deep a.active {
+    color: #fff;
+    opacity: 1;
+}
+.sidebar .nav-links li ::deep a.active {
+    background: rgba(100, 130, 235, .22);
+    border-radius: 8px;
+}
+.sidebar .profile-details {
+    width: 260px;
+    background: rgba(7, 15, 30, .55);
+    border-top: 1px solid rgba(255,255,255,.08);
+}
+.sidebar.close .profile-details {
+    width: 78px;
+}
+.sidebar .profile-details .profile_name,
+.sidebar .profile-details .job {
+    font-size: 13px;
+}
+@media (max-width: 640px) {
+    .sidebar { max-width: 78vw; }
+}
