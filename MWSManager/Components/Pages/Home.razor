@@ -1,57 +1,99 @@
-﻿@page "/"
+@page "/"
+<PageTitle>داشبورد | MWSManager</PageTitle>
 
-<PageTitle>Home</PageTitle>
-<style>
-    /* فقط استایل‌های مورد نیاز برای کانتینر و متن‌ها - هیچ استایلی روی body نیست */
-
-    .satellite-card {
-        display: inline-block;
-        background: linear-gradient(75deg, #1e293b, #0f172a00);
-        padding: 60px 85px;
-        border-radius: 60px 60px 60px 60px;
-        box-shadow: 25px 25px 50px rgba(0,0,0,0.3), 0px 0px 0px 2px rgba(255,215,0,0.3), inset 0px 1px 0px rgba(255,255,255,0.1);
-        border: 1px solid rgba(255,215,0,0.5);
-        text-align: center;
-        margin: 50px;
-    }
-
-    h1 {
-        font-size: 48px;
-        font-family: 'Segoe UI', 'Arial Black', sans-serif;
-        background: radial-gradient(circle at 30% 10%, #FFD966, #FF8C42);
-        background-clip: text;
-        -webkit-background-clip: text;
-        color: transparent;
-        text-shadow: 3px 3px 0px rgba(0,0,0,0.2);
-        letter-spacing: 1.5px;
-        margin: 0 0 20px 0;
-    }
-
-    .creator {
-        font-size: 22px;
-        font-family: 'Courier New', monospace;
-        color: #A5F3FF;
-        background: rgba(0,0,0,0.5);
-        display: inline-block;
-        padding: 12px 28px;
-        border-radius: 40px;
-        letter-spacing: 1px;
-        border-left: 4px solid #FFD966;
-        border-right: 4px solid #FFD966;
-    }
-
-        .creator span {
-            color: #FFB347;
-            font-weight: bold;
-            font-size: 24px;
-        }
-</style>
-<center>
-    <div class="satellite-card">
-        <h1>🚀 Welcom To MWSManager 🛸</h1>
-        <div class="creator">
-            👨‍🚀 Creator : <span>Tavakoli</span>
+<div class="home-dashboard" dir="rtl">
+    <section class="home-welcome">
+        <div class="home-welcome__content">
+            <span class="home-eyebrow"><span class="home-status-dot"></span> سامانه مدیریت پیام و درخواست</span>
+            <h1>به MWSManager خوش آمدید</h1>
+            <p>مدیریت درخواست‌ها، پیام‌ها و زمان‌بندی ارسال‌ها از یک فضای یکپارچه.</p>
+            <div class="home-welcome__meta">
+                <span class="home-mark">MWS</span>
+                <span><strong>مدیریت ارتباطات</strong><small>پنل عملیاتی سازمان</small></span>
+            </div>
         </div>
-    </div>
-</center>
+        <div class="home-art" aria-hidden="true">
+            <div class="home-art__orbit home-art__orbit--one"></div>
+            <div class="home-art__orbit home-art__orbit--two"></div>
+            <div class="home-art__core"><i class="bx bx-rss"></i></div>
+            <span class="home-art__node home-art__node--one"><i class="bx bx-message-rounded-dots"></i></span>
+            <span class="home-art__node home-art__node--two"><i class="bx bx-time-five"></i></span>
+            <span class="home-art__node home-art__node--three"><i class="bx bx-check-shield"></i></span>
+        </div>
+    </section>
 
+    <div class="home-section-heading">
+        <div><h2>شروع سریع</h2><p>از منوی کناری، بخش موردنظر را انتخاب کنید.</p></div>
+        <span class="home-section-pill"><i class="bx bx-grid-alt"></i> فضای کاری شما</span>
+    </div>
+
+    <section class="home-shortcuts">
+        <article class="home-shortcut">
+            <span class="home-shortcut__icon home-shortcut__icon--blue"><i class="bx bx-rss"></i></span>
+            <h3>درخواست‌ها</h3>
+            <p>ایجاد، ارسال و پیگیری درخواست‌های جدید یا آماده.</p>
+            <span class="home-shortcut__hint">از منوی درخواست استفاده کنید <i class="bx bx-left-arrow-alt"></i></span>
+        </article>
+        <article class="home-shortcut">
+            <span class="home-shortcut__icon home-shortcut__icon--violet"><i class="bx bx-message-rounded-dots"></i></span>
+            <h3>پیام‌ها</h3>
+            <p>مدیریت پیام‌ها و دسترسی به عملیات آماده برای ارسال.</p>
+            <span class="home-shortcut__hint">از منوی پیام استفاده کنید <i class="bx bx-left-arrow-alt"></i></span>
+        </article>
+        <article class="home-shortcut">
+            <span class="home-shortcut__icon home-shortcut__icon--teal"><i class="bx bx-time-five"></i></span>
+            <h3>زمان‌بندی</h3>
+            <p>تنظیم و مشاهده وظایف زمان‌بندی‌شده‌ی ارسال.</p>
+            <span class="home-shortcut__hint">از منوی زمان‌بندی استفاده کنید <i class="bx bx-left-arrow-alt"></i></span>
+        </article>
+    </section>
+    <footer class="home-footer"><span>© MWSManager</span><span>طراحی شده برای مدیریت ساده‌تر عملیات</span></footer>
+</div>
+
+<style>
+    .home-dashboard { max-width: 1500px; margin: 0 auto; padding: clamp(.25rem, 1.5vw, 1.25rem) 0; }
+    .home-welcome {
+        position: relative; display: flex; align-items: center; justify-content: space-between; gap: 2rem;
+        min-height: 280px; padding: clamp(1.5rem, 4vw, 3.25rem);
+        overflow: hidden; border: 1px solid rgba(255,255,255,.12); border-radius: 24px;
+        color: #fff; background: linear-gradient(115deg, #172846 0%, #243f7d 58%, #3e5bc3 100%);
+        box-shadow: 0 18px 45px rgba(35,58,125,.16);
+    }
+    .home-welcome::after { content: ""; position: absolute; width: 360px; height: 360px; left: -100px; top: -180px; border-radius: 50%; border: 1px solid rgba(255,255,255,.09); box-shadow: 0 0 0 34px rgba(255,255,255,.025), 0 0 0 68px rgba(255,255,255,.02); }
+    .home-welcome__content { position: relative; z-index: 1; max-width: 620px; }
+    .home-eyebrow { display: inline-flex; align-items: center; gap: 9px; padding: 7px 12px; border: 1px solid rgba(255,255,255,.18); border-radius: 999px; color: #e0e8ff; background: rgba(255,255,255,.07); font-size: .82rem; }
+    .home-status-dot { width: 7px; height: 7px; border-radius: 50%; background: #6ee7b7; box-shadow: 0 0 0 4px rgba(110,231,183,.13); }
+    .home-welcome h1 { margin: 22px 0 10px; color: #fff; font-size: clamp(1.7rem, 3vw, 2.55rem); font-weight: 800; letter-spacing: -.03em; }
+    .home-welcome p { margin: 0; color: #dbe5ff; font-size: 1rem; line-height: 2; }
+    .home-welcome__meta { display: flex; align-items: center; gap: 12px; margin-top: 26px; }
+    .home-mark { display: grid; place-items: center; width: 48px; height: 48px; border: 1px solid rgba(255,255,255,.22); border-radius: 14px; background: rgba(255,255,255,.12); font-size: .85rem; font-weight: 800; letter-spacing: .08em; }
+    .home-welcome__meta strong, .home-welcome__meta small { display: block; }
+    .home-welcome__meta strong { color: #fff; font-size: .92rem; }
+    .home-welcome__meta small { color: #c6d4f6; font-size: .8rem; }
+    .home-art { position: relative; flex: 0 0 245px; width: 245px; height: 220px; display: grid; place-items: center; }
+    .home-art__orbit { position: absolute; border: 1px solid rgba(255,255,255,.19); border-radius: 50%; transform: rotate(-28deg); }
+    .home-art__orbit--one { width: 210px; height: 115px; }
+    .home-art__orbit--two { width: 165px; height: 205px; transform: rotate(35deg); }
+    .home-art__core { display: grid; place-items: center; width: 82px; height: 82px; border: 1px solid rgba(255,255,255,.3); border-radius: 25px; color: #fff; background: linear-gradient(145deg, rgba(255,255,255,.22), rgba(255,255,255,.08)); box-shadow: 0 14px 32px rgba(8,18,48,.22); font-size: 2.5rem; }
+    .home-art__node { position: absolute; display: grid; place-items: center; width: 42px; height: 42px; border: 1px solid rgba(255,255,255,.2); border-radius: 14px; color: #fff; background: #334f9e; box-shadow: 0 8px 22px rgba(7,17,45,.2); font-size: 1.3rem; }
+    .home-art__node--one { top: 17px; right: 20px; } .home-art__node--two { bottom: 13px; right: 43px; } .home-art__node--three { left: 6px; top: 82px; }
+    .home-section-heading { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin: 30px 2px 16px; }
+    .home-section-heading h2 { margin: 0 0 4px; font-size: 1.25rem; font-weight: 800; }
+    .home-section-heading p { margin: 0; color: #7b8799; font-size: .88rem; }
+    .home-section-pill { display: inline-flex; align-items: center; gap: 7px; padding: 8px 12px; border: 1px solid #e2e8f4; border-radius: 10px; color: #65738a; background: #fff; font-size: .8rem; white-space: nowrap; }
+    .home-shortcuts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+    .home-shortcut { min-width: 0; padding: 23px; border: 1px solid #e4e9f2; border-radius: 18px; background: #fff; box-shadow: 0 5px 18px rgba(24,39,75,.035); transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
+    .home-shortcut:hover { transform: translateY(-3px); border-color: #cbd5f5; box-shadow: 0 12px 28px rgba(24,39,75,.08); }
+    .home-shortcut__icon { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 14px; font-size: 1.6rem; }
+    .home-shortcut__icon--blue { color: #3659c9; background: #edf1ff; }
+    .home-shortcut__icon--violet { color: #7856c7; background: #f2edff; }
+    .home-shortcut__icon--teal { color: #148a82; background: #e7f8f5; }
+    .home-shortcut h3 { margin: 19px 0 7px; font-size: 1.05rem; font-weight: 800; }
+    .home-shortcut p { min-height: 54px; margin: 0; color: #758196; font-size: .88rem; line-height: 1.9; }
+    .home-shortcut__hint { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 18px; padding-top: 14px; border-top: 1px solid #edf0f5; color: #5269b3; font-size: .8rem; font-weight: 700; }
+    .home-shortcut__hint i { font-size: 1.2rem; }
+    .home-footer { display: flex; justify-content: space-between; gap: 12px; margin-top: 28px; padding: 15px 4px 0; border-top: 1px solid #e5e9f1; color: #98a2b3; font-size: .78rem; }
+    @media (max-width: 1000px) { .home-art { flex-basis: 190px; transform: scale(.85); } .home-shortcuts { gap: 12px; } .home-shortcut { padding: 18px; } }
+    @media (max-width: 760px) { .home-welcome { min-height: 0; padding: 1.5rem; } .home-art { display: none; } .home-shortcuts { grid-template-columns: 1fr; } .home-shortcut p { min-height: 0; } .home-section-pill { display: none; } .home-footer { flex-direction: column; } }
+    @media (prefers-reduced-motion: reduce) { .home-shortcut { transition: none; } .home-shortcut:hover { transform: none; } }
+</style>
