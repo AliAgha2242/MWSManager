@@ -161,9 +161,21 @@ hr { border-color: var(--mws-border); opacity: 1; }
 ::selection { color: #fff; background: var(--mws-primary); }
 
 .blazor-error-boundary {
-    background: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTYiIGhlaWdodD0iNDkiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAveGxpbmsiIG92ZXJmbG93PSJoaWRkZW4iPjxkZWZzPjxjbGlwUGF0aCBpZD0iY2xpcDAiPjxyZWN0IHg9IjIzNSIgeT0iNTEiIHdpZHRoPSI1NiIgaGVpZ2h0PSI0OSIvPjwvY2xpcFBhdGgiPjwvZGVmcz48ZyBjbGlwLXBhdGg9InVybCgjY2xpcDApIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMjM1IC01MSkiPjxwYXRoIGQ9Ik0yNjMuNSA1MUMyNjQuNyA1MSAyNjUuOCA1MS40IDI2Ni42IDUyLjJM...") no-repeat 1rem/1.8rem, #b42318;
-    padding: 1rem 1rem 1rem 3.7rem;
+    background: #b42318;
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
     color: white;
+}
+.blazor-error-boundary::before {
+    content: "!";
+    display: inline-grid;
+    place-items: center;
+    width: 1.6rem;
+    height: 1.6rem;
+    margin-left: .6rem;
+    border: 2px solid currentColor;
+    border-radius: 50%;
+    font-weight: 800;
 }
 .blazor-error-boundary::after { content: "An error has occurred."; }
 
