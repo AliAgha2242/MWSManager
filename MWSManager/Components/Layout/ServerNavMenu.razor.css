@@ -403,3 +403,43 @@
         display: none;
     }
 }
+
+
+/* Refined server status rail */
+.sidebar#sidebar_Server {
+    background: linear-gradient(180deg, #18243d 0%, #101a2e 100%);
+    box-shadow: 0 10px 35px rgba(16, 26, 46, .14);
+    border-right: 1px solid rgba(255,255,255,.08);
+    transition: width .22s ease;
+}
+#sidebar_Server .logo-details {
+    border-bottom: 1px solid rgba(255,255,255,.09);
+}
+#sidebar_Server .logo-details .logo_name {
+    color: #f8fafc;
+    font-size: 18px;
+}
+#sidebar_Server .checkbox-list {
+    padding: 18px 14px 30px;
+    max-height: calc(100vh - 76px);
+}
+#sidebar_Server .checkbox-list label {
+    min-height: 40px;
+    margin-bottom: 7px;
+    padding: 7px 10px;
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 9px;
+    background: rgba(255,255,255,.045);
+    font-size: 13px;
+    font-weight: 500;
+    transition: background .15s ease, border-color .15s ease;
+}
+#sidebar_Server .checkbox-list label:hover {
+    background: rgba(255,255,255,.09);
+    border-color: rgba(255,255,255,.16);
+}
+#sidebar_Server .checkbox-list input[type="checkbox"] {
+    accent-color: #8ba5ff;
+    width: 16px;
+    height: 16px;
+}
