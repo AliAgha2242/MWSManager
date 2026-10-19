@@ -333,3 +333,92 @@ hr { border-color: var(--mws-border); opacity: 1; }
 .form-floating > .form-control:focus ~ label,
 .form-floating > .form-control:not(:placeholder-shown) ~ label,
 .form-floating > .form-select ~ label { color: var(--mws-primary); }
+
+
+/* Task list: compact action buttons with enough room for Persian labels. */
+.task-list-card { margin-block: 1rem !important; }
+.task-list-card > .row { align-items: stretch; }
+.task-list-card .info-item { gap: .4rem; }
+.task-list-card .info-item .title { flex: 0 0 auto; min-width: 0; font-size: .78rem; }
+.task-list-card .info-item .value { min-width: 0; font-size: .84rem; }
+.task-list-card .task-actions-column { display: flex; align-items: stretch; }
+.task-list-card .task-actions-grid {
+    width: 100%;
+    min-width: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-content: center;
+    gap: .5rem;
+    padding: .35rem 0 .35rem .15rem !important;
+    border-right: 1px solid var(--mws-border) !important;
+}
+.task-list-card .task-actions-grid .btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-width: 0;
+    min-height: 38px !important;
+    height: auto !important;
+    padding: .4rem .35rem !important;
+    font-size: .76rem !important;
+    line-height: 1.45 !important;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: normal;
+    text-align: center;
+}
+.task-list-card .task-actions-grid .btn-warning {
+    color: #352508 !important;
+    background: #f6c96b !important;
+    border-color: #e7b64f !important;
+}
+.task-list-card .task-actions-grid .btn-warning:hover {
+    color: #2b1c04 !important;
+    background: #ffd985 !important;
+    border-color: #ffd985 !important;
+}
+.task-list-card .task-actions-grid .btn-secondary {
+    color: #e2d9ff !important;
+    background: #302a4a !important;
+    border-color: #554879 !important;
+}
+.task-list-card .task-actions-grid .btn-primary {
+    color: #082a2a !important;
+    background: var(--mws-primary) !important;
+    border-color: var(--mws-primary) !important;
+}
+.task-list-card .task-actions-grid .btn-danger {
+    color: #3b1909 !important;
+    background: #f3a36b !important;
+    border-color: #d9874d !important;
+}
+.task-list-card .task-actions-grid .btn-danger:hover {
+    background: #ffc08e !important;
+    border-color: #ffc08e !important;
+}
+.task-list-card .info-item input.btn {
+    width: 100%;
+    min-width: 0;
+    padding: .35rem .5rem !important;
+    font-size: .78rem !important;
+    white-space: normal;
+}
+.task-list-card .info-item { min-width: 0; }
+.task-list-card .info-item .value { overflow: hidden; text-overflow: ellipsis; }
+@media (max-width: 991.98px) {
+    .task-list-card .task-actions-column { margin-top: .65rem; }
+    .task-list-card .task-actions-grid { border-right: 0 !important; border-top: 1px solid var(--mws-border); padding-top: .75rem !important; }
+    .task-list-card .info-item .title { font-size: .82rem; }
+    .task-list-card .info-item .value { font-size: .88rem; }
+}
+@media (max-width: 420px) {
+    .task-list-card .task-actions-grid { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* Gold and amber accents complement the teal theme without overwhelming the UI. */
+:root {
+    --mws-gold: #f6c96b;
+    --mws-gold-soft: #443821;
+    --mws-orange: #f3a36b;
+}
