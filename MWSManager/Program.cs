@@ -8,6 +8,10 @@ using MWSMan;
 using MWSManager.Components;
 using Persistence;
 using System.Diagnostics;
+using System.Net.Http.Headers;
+using System.Text;
+using Microsoft.Extensions.Options;
+using MWSManager.Services;
 
 
 
@@ -60,6 +64,27 @@ builder.Services.Persistence_DIRegister(builder.Configuration);
 builder.Services.MWSMan_DIRegister();
 builder.Services.Application_DIRegister();
 builder.Services.AddToasts();
+
+// RabbitMQ Management HTTP API. Supply credentials through environment variables or user-secrets,
+// never commit them to appsettings.json.
+// Example environment variables: RabbitMqMonitoring__UserName and RabbitMqMonitoring__Password.
+builder.Services.Configure<RabbitMqMonitoringOptions>(
+    builder.Configuration.GetSection("RabbitMqMonitoring"));
+builder.Services.AddHttpClient<IRabbitMqMonitoringService, RabbitMqMonitoringService>((services, client) =>
+{
+    var options = services.GetRequiredService<IOptions<RabbitMqMonitoringOptions>>().Value;
+    var managementUrl = builder.Configuration["RabbitMqMonitoring:ManagementUrl"];
+    client.BaseAddress = new Uri(string.IsNullOrWhiteSpace(managementUrl)
+        ? "http://Rabbit-srv:15672/"
+        : managementUrl);
+    client.Timeout = TimeSpan.FromSeconds(8);
+
+    if (!string.IsNullOrWhiteSpace(options.UserName))
+    {
+        var credentials = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{options.UserName}:{options.Password}"));
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", credentials);
+    }
+});
 
 
 
