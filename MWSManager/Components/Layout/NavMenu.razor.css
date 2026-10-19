@@ -26,7 +26,7 @@
     margin: 0; padding: 14px 9px 20px; list-style: none; scrollbar-width: thin; scrollbar-color: #3d4b5e transparent;
 }
 .sidebar .nav-links > li { margin: 5px 0; border: 1px solid transparent; border-radius: 12px; list-style: none; }
-.sidebar .nav-links > li:hover { background: rgba(255,255,255,.035); }
+.sidebar .nav-links > li:hover { background: rgba(160,190,210,.045); }
 .sidebar .iocn-link { display: flex; align-items: center; gap: 2px; min-height: 48px; }
 .sidebar .nav-group-button {
     display: flex; align-items: center; gap: 13px; flex: 1; min-width: 0; min-height: 46px;
