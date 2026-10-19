@@ -308,3 +308,28 @@ hr { border-color: var(--mws-border); opacity: 1; }
 @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
 }
+
+
+/* Final contrast safeguards for legacy inline styles used by older Razor pages. */
+[style*="background: white" i], [style*="background:white" i],
+[style*="background-color: white" i], [style*="background-color:white" i],
+[style*="background: #fff" i], [style*="background:#fff" i],
+[style*="background-color: #fff" i], [style*="background-color:#fff" i] {
+    background-color: var(--mws-surface-raised) !important;
+    background-image: none;
+    color: var(--mws-text) !important;
+}
+[style*="color: black" i], [style*="color:black" i],
+[style*="color: #000" i], [style*="color:#000" i] {
+    color: var(--mws-text) !important;
+}
+.bg-white, .text-bg-light, .bg-light {
+    color: var(--mws-text) !important;
+    background-color: var(--mws-surface-raised) !important;
+}
+.text-dark { color: var(--mws-text) !important; }
+.border, .border-top, .border-bottom, .border-start, .border-end { border-color: var(--mws-border) !important; }
+.form-floating > label { color: var(--mws-muted); }
+.form-floating > .form-control:focus ~ label,
+.form-floating > .form-control:not(:placeholder-shown) ~ label,
+.form-floating > .form-select ~ label { color: var(--mws-primary); }
