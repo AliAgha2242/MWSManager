@@ -1,29 +1,94 @@
+/* Server selector is a separate fixed rail on the left, mirroring the main nav on the right. */
 .server-sidebar {
-    left: 0; right: auto; width: 200px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: auto;
+    z-index: 99;
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    height: 100vh;
+    min-height: 0;
+    overflow: hidden;
+    box-sizing: border-box;
+    color: #e7edf5;
     background: linear-gradient(180deg, #192533 0%, #111923 100%);
-    border-right: 1px solid #354155; border-left: 0;
+    border-right: 1px solid #354155;
+    border-left: 0;
+    box-shadow: 0 12px 36px rgba(0,0,0,.22);
+    transition: width .22s ease;
 }
 .server-sidebar.close { width: 58px; }
-.server-sidebar .logo-details { flex-direction: row; }
-.server-sidebar .logo_name { font-size: 16px; }
+.server-sidebar .logo-details {
+    display: flex;
+    flex: 0 0 68px;
+    align-items: center;
+    flex-direction: row;
+    gap: 8px;
+    min-height: 68px;
+    padding: 8px 10px;
+    border-bottom: 1px solid #303c4e;
+}
+.server-sidebar .sidebar-toggle {
+    display: grid;
+    place-items: center;
+    flex: 0 0 46px;
+    width: 46px;
+    height: 46px;
+    padding: 0;
+    border: 1px solid #3b4b60;
+    border-radius: 12px;
+    color: #8deadd;
+    background: #243442;
+    cursor: pointer;
+}
+.server-sidebar .sidebar-toggle:hover { background: #2c4552; border-color: #4e8b88; }
+.server-sidebar .sidebar-toggle i { font-size: 25px; }
+.server-sidebar .logo_name { overflow: hidden; color: #e7edf5; font-size: 16px; font-weight: 800; white-space: nowrap; }
 .server-sidebar.close .logo_name { display: none; }
 .server-sidebar .checkbox-list {
-    display: flex; flex-direction: column; gap: 7px;
-    min-height: 0; padding: 15px 10px 24px; overflow-y: auto; overflow-x: hidden;
-    color: #cbd5e3; scrollbar-width: thin; scrollbar-color: #3d4b5e transparent;
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    gap: 7px;
+    min-height: 0;
+    padding: 15px 10px 24px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    color: #cbd5e3;
+    scrollbar-width: thin;
+    scrollbar-color: #3d4b5e transparent;
 }
 .server-sidebar .checkbox-list label {
-    display: flex; align-items: center; gap: 9px; min-width: 0; min-height: 40px;
-    margin: 0; padding: 7px 9px; border: 1px solid #354155; border-radius: 10px;
-    color: #cbd5e3; background: #1c2633; cursor: pointer;
-    font-family: samim-fd, Tahoma, sans-serif; font-size: 12px; line-height: 1.5;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    min-width: 0;
+    min-height: 40px;
+    margin: 0;
+    padding: 7px 9px;
+    border: 1px solid #354155;
+    border-radius: 10px;
+    color: #cbd5e3;
+    background: #1c2633;
+    cursor: pointer;
+    font-family: samim-fd, Tahoma, sans-serif;
+    font-size: 12px;
+    line-height: 1.5;
     transition: background .15s ease, border-color .15s ease;
 }
 .server-sidebar .checkbox-list label:hover { background: #263443; border-color: #4a6377; }
 .server-sidebar .checkbox-list label.server-select-all { color: #a5f3e7; background: #193438; border-color: #2e6968; font-weight: 750; }
 .server-sidebar .checkbox-list ::deep input[type="checkbox"] {
-    flex: 0 0 16px; width: 16px; height: 16px; min-height: 16px;
-    margin: 0; padding: 0; accent-color: #43d9c3; cursor: pointer;
+    flex: 0 0 16px;
+    width: 16px;
+    height: 16px;
+    min-height: 16px;
+    margin: 0;
+    padding: 0;
+    accent-color: #43d9c3;
+    cursor: pointer;
 }
 .server-sidebar .checkbox-list ::deep input[type="checkbox"]:disabled { cursor: not-allowed; opacity: .45; }
 .server-sidebar .server-name { min-width: 0; flex: 1; overflow-wrap: anywhere; }
@@ -32,6 +97,7 @@
 .server-sidebar .server-normal { color: #cbd5e3 !important; }
 .server-sidebar .server-wait { color: #f6c96b; font-weight: 800; }
 .server-sidebar .server-state-icon { flex: 0 0 auto; font-size: 16px; }
+.server-sidebar.close .logo-details { justify-content: center; padding-inline: 4px; }
 .server-sidebar.close .checkbox-list { padding-inline: 5px; }
 .server-sidebar.close .checkbox-list label { justify-content: center; padding: 7px 4px; }
 .server-sidebar.close .checkbox-list label span { display: none; }
