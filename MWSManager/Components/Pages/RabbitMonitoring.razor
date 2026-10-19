@@ -47,34 +47,47 @@
 
         <section class="rabbit-monitor__panel">
             <div class="rabbit-monitor__panel-heading">
-                <div><h2>وضعیت صف‌ها</h2><p>نام صف‌ها با نام سرورهای تعریف‌شده در RabbitMQ نمایش داده می‌شود.</p></div>
-                <span class="rabbit-monitor__count">@Snapshot.Queues.Count صف</span>
+                <div><h2>وضعیت صف‌ها بر اساس Virtual Host</h2><p>برای دیدن صف‌های هر vhost، گروه مربوط را باز کنید.</p></div>
+                <span class="rabbit-monitor__count">@Snapshot.Queues.Count صف در @Snapshot.Queues.Select(q => q.Vhost).Distinct(StringComparer.OrdinalIgnoreCase).Count() ‏VHost</span>
             </div>
-            <div class="table-responsive">
-                <table class="table rabbit-queues">
-                    <thead><tr><th>نام صف / سرور</th><th>Virtual host</th><th>وضعیت</th><th>کل پیام</th><th>در انتظار</th><th>در حال پردازش</th><th>مصرف‌کننده</th><th>نرخ ورود / ثانیه</th><th>نرخ خروج / ثانیه</th></tr></thead>
-                    <tbody>
-                    @foreach (var queue in Snapshot.Queues)
+            @if (Snapshot.Queues.Count == 0)
+            {
+                <div class="rabbit-monitor__empty">صفی برای نمایش وجود ندارد.</div>
+            }
+            else
+            {
+                <div class="rabbit-monitor__vhosts">
+                    @foreach (var group in Snapshot.Queues.GroupBy(q => q.Vhost ?? "/", StringComparer.OrdinalIgnoreCase).OrderBy(g => g.Key))
                     {
-                        <tr @key="queue.Name">
-                            <td class="rabbit-queues__name">@queue.Name</td>
-                            <td>@queue.Vhost</td>
-                            <td><span class="rabbit-queue-state @(queue.State == "running" ? "is-running" : "is-other")">@queue.State</span></td>
-                            <td class="@(queue.Messages > 0 ? "has-messages" : "")">@N(queue.Messages)</td>
-                            <td>@N(queue.MessagesReady)</td>
-                            <td>@N(queue.MessagesUnacknowledged)</td>
-                            <td>@N(queue.Consumers)</td>
-                            <td>@(queue.MessageStats?.PublishDetails is { } publish ? publish.Rate.ToString("N2") : "—")</td>
-                            <td>@(queue.MessageStats?.DeliverGetDetails is { } deliver ? deliver.Rate.ToString("N2") : "—")</td>
-                        </tr>
+                        <details class="rabbit-monitor__collapse rabbit-monitor__vhost" @key="group.Key">
+                            <summary>
+                                <span class="rabbit-monitor__collapse-title"><span class="rabbit-monitor__chevron">⌄</span><strong>@group.Key</strong></span>
+                                <span class="rabbit-monitor__collapse-meta">@group.Count() صف <span>·</span> @N(group.Sum(q => q.Messages)) پیام <span>·</span> @N(group.Sum(q => q.Consumers)) مصرف‌کننده</span>
+                            </summary>
+                            <div class="table-responsive rabbit-monitor__collapse-body">
+                                <table class="table rabbit-queues">
+                                    <thead><tr><th>نام صف / سرور</th><th>وضعیت</th><th>کل پیام</th><th>در انتظار</th><th>در حال پردازش</th><th>مصرف‌کننده</th><th>نرخ ورود / ثانیه</th><th>نرخ خروج / ثانیه</th></tr></thead>
+                                    <tbody>
+                                    @foreach (var queue in group.OrderByDescending(q => q.Messages))
+                                    {
+                                        <tr @key="queue.Name">
+                                            <td class="rabbit-queues__name">@queue.Name</td>
+                                            <td><span class="rabbit-queue-state @(queue.State == "running" ? "is-running" : "is-other")">@queue.State</span></td>
+                                            <td class="@(queue.Messages > 0 ? "has-messages" : "")">@N(queue.Messages)</td>
+                                            <td>@N(queue.MessagesReady)</td>
+                                            <td>@N(queue.MessagesUnacknowledged)</td>
+                                            <td>@N(queue.Consumers)</td>
+                                            <td>@(queue.MessageStats?.PublishDetails is { } publish ? publish.Rate.ToString("N2") : "—")</td>
+                                            <td>@(queue.MessageStats?.DeliverGetDetails is { } deliver ? deliver.Rate.ToString("N2") : "—")</td>
+                                        </tr>
+                                    }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </details>
                     }
-                    @if (Snapshot.Queues.Count == 0)
-                    {
-                        <tr><td colspan="9" class="text-center">صفی برای نمایش وجود ندارد.</td></tr>
-                    }
-                    </tbody>
-                </table>
-            </div>
+                </div>
+            }
         </section>
     }
     else if (string.IsNullOrWhiteSpace(RabbitError))
@@ -84,20 +97,43 @@
 
     <section class="rabbit-monitor__panel rabbit-monitor__sql">
         <div class="rabbit-monitor__panel-heading">
-            <div><h2>گزارش ارتباط سرورها</h2><p>گزارش هفت روز اخیر از dbo.RabbitConsumerLog، بر اساس تاریخ، SenderName و ReceiverName</p></div>
-            <span class="rabbit-monitor__count">@LogSummaries.Count ردیف</span>
+            <div><h2>گزارش ارتباط سرورها</h2><p>گزارش هفت روز اخیر؛ فیلتر بر اساس فرستنده و گیرنده</p></div>
+            <span class="rabbit-monitor__count">@FilteredLogSummaries.Count از @LogSummaries.Count ردیف</span>
+        </div>
+        <div class="rabbit-monitor__filters">
+            <label>
+                <span>فرستنده</span>
+                <select class="rabbit-monitor__select" @bind="SelectedSender">
+                    <option value="">همه فرستنده‌ها</option>
+                    @foreach (var sender in LogSummaries.Select(x => x.SenderName).Where(x => !string.IsNullOrWhiteSpace(x)).Distinct(StringComparer.OrdinalIgnoreCase).OrderBy(x => x))
+                    {
+                        <option value="@sender">@sender</option>
+                    }
+                </select>
+            </label>
+            <label>
+                <span>گیرنده</span>
+                <select class="rabbit-monitor__select" @bind="SelectedReceiver">
+                    <option value="">همه گیرنده‌ها</option>
+                    @foreach (var receiver in LogSummaries.Select(x => x.ReceiverName).Where(x => !string.IsNullOrWhiteSpace(x)).Distinct(StringComparer.OrdinalIgnoreCase).OrderBy(x => x))
+                    {
+                        <option value="@receiver">@receiver</option>
+                    }
+                </select>
+            </label>
+            <button type="button" class="rabbit-monitor__clear-filter" @onclick="ClearLogFilters">پاک‌کردن فیلترها</button>
         </div>
         @if (!string.IsNullOrWhiteSpace(SqlError))
         {
             <div class="rabbit-monitor__alert" role="alert">
                 <strong>گزارش دیتابیس در دسترس نیست.</strong>
                 <div>@SqlError</div>
-                <small>تنظیم ConnectionStrings:Monitoring را برای دیتابیسی که جدول‌های RabbitConsumerLog در آن قرار دارند بررسی کنید.</small>
+                <small>تنظیم ConnectionStrings را برای دیتابیسی که جدول‌های RabbitConsumerLog در آن قرار دارند بررسی کنید.</small>
             </div>
         }
-        else if (LogSummaries.Count == 0)
+        else if (FilteredLogSummaries.Count == 0)
         {
-            <div class="rabbit-monitor__empty">در بازه هفت روز اخیر گزارشی پیدا نشد.</div>
+            <div class="rabbit-monitor__empty">با فیلترهای انتخاب‌شده گزارشی پیدا نشد.</div>
         }
         else
         {
@@ -105,7 +141,7 @@
                 <table class="table rabbit-queues">
                     <thead><tr><th>تاریخ</th><th>فرستنده (SenderName)</th><th>گیرنده (ReceiverName)</th><th>تعداد لاگ</th><th>خطاها</th><th>دارای ErrorMessageId</th></tr></thead>
                     <tbody>
-                    @foreach (var row in LogSummaries)
+                    @foreach (var row in FilteredLogSummaries)
                     {
                         <tr @key="(row.LogDate, row.SenderName, row.ReceiverName)">
                             <td>@row.LogDate.ToString("yyyy-MM-dd")</td>
@@ -122,43 +158,45 @@
         }
     </section>
 
-    <section class="rabbit-monitor__panel rabbit-monitor__sql">
-        <div class="rabbit-monitor__panel-heading">
-            <div><h2>رویدادهای ثبت‌شده</h2><p>خلاصه جدول RabbitConsumerLogDetail به‌همراه شرح رویداد از RabbitMessage</p></div>
+    <details class="rabbit-monitor__panel rabbit-monitor__sql rabbit-monitor__collapse rabbit-monitor__events">
+        <summary class="rabbit-monitor__panel-heading">
+            <span class="rabbit-monitor__collapse-title"><span class="rabbit-monitor__chevron">⌄</span><span><strong>رویدادهای ثبت‌شده</strong><small>خلاصه RabbitConsumerLogDetail به‌همراه شرح رویداد از RabbitMessage</small></span></span>
             <span class="rabbit-monitor__count">@LogEvents.Count رویداد</span>
+        </summary>
+        <div class="rabbit-monitor__collapse-body">
+            @if (!string.IsNullOrWhiteSpace(SqlError))
+            {
+                <div class="rabbit-monitor__empty">به دلیل خطای اتصال دیتابیس، رویدادها قابل نمایش نیستند.</div>
+            }
+            else if (LogEvents.Count == 0)
+            {
+                <div class="rabbit-monitor__empty">در بازه هفت روز اخیر رویدادی پیدا نشد.</div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table rabbit-queues">
+                        <thead><tr><th>تاریخ</th><th>شناسه</th><th>شرح رویداد</th><th>عملیات</th><th>سطح</th><th>تعداد</th><th>توقف برنامه</th><th>پایان کامل</th></tr></thead>
+                        <tbody>
+                        @foreach (var row in LogEvents)
+                        {
+                            <tr @key="(row.LogDate, row.MessageId, row.CurrentOperation, row.LogLevel)">
+                                <td>@row.LogDate.ToString("yyyy-MM-dd")</td>
+                                <td>@row.MessageId</td>
+                                <td class="rabbit-queues__description">@row.MessageDescription</td>
+                                <td>@(string.IsNullOrWhiteSpace(row.CurrentOperation) ? "—" : row.CurrentOperation)</td>
+                                <td><span class="rabbit-queue-state @(IsError(row.LogLevel) || row.StopProgramCount > 0 ? "is-other" : "is-running")">@row.LogLevel</span></td>
+                                <td>@N(row.EventCount)</td>
+                                <td class="@(row.StopProgramCount > 0 ? "has-errors" : "")">@N(row.StopProgramCount)</td>
+                                <td>@N(row.TotalFinishCount)</td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                </div>
+            }
         </div>
-        @if (!string.IsNullOrWhiteSpace(SqlError))
-        {
-            <div class="rabbit-monitor__empty">به دلیل خطای اتصال دیتابیس، رویدادها قابل نمایش نیستند.</div>
-        }
-        else if (LogEvents.Count == 0)
-        {
-            <div class="rabbit-monitor__empty">در بازه هفت روز اخیر رویدادی پیدا نشد.</div>
-        }
-        else
-        {
-            <div class="table-responsive">
-                <table class="table rabbit-queues">
-                    <thead><tr><th>تاریخ</th><th>شناسه</th><th>شرح رویداد</th><th>عملیات</th><th>سطح</th><th>تعداد</th><th>توقف برنامه</th><th>پایان کامل</th></tr></thead>
-                    <tbody>
-                    @foreach (var row in LogEvents)
-                    {
-                        <tr @key="(row.LogDate, row.MessageId, row.CurrentOperation, row.LogLevel)">
-                            <td>@row.LogDate.ToString("yyyy-MM-dd")</td>
-                            <td>@row.MessageId</td>
-                            <td class="rabbit-queues__description">@row.MessageDescription</td>
-                            <td>@(string.IsNullOrWhiteSpace(row.CurrentOperation) ? "—" : row.CurrentOperation)</td>
-                            <td><span class="rabbit-queue-state @(IsError(row.LogLevel) || row.StopProgramCount > 0 ? "is-other" : "is-running")">@row.LogLevel</span></td>
-                            <td>@N(row.EventCount)</td>
-                            <td class="@(row.StopProgramCount > 0 ? "has-errors" : "")">@N(row.StopProgramCount)</td>
-                            <td>@N(row.TotalFinishCount)</td>
-                        </tr>
-                    }
-                    </tbody>
-                </table>
-            </div>
-        }
-    </section>
+    </details>
     <p class="rabbit-monitor__note">بروزرسانی خودکار هر ۱۵ ثانیه انجام می‌شود. نرخ پیام‌ها از Management API می‌آید؛ گزارش‌ها از دیتابیس خوانده می‌شوند. زمان پردازش در گزارش اصلی محاسبه نشده، چون ProccessDate در داده‌های فعلی خالی است.</p>
 </div>
 
@@ -196,6 +234,29 @@
     .rabbit-monitor__alert small { display:block; margin-top:.4rem; color:#e6b5a5; }
     .rabbit-monitor__empty { padding:1.25rem; border:1px dashed var(--mws-border,#354155); border-radius:12px; color:var(--mws-muted,#a5b1c3); background:var(--mws-surface,#191f2a); }
     .rabbit-monitor__note { color:var(--mws-muted,#a5b1c3); margin-top:.8rem; font-size:.85rem; }
+    .rabbit-monitor__vhosts { display:flex; flex-direction:column; gap:.7rem; }
+    .rabbit-monitor__collapse { min-width:0; }
+    .rabbit-monitor__vhost { border:1px solid var(--mws-border,#354155); border-radius:12px; background:var(--mws-surface-raised,#202837); overflow:hidden; }
+    .rabbit-monitor__collapse > summary { display:flex; align-items:center; justify-content:space-between; gap:1rem; cursor:pointer; list-style:none; padding:.9rem 1rem; }
+    .rabbit-monitor__collapse > summary::-webkit-details-marker { display:none; }
+    .rabbit-monitor__collapse > summary::marker { content:""; }
+    .rabbit-monitor__collapse[open] > summary { border-bottom:1px solid var(--mws-border,#354155); }
+    .rabbit-monitor__collapse-title { display:inline-flex; align-items:center; gap:.7rem; min-width:0; }
+    .rabbit-monitor__collapse-title strong { color:var(--mws-text,#e7edf5); font-size:1rem; }
+    .rabbit-monitor__chevron { display:inline-flex; align-items:center; justify-content:center; width:1.7rem; height:1.7rem; border-radius:8px; color:#ffd27a; background:#44351e; transition:transform .18s ease; }
+    .rabbit-monitor__collapse[open] > summary .rabbit-monitor__chevron { transform:rotate(180deg); }
+    .rabbit-monitor__collapse-meta { display:inline-flex; flex-wrap:wrap; gap:.4rem; align-items:center; color:var(--mws-muted,#a5b1c3); font-size:.85rem; }
+    .rabbit-monitor__collapse-body { padding:.8rem 1rem 1rem; }
+    .rabbit-monitor__events > summary { margin:0; }
+    .rabbit-monitor__events .rabbit-monitor__collapse-title { text-align:right; }
+    .rabbit-monitor__events .rabbit-monitor__collapse-title span:last-child { display:flex; flex-direction:column; gap:.2rem; }
+    .rabbit-monitor__events .rabbit-monitor__collapse-title small { color:var(--mws-muted,#a5b1c3); font-weight:400; }
+    .rabbit-monitor__filters { display:flex; flex-wrap:wrap; align-items:end; gap:.8rem; margin:0 0 1rem; padding:1rem; border:1px solid var(--mws-border,#354155); border-radius:12px; background:var(--mws-surface-raised,#202837); }
+    .rabbit-monitor__filters label { display:flex; flex-direction:column; gap:.35rem; min-width:190px; flex:1; color:var(--mws-muted,#a5b1c3); font-size:.85rem; font-weight:700; }
+    .rabbit-monitor__select { width:100%; min-height:42px; padding:.55rem .7rem; border:1px solid var(--mws-border,#354155); border-radius:9px; color:var(--mws-text,#e7edf5); background:var(--mws-surface,#191f2a); font:inherit; }
+    .rabbit-monitor__clear-filter { min-height:42px; padding:.55rem .9rem; border:1px solid #b98527; border-radius:9px; color:#ffd27a; background:transparent; font:inherit; font-weight:750; cursor:pointer; }
+    .rabbit-monitor__clear-filter:hover { background:#44351e; }
+    @media (max-width:700px) { .rabbit-monitor__collapse > summary { align-items:flex-start; flex-direction:column; } .rabbit-monitor__stats { grid-template-columns:repeat(2,minmax(0,1fr)); } .rabbit-monitor__panel { padding:.85rem; } }
     
     
 </style>
@@ -204,6 +265,21 @@
     private RabbitMqMonitoringSnapshot? Snapshot;
     private IReadOnlyList<RabbitMqLogSummary> LogSummaries = Array.Empty<RabbitMqLogSummary>();
     private IReadOnlyList<RabbitMqLogEventSummary> LogEvents = Array.Empty<RabbitMqLogEventSummary>();
+    private string SelectedSender = "";
+    private string SelectedReceiver = "";
+
+    private IReadOnlyList<RabbitMqLogSummary> FilteredLogSummaries => LogSummaries
+        .Where(row => string.IsNullOrWhiteSpace(SelectedSender) ||
+                      string.Equals(row.SenderName, SelectedSender, StringComparison.OrdinalIgnoreCase))
+        .Where(row => string.IsNullOrWhiteSpace(SelectedReceiver) ||
+                      string.Equals(row.ReceiverName, SelectedReceiver, StringComparison.OrdinalIgnoreCase))
+        .ToArray();
+
+    private void ClearLogFilters()
+    {
+        SelectedSender = "";
+        SelectedReceiver = "";
+    }
     private string? RabbitError;
     private string? SqlError;
     private bool IsLoading;
