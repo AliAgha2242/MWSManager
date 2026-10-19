@@ -12,10 +12,6 @@ using System.Net.Http.Headers;
 using System.Text;
 using Microsoft.Extensions.Options;
 using MWSManager.Services;
-using System.Net.Http.Headers;
-using System.Text;
-using Microsoft.Extensions.Options;
-using MWSManager.Services;
 
 
 
@@ -69,41 +65,28 @@ builder.Services.MWSMan_DIRegister();
 builder.Services.Application_DIRegister();
 builder.Services.AddToasts();
 
-builder.Services.Configure<RabbitMqMonitoringOptions>(builder.Configuration.GetSection("RabbitMqMonitoring"));
-builder.Services.AddHttpClient<IRabbitMqMonitoringService, RabbitMqMonitoringService>((services, client) =>
-{
-    var options = services.GetRequiredService<IOptions<RabbitMqMonitoringOptions>>().Value;
-    var managementUrl = builder.Configuration["RabbitMqMonitoring:ManagementUrl"];
-    client.BaseAddress = new Uri(string.IsNullOrWhiteSpace(managementUrl) ? "http://Rabbit-srv:15672/" : managementUrl);
-    client.Timeout = TimeSpan.FromSeconds(8);
-    if (!string.IsNullOrWhiteSpace(options.UserName))
-    {
-        var token = Convert.ToBase64String(Encoding.UTF8.GetBytes(options.UserName + ":" + options.Password));
-        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", token);
-    }
-});
-
-// RabbitMQ Management HTTP API. Supply credentials through environment variables or user-secrets,
-// never commit them to appsettings.json.
-// Example environment variables: RabbitMqMonitoring__UserName and RabbitMqMonitoring__Password.
+// RabbitMQ Management HTTP API and SQL log monitoring.
 builder.Services.Configure<RabbitMqMonitoringOptions>(
     builder.Configuration.GetSection("RabbitMqMonitoring"));
+
 builder.Services.AddHttpClient<IRabbitMqMonitoringService, RabbitMqMonitoringService>((services, client) =>
 {
     var options = services.GetRequiredService<IOptions<RabbitMqMonitoringOptions>>().Value;
-    var managementUrl = builder.Configuration["RabbitMqMonitoring:ManagementUrl"];
-    client.BaseAddress = new Uri(string.IsNullOrWhiteSpace(managementUrl)
+    var managementUrl = string.IsNullOrWhiteSpace(options.ManagementUrl)
         ? "http://Rabbit-srv:15672/"
-        : managementUrl);
+        : options.ManagementUrl;
+
+    client.BaseAddress = new Uri(managementUrl.EndsWith('/') ? managementUrl : managementUrl + "/");
     client.Timeout = TimeSpan.FromSeconds(8);
 
     if (!string.IsNullOrWhiteSpace(options.UserName))
     {
-        var credentials = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{options.UserName}:{options.Password}"));
-        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", credentials);
+        var credentials = Convert.ToBase64String(
+            Encoding.UTF8.GetBytes($"{options.UserName}:{options.Password}"));
+        client.DefaultRequestHeaders.Authorization =
+            new AuthenticationHeaderValue("Basic", credentials);
     }
 });
-
 
 
 var app = builder.Build();
