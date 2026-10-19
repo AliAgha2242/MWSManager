@@ -1,0 +1,76 @@
+# Azure DevOps pipeline for MWSManager (.NET 10)
+trigger:
+  branches:
+    include:
+      - master
+      - ui/modernize-layout-and-global-styles
+
+pr:
+  branches:
+    include:
+      - master
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  buildConfiguration: 'Release'
+  webProject: 'MWSManager/MWSManager.csproj'
+  publishDirectory: '$(Build.ArtifactStagingDirectory)/publish'
+
+steps:
+  - checkout: self
+    clean: true
+
+  - task: UseDotNet@2
+    displayName: 'Install .NET SDK 10'
+    inputs:
+      packageType: 'sdk'
+      version: '10.0.x'
+
+  - task: Cache@2
+    displayName: 'Cache NuGet packages'
+    inputs:
+      key: 'nuget | "$(Agent.OS)" | **/*.csproj,global.json'
+      restoreKeys: |
+        nuget | "$(Agent.OS)"
+      path: '$(UserProfile)/.nuget/packages'
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Restore'
+    inputs:
+      command: 'restore'
+      projects: '$(webProject)'
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Build'
+    inputs:
+      command: 'build'
+      projects: '$(webProject)'
+      arguments: '--configuration $(buildConfiguration) --no-restore'
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Publish web application'
+    inputs:
+      command: 'publish'
+      publishWebProjects: false
+      projects: '$(webProject)'
+      arguments: '--configuration $(buildConfiguration) --no-build --output "$(publishDirectory)"'
+      zipAfterPublish: false
+      modifyOutputPath: false
+
+  - task: ArchiveFiles@2
+    displayName: 'Create deployment ZIP'
+    inputs:
+      rootFolderOrFile: '$(publishDirectory)'
+      includeRootFolder: false
+      archiveType: 'zip'
+      archiveFile: '$(Build.ArtifactStagingDirectory)/MWSManager-$(Build.BuildId).zip'
+      replaceExistingArchive: true
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish deployment artifact'
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)/MWSManager-$(Build.BuildId).zip'
+      ArtifactName: 'MWSManager-drop'
+      publishLocation: 'Container'
