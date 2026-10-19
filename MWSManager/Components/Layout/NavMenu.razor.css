@@ -50,13 +50,13 @@
 }
 .sidebar .showMenu .sub-menu { display: block; }
 .sidebar .sub-menu li { margin: 2px 0; list-style: none; }
-.sidebar .sub-menu a, .sidebar .nav-home a {
+.sidebar .sub-menu ::deep a, .sidebar .nav-home ::deep a {
     display: flex; align-items: center; min-height: 38px; padding: 7px 10px;
     border-radius: 8px; color: #afbdcf; font-size: 12.5px; line-height: 1.65;
     text-decoration: none; overflow-wrap: anywhere;
 }
-.sidebar .sub-menu a:hover, .sidebar .sub-menu a.active,
-.sidebar .nav-home a:hover, .sidebar .nav-home a.active {
+.sidebar .sub-menu ::deep a:hover, .sidebar .sub-menu ::deep a.active,
+.sidebar .nav-home ::deep a:hover, .sidebar .nav-home ::deep a.active {
     color: #a4f1e7; background: #203a40;
 }
 .sidebar .nav-home a { gap: 12px; min-height: 46px; font-size: 14px; }
