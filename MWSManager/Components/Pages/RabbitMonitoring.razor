@@ -59,7 +59,7 @@
                     <tbody>
                     @foreach (var queue in Snapshot.Queues)
                     {
-                        <tr @key="($"{queue.Vhost}/{queue.Name}")">
+                        <tr @key="queue">
                             <td class="rabbit-queues__name">@queue.Name</td>
                             <td>@queue.Vhost</td>
                             <td><span class="rabbit-queue-state @(queue.State == "running" ? "is-running" : "is-other")">@queue.State</span></td>
