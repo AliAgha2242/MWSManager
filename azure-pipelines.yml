@@ -17,6 +17,7 @@ variables:
   buildConfiguration: 'Release'
   webProject: 'MWSManager/MWSManager.csproj'
   publishDirectory: '$(Build.ArtifactStagingDirectory)/publish'
+  nugetPackages: '$(Pipeline.Workspace)/.nuget/packages'
 
 steps:
   - checkout: self
@@ -34,13 +35,15 @@ steps:
       key: 'nuget | "$(Agent.OS)" | **/*.csproj,global.json'
       restoreKeys: |
         nuget | "$(Agent.OS)"
-      path: '$(UserProfile)/.nuget/packages'
+      path: '$(nugetPackages)'
 
   - task: DotNetCoreCLI@2
     displayName: 'Restore'
     inputs:
       command: 'restore'
       projects: '$(webProject)'
+    env:
+      NUGET_PACKAGES: '$(nugetPackages)'
 
   - task: DotNetCoreCLI@2
     displayName: 'Build'
@@ -48,6 +51,8 @@ steps:
       command: 'build'
       projects: '$(webProject)'
       arguments: '--configuration $(buildConfiguration) --no-restore'
+    env:
+      NUGET_PACKAGES: '$(nugetPackages)'
 
   - task: DotNetCoreCLI@2
     displayName: 'Publish web application'
@@ -58,6 +63,8 @@ steps:
       arguments: '--configuration $(buildConfiguration) --no-build --output "$(publishDirectory)"'
       zipAfterPublish: false
       modifyOutputPath: false
+    env:
+      NUGET_PACKAGES: '$(nugetPackages)'
 
   - task: ArchiveFiles@2
     displayName: 'Create deployment ZIP'
