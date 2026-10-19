@@ -60,6 +60,11 @@
     color: #ffe0a0; background: #3b3020;
 }
 .sidebar .nav-home a { gap: 12px; min-height: 46px; font-size: 14px; }
+.sidebar .nav-monitoring { margin-block: 10px !important; border: 1px solid #725522 !important; background: linear-gradient(110deg, #44351e, #2c2b25) !important; box-shadow: inset 3px 0 0 #f6c453; }
+.sidebar .nav-monitoring ::deep a { color: #ffe0a0; font-weight: 800; }
+.sidebar .nav-monitoring ::deep a > i { color: #ffd27a; }
+.sidebar .nav-monitoring ::deep a:hover, .sidebar .nav-monitoring ::deep a.active { color: #fff2ce; background: #554124; }
+.sidebar.close .nav-monitoring { box-shadow: inset 0 -3px 0 #f6c453; }
 .sidebar .nav-home a > i { flex: 0 0 28px; color: #f6c453; font-size: 21px; text-align: center; }
 .sidebar .profile-details {
     display: flex; align-items: center; gap: 10px; margin-top: 16px !important;
