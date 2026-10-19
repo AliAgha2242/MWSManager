@@ -1,20 +1,16 @@
 ﻿@using MWSMan.Core.Model.InfrastructModels
 @using Microsoft.AspNetCore.Authorization
 @using Model.PresentationModels
-@* @attribute [Authorize] *@
+@using Application.ServiceContract
 @inject IList<ServerSelected> serverSelecteds;
+@inject IUiOperationLog OperationLog
 @inherits LayoutComponentBase
+@implements IDisposable
 
 <div class="page">
-    @* <div class="sidebar"> *@
     <NavMenu />
-    @* </div> *@
 
     <main>
-        @*    <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
-        </div> *@
-
         <article class="content px-4">
             @Body
         </article>
@@ -22,11 +18,88 @@
     <ServerNavMenu />
 </div>
 
+<div class="operation-log-widget" dir="rtl">
+    @if (LogOpen)
+    {
+        <section class="operation-log-panel" aria-label="گزارش پاسخ ارسال‌ها">
+            <header class="operation-log-header">
+                <div>
+                    <strong>گزارش ارسال‌ها</strong>
+                    <span class="operation-log-subtitle">پاسخ سرورها و خطاهای عملیات</span>
+                </div>
+                <div class="operation-log-header-actions">
+                    <button type="button" class="operation-log-small-btn" @onclick="ClearLogs" title="پاک کردن گزارش‌ها">پاک‌سازی</button>
+                    <button type="button" class="operation-log-close" @onclick="ToggleLog" aria-label="بستن پنجره">×</button>
+                </div>
+            </header>
+            <div class="operation-log-summary">
+                <span>کل: @OperationLog.Entries.Count</span>
+                <span class="operation-log-errors">خطا: @OperationLog.ErrorCount</span>
+            </div>
+            <div class="operation-log-entries">
+                @if (OperationLog.Entries.Count == 0)
+                {
+                    <div class="operation-log-empty">هنوز پاسخی ثبت نشده است. پس از ارسال پیام یا درخواست، نتیجه اینجا نمایش داده می‌شود.</div>
+                }
+                else
+                {
+                    @foreach (var entry in OperationLog.Entries)
+                    {
+                        <article class="operation-log-entry @(entry.IsSuccess ? "is-success" : "is-error")" @key="entry">
+                            <div class="operation-log-entry-top">
+                                <span class="operation-log-status">@(entry.IsSuccess ? "موفق" : "خطا")</span>
+                                <time>@entry.Timestamp.ToString("HH:mm:ss")</time>
+                            </div>
+                            <div class="operation-log-operation">@entry.Operation</div>
+                            <div class="operation-log-server">سرور: @entry.Receiver</div>
+                            <div class="operation-log-message">@entry.Message</div>
+                            <div class="operation-log-meta">کد پاسخ: @entry.StatusCode</div>
+                            @if (!string.IsNullOrWhiteSpace(entry.ResponseId))
+                            {
+                                <div class="operation-log-meta">شناسه پاسخ: <code>@entry.ResponseId</code></div>
+                            }
+                        </article>
+                    }
+                }
+            </div>
+            <footer class="operation-log-footer">حداکثر ۲۵۰ نتیجه آخر در این نشست نگهداری می‌شود.</footer>
+        </section>
+    }
+    <button type="button" class="operation-log-fab" @onclick="ToggleLog" aria-label="نمایش گزارش ارسال‌ها" title="گزارش پاسخ‌ها و خطاها">
+        <span class="operation-log-fab-icon">▤</span>
+        <span>گزارش ارسال‌ها</span>
+        @if (OperationLog.ErrorCount > 0)
+        {
+            <span class="operation-log-badge">@OperationLog.ErrorCount</span>
+        }
+    </button>
+</div>
+
 <div id="blazor-error-ui" data-nosnippet>
     An unhandled error has occurred.
     <a href="." class="reload">Reload</a>
     <span class="dismiss">🗙</span>
 </div>
+
 @code {
-    // public IList<ServerSelected> servers { get; set; }
+    private bool LogOpen;
+
+    protected override void OnInitialized()
+    {
+        OperationLog.Changed += OnOperationLogChanged;
+    }
+
+    private void ToggleLog() => LogOpen = !LogOpen;
+
+    private void ClearLogs() => OperationLog.Clear();
+
+    private void OnOperationLogChanged()
+    {
+        _ = InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        OperationLog.Changed -= OnOperationLogChanged;
+    }
 }
