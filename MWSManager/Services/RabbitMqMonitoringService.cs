@@ -7,10 +7,10 @@ namespace MWSManager.Services;
 
 public sealed class RabbitMqMonitoringOptions
 {
-    public string ManagementUrl { get; set; } = "http://Rabbit-srv:15672/";
-    public string UserName { get; set; } = "";
-    public string Password { get; set; } = "";
-    public string SqlConnectionStringName { get; set; } = "Monitoring";
+    public string ManagementUrl { get; set; } = "http://172.16.5.39:15672/";
+    public string UserName { get; set; } = "AdminMinoo";
+    public string Password { get; set; } = "RabbitAdmin";
+    public string SqlConnectionStringName { get; set; } = "Rabbit-SRV";
 }
 
 public sealed class RabbitMqOverview
@@ -203,7 +203,7 @@ public sealed class RabbitMqMonitoringService(
     private SqlConnection CreateSqlConnection()
     {
         var connectionStringName = string.IsNullOrWhiteSpace(_options.SqlConnectionStringName)
-            ? "Monitoring"
+            ? "Rabbit-SRV"
             : _options.SqlConnectionStringName;
         var connectionString = configuration.GetConnectionString(connectionStringName);
         if (string.IsNullOrWhiteSpace(connectionString))
