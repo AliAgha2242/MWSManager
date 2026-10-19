@@ -21,11 +21,11 @@
 }
 .server-sidebar .checkbox-list label:hover { background: #263443; border-color: #4a6377; }
 .server-sidebar .checkbox-list label.server-select-all { color: #a5f3e7; background: #193438; border-color: #2e6968; font-weight: 750; }
-.server-sidebar .checkbox-list input[type="checkbox"] {
+.server-sidebar .checkbox-list ::deep input[type="checkbox"] {
     flex: 0 0 16px; width: 16px; height: 16px; min-height: 16px;
     margin: 0; padding: 0; accent-color: #43d9c3; cursor: pointer;
 }
-.server-sidebar .checkbox-list input[type="checkbox"]:disabled { cursor: not-allowed; opacity: .45; }
+.server-sidebar .checkbox-list ::deep input[type="checkbox"]:disabled { cursor: not-allowed; opacity: .45; }
 .server-sidebar .server-name { min-width: 0; flex: 1; overflow-wrap: anywhere; }
 .server-sidebar .server-success { color: #8de7bd !important; border-color: #2b5f50 !important; }
 .server-sidebar .server-error { color: #ff9aa8 !important; border-color: #70404b !important; background: #33232d !important; }
@@ -36,7 +36,7 @@
 .server-sidebar.close .checkbox-list label { justify-content: center; padding: 7px 4px; }
 .server-sidebar.close .checkbox-list label span { display: none; }
 .server-sidebar.close .checkbox-list label .server-state-icon { display: none; }
-.server-sidebar.close .checkbox-list input[type="checkbox"] { flex-basis: 16px; }
+.server-sidebar.close .checkbox-list ::deep input[type="checkbox"] { flex-basis: 16px; }
 @media (max-width: 640px) {
     .server-sidebar { width: min(200px, 72vw); }
     .server-sidebar.close { width: 45px; }
