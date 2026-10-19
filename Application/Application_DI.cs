@@ -14,6 +14,7 @@ namespace Application
 
             services.AddScoped<IRabbitSenderRepository, RabbitSenderRepository>();
             services.AddScoped<ISend,Send>();
+            services.AddScoped<IUiOperationLog, UiOperationLog>();
             services.AddScoped<IRequestHubService, RequestHubService>();
             services.AddScoped<IRabbitTaskService, RabbitTaskService>();
             services.AddScoped<IRabbitTaskServerService, RabbitTaskServerService>();
