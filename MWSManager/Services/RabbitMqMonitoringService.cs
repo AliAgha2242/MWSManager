@@ -1,6 +1,4 @@
-using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using System.Text;
 using System.Text.Json.Serialization;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Options;
@@ -189,7 +187,7 @@ public sealed class RabbitMqMonitoringService(
             result.Add(new RabbitMqLogEventSummary
             {
                 LogDate = reader.GetDateTime(0),
-                MessageId = reader.GetInt32(1),
+                MessageId = reader.IsDBNull(1) ? 0 : reader.GetInt32(1),
                 MessageDescription = reader.GetString(2),
                 LogLevel = reader.GetString(3),
                 CurrentOperation = reader.GetString(4),
