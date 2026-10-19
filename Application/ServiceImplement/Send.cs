@@ -18,8 +18,9 @@ namespace Application.ServiceImplement
         private readonly CenterEvent centerEvent;
         private readonly IRabbitTaskServerService serverService;
         private readonly IMinooConfiguration minooConfiguration;
+        private readonly IUiOperationLog operationLog;
 
-        public Send(DockerDateTime dockerDateTime, IRabbitSenderRepository rabbitSenderRepository, IList<ServerSelected> serverSelecteds, CenterEvent centerEvent, IRabbitTaskServerService serverService, IMinooConfiguration minooConfiguration)
+        public Send(DockerDateTime dockerDateTime, IRabbitSenderRepository rabbitSenderRepository, IList<ServerSelected> serverSelecteds, CenterEvent centerEvent, IRabbitTaskServerService serverService, IMinooConfiguration minooConfiguration, IUiOperationLog operationLog)
         {
             this.dockerDateTime = dockerDateTime;
             this.rabbitSenderRepository = rabbitSenderRepository;
@@ -27,6 +28,7 @@ namespace Application.ServiceImplement
             this.centerEvent = centerEvent;
             this.serverService = serverService;
             this.minooConfiguration = minooConfiguration;
+            this.operationLog = operationLog;
         }
 
         public async Task<IList<BaseResultModel>> RunTask(RabbitTasks tasks, bool serverNavSideEffect = true)
@@ -239,7 +241,17 @@ namespace Application.ServiceImplement
 
         public async Task<BaseResultModel> SendToQueueAsync(string receiver, string messageProccessorName, IDictionary<string, object?> body, bool serverNavSideEffect = true)
         {
-            BaseResultModel result = await rabbitSenderRepository.SendAsync(receiver, messageProccessorName, body, RequestOrMessageEnum.Message);
+            BaseResultModel result;
+            try
+            {
+                result = await rabbitSenderRepository.SendAsync(receiver, messageProccessorName, body, RequestOrMessageEnum.Message);
+                operationLog.Add("ارسال پیام", receiver, result.IsSuccsss, result.StatusCode, result.IsSuccsss ? "پاسخ موفق دریافت شد." : result.ErrMessage, result.id);
+            }
+            catch (Exception ex)
+            {
+                operationLog.Add("ارسال پیام", receiver, false, 500, ex.Message);
+                result = new BaseResultModel(null, ex.Message, 500, false, receiver);
+            }
             if (result.IsSuccsss && serverNavSideEffect)
                 serverSelecteds.FirstOrDefault(p => p.serverInfo.ServerName.ToLower() == receiver.ToLower())?.responseInfo.responseState = ResponseState.Finish;
             else if (serverNavSideEffect)
@@ -252,7 +264,17 @@ namespace Application.ServiceImplement
 
         public async Task<BaseResultModel> SendToQueueAsync(decimal receiver, string messageProccessorName, IDictionary<string, object?> body, bool serverNavSideEffect = true)
         {
-            BaseResultModel result = await rabbitSenderRepository.SendAsync(receiver, messageProccessorName, body, RequestOrMessageEnum.Message);
+            BaseResultModel result;
+            try
+            {
+                result = await rabbitSenderRepository.SendAsync(receiver, messageProccessorName, body, RequestOrMessageEnum.Message);
+                operationLog.Add("ارسال پیام", receiver.ToString(), result.IsSuccsss, result.StatusCode, result.IsSuccsss ? "پاسخ موفق دریافت شد." : result.ErrMessage, result.id);
+            }
+            catch (Exception ex)
+            {
+                operationLog.Add("ارسال پیام", receiver.ToString(), false, 500, ex.Message);
+                result = new BaseResultModel(null, ex.Message, 500, false, receiver.ToString());
+            }
             if (result.IsSuccsss && serverNavSideEffect)
                 serverSelecteds.FirstOrDefault(p => p.serverInfo.VahedeTejariSN == receiver)?.responseInfo.responseState = ResponseState.Finish;
             else if (serverNavSideEffect)
@@ -279,7 +301,17 @@ namespace Application.ServiceImplement
 
         public async Task<BaseResultModel> SendTransactionalAsync(string receiver, string messageProccessorName, IDictionary<string, object?> body, bool serverNavSideEffect = true)
         {
-            BaseResultModel result = await rabbitSenderRepository.SendAsync(receiver, messageProccessorName, body, RequestOrMessageEnum.Request);
+            BaseResultModel result;
+            try
+            {
+                result = await rabbitSenderRepository.SendAsync(receiver, messageProccessorName, body, RequestOrMessageEnum.Request);
+                operationLog.Add("ارسال تراکنشی", receiver, result.IsSuccsss, result.StatusCode, result.IsSuccsss ? "پاسخ موفق دریافت شد." : result.ErrMessage, result.id);
+            }
+            catch (Exception ex)
+            {
+                operationLog.Add("ارسال تراکنشی", receiver, false, 500, ex.Message);
+                result = new BaseResultModel(null, ex.Message, 500, false, receiver);
+            }
             if (result.IsSuccsss && serverNavSideEffect)
                 serverSelecteds.FirstOrDefault(p => p.serverInfo.ServerName.ToLower() == receiver.ToLower())?.responseInfo.responseState = ResponseState.Finish;
             else if (serverNavSideEffect)
