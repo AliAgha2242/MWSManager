@@ -9,37 +9,34 @@
 <div class="rabbit-monitor" dir="rtl">
     <header class="rabbit-monitor__header">
         <div>
-            <span class="rabbit-monitor__eyebrow">زیرساخت پیام‌رسانی</span>
+            <span class="rabbit-monitor__eyebrow">مرکز پایش زیرساخت</span>
             <h1>مانیتورینگ RabbitMQ</h1>
-            <p>وضعیت صف‌ها، پیام‌های منتظر پردازش و نرخ ورودی و خروجی پیام‌ها</p>
+            <p>وضعیت زنده صف‌ها به‌همراه گزارش هفت روز اخیر ارسال‌ها و رویدادهای ثبت‌شده</p>
         </div>
-        <button class="btn btn-primary" @onclick="RefreshAsync" disabled="@IsLoading">
-            @(IsLoading ? "در حال دریافت..." : "بروزرسانی")
+        <button class="rabbit-monitor__refresh" type="button" @onclick="RefreshAsync" disabled="@IsLoading">
+            <span aria-hidden="true">↻</span> @(IsLoading ? "در حال دریافت..." : "بروزرسانی")
         </button>
     </header>
 
-    @if (!string.IsNullOrWhiteSpace(ErrorMessage))
+    @if (!string.IsNullOrWhiteSpace(RabbitError))
     {
-        <div class="alert alert-danger" role="alert">
-            <strong>اتصال به RabbitMQ برقرار نشد.</strong>
-            <div>@ErrorMessage</div>
-            <small>آدرس Management API و دسترسی کاربر را بررسی کنید. پورت پیش‌فرض API مدیریتی ۱۵۶۷۲ است.</small>
+        <div class="rabbit-monitor__alert" role="alert">
+            <strong>دریافت وضعیت زنده RabbitMQ ناموفق بود.</strong>
+            <div>@RabbitError</div>
+            <small>آدرس Management API، پورت ۱۵۶۷۲ و دسترسی کاربر را بررسی کنید.</small>
         </div>
     }
-    else if (Snapshot is null)
-    {
-        <div class="rabbit-monitor__empty">در حال دریافت اطلاعات RabbitMQ...</div>
-    }
-    else
+
+    @if (Snapshot is not null)
     {
         <div class="rabbit-monitor__meta">
             <span>کلاستر: <strong>@(Snapshot.Overview.ClusterName ?? "RabbitMQ")</strong></span>
             <span>نسخه: <strong>@(Snapshot.Overview.RabbitMqVersion ?? "نامشخص")</strong></span>
             <span>آخرین دریافت: <strong>@Snapshot.CollectedAt.ToString("HH:mm:ss")</strong></span>
-            <span class="rabbit-monitor__live"><i></i> متصل</span>
+            <span class="rabbit-monitor__live"><i></i> اطلاعات زنده</span>
         </div>
 
-        <section class="rabbit-monitor__stats">
+        <section class="rabbit-monitor__stats" aria-label="خلاصه وضعیت RabbitMQ">
             <article class="rabbit-stat"><span>کل پیام‌های صف‌شده</span><strong>@N(Snapshot.Overview.QueueTotals?.Messages ?? 0)</strong><small>Ready + Unacknowledged</small></article>
             <article class="rabbit-stat"><span>در انتظار پردازش</span><strong>@N(Snapshot.Overview.QueueTotals?.MessagesReady ?? 0)</strong><small>Messages Ready</small></article>
             <article class="rabbit-stat"><span>در حال پردازش</span><strong>@N(Snapshot.Overview.QueueTotals?.MessagesUnacknowledged ?? 0)</strong><small>Unacknowledged</small></article>
@@ -50,16 +47,16 @@
 
         <section class="rabbit-monitor__panel">
             <div class="rabbit-monitor__panel-heading">
-                <div><h2>وضعیت صف‌ها</h2><p>صف‌ها بر اساس تعداد پیام، از بیشترین به کمترین مرتب شده‌اند.</p></div>
+                <div><h2>وضعیت صف‌ها</h2><p>نام صف‌ها با نام سرورهای تعریف‌شده در RabbitMQ نمایش داده می‌شود.</p></div>
                 <span class="rabbit-monitor__count">@Snapshot.Queues.Count صف</span>
             </div>
             <div class="table-responsive">
                 <table class="table rabbit-queues">
-                    <thead><tr><th>نام صف</th><th>Virtual host</th><th>وضعیت</th><th>کل پیام</th><th>در انتظار</th><th>در حال پردازش</th><th>مصرف‌کننده</th><th>نرخ ورود / ثانیه</th><th>نرخ خروج / ثانیه</th></tr></thead>
+                    <thead><tr><th>نام صف / سرور</th><th>Virtual host</th><th>وضعیت</th><th>کل پیام</th><th>در انتظار</th><th>در حال پردازش</th><th>مصرف‌کننده</th><th>نرخ ورود / ثانیه</th><th>نرخ خروج / ثانیه</th></tr></thead>
                     <tbody>
                     @foreach (var queue in Snapshot.Queues)
                     {
-                        <tr @key="queue">
+                        <tr @key="queue.Name">
                             <td class="rabbit-queues__name">@queue.Name</td>
                             <td>@queue.Vhost</td>
                             <td><span class="rabbit-queue-state @(queue.State == "running" ? "is-running" : "is-other")">@queue.State</span></td>
@@ -67,8 +64,8 @@
                             <td>@N(queue.MessagesReady)</td>
                             <td>@N(queue.MessagesUnacknowledged)</td>
                             <td>@N(queue.Consumers)</td>
-                            <td>@queue.MessageStats?.PublishDetails?.Rate.ToString("N2")</td>
-                            <td>@queue.MessageStats?.DeliverGetDetails?.Rate.ToString("N2")</td>
+                            <td>@(queue.MessageStats?.PublishDetails is { } publish ? publish.Rate.ToString("N2") : "—")</td>
+                            <td>@(queue.MessageStats?.DeliverGetDetails is { } deliver ? deliver.Rate.ToString("N2") : "—")</td>
                         </tr>
                     }
                     @if (Snapshot.Queues.Count == 0)
@@ -79,17 +76,102 @@
                 </table>
             </div>
         </section>
-        <p class="rabbit-monitor__note">نکته: نرخ‌ها فقط در صورتی نمایش داده می‌شوند که آمار پیام برای صف در RabbitMQ فعال و موجود باشد.</p>
     }
+    else if (string.IsNullOrWhiteSpace(RabbitError))
+    {
+        <div class="rabbit-monitor__empty">در حال دریافت وضعیت زنده RabbitMQ...</div>
+    }
+
+    <section class="rabbit-monitor__panel rabbit-monitor__sql">
+        <div class="rabbit-monitor__panel-heading">
+            <div><h2>گزارش ارتباط سرورها</h2><p>گزارش هفت روز اخیر از dbo.RabbitConsumerLog، بر اساس تاریخ، SenderName و ReceiverName</p></div>
+            <span class="rabbit-monitor__count">@LogSummaries.Count ردیف</span>
+        </div>
+        @if (!string.IsNullOrWhiteSpace(SqlError))
+        {
+            <div class="rabbit-monitor__alert" role="alert">
+                <strong>گزارش دیتابیس در دسترس نیست.</strong>
+                <div>@SqlError</div>
+                <small>تنظیم ConnectionStrings:Monitoring را برای دیتابیسی که جدول‌های RabbitConsumerLog در آن قرار دارند بررسی کنید.</small>
+            </div>
+        }
+        else if (LogSummaries.Count == 0)
+        {
+            <div class="rabbit-monitor__empty">در بازه هفت روز اخیر گزارشی پیدا نشد.</div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table rabbit-queues">
+                    <thead><tr><th>تاریخ</th><th>فرستنده (SenderName)</th><th>گیرنده (ReceiverName)</th><th>تعداد لاگ</th><th>خطاها</th><th>دارای ErrorMessageId</th></tr></thead>
+                    <tbody>
+                    @foreach (var row in LogSummaries)
+                    {
+                        <tr @key="(row.LogDate, row.SenderName, row.ReceiverName)">
+                            <td>@row.LogDate.ToString("yyyy-MM-dd")</td>
+                            <td class="rabbit-queues__name">@(string.IsNullOrWhiteSpace(row.SenderName) ? "—" : row.SenderName)</td>
+                            <td class="rabbit-queues__name">@(string.IsNullOrWhiteSpace(row.ReceiverName) ? "—" : row.ReceiverName)</td>
+                            <td>@N(row.TotalLogs)</td>
+                            <td class="@(row.ErrorCount > 0 ? "has-errors" : "")">@N(row.ErrorCount)</td>
+                            <td class="@(row.ErrorMessageCount > 0 ? "has-errors" : "")">@N(row.ErrorMessageCount)</td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </section>
+
+    <section class="rabbit-monitor__panel rabbit-monitor__sql">
+        <div class="rabbit-monitor__panel-heading">
+            <div><h2>رویدادهای ثبت‌شده</h2><p>خلاصه جدول RabbitConsumerLogDetail به‌همراه شرح رویداد از RabbitMessage</p></div>
+            <span class="rabbit-monitor__count">@LogEvents.Count رویداد</span>
+        </div>
+        @if (!string.IsNullOrWhiteSpace(SqlError))
+        {
+            <div class="rabbit-monitor__empty">به دلیل خطای اتصال دیتابیس، رویدادها قابل نمایش نیستند.</div>
+        }
+        else if (LogEvents.Count == 0)
+        {
+            <div class="rabbit-monitor__empty">در بازه هفت روز اخیر رویدادی پیدا نشد.</div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table rabbit-queues">
+                    <thead><tr><th>تاریخ</th><th>شناسه</th><th>شرح رویداد</th><th>عملیات</th><th>سطح</th><th>تعداد</th><th>توقف برنامه</th><th>پایان کامل</th></tr></thead>
+                    <tbody>
+                    @foreach (var row in LogEvents)
+                    {
+                        <tr @key="(row.LogDate, row.MessageId, row.CurrentOperation, row.LogLevel)">
+                            <td>@row.LogDate.ToString("yyyy-MM-dd")</td>
+                            <td>@row.MessageId</td>
+                            <td class="rabbit-queues__description">@row.MessageDescription</td>
+                            <td>@(string.IsNullOrWhiteSpace(row.CurrentOperation) ? "—" : row.CurrentOperation)</td>
+                            <td><span class="rabbit-queue-state @(IsError(row.LogLevel) || row.StopProgramCount > 0 ? "is-other" : "is-running")">@row.LogLevel</span></td>
+                            <td>@N(row.EventCount)</td>
+                            <td class="@(row.StopProgramCount > 0 ? "has-errors" : "")">@N(row.StopProgramCount)</td>
+                            <td>@N(row.TotalFinishCount)</td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </section>
+    <p class="rabbit-monitor__note">بروزرسانی خودکار هر ۱۵ ثانیه انجام می‌شود. نرخ پیام‌ها از Management API می‌آید؛ گزارش‌ها از دیتابیس خوانده می‌شوند. زمان پردازش در گزارش اصلی محاسبه نشده، چون ProccessDate در داده‌های فعلی خالی است.</p>
 </div>
 
 <style>
-    .rabbit-monitor { max-width: 1700px; margin: 0 auto; padding: 1rem 0 2rem; color: var(--mws-text, #e7edf5); }
+    .rabbit-monitor { max-width: 1800px; margin: 0 auto; padding: 1rem 0 2rem; color: var(--mws-text, #e7edf5); }
     .rabbit-monitor__header, .rabbit-monitor__panel-heading { display:flex; align-items:center; justify-content:space-between; gap:1rem; }
     .rabbit-monitor__header { margin-bottom:1.25rem; }
     .rabbit-monitor__eyebrow { color:#f6c453; font-weight:800; font-size:.85rem; }
     .rabbit-monitor__header h1 { margin:.2rem 0; }
     .rabbit-monitor__header p, .rabbit-monitor__panel-heading p { color:var(--mws-muted,#a5b1c3); margin:0; }
+    .rabbit-monitor__refresh { display:inline-flex; align-items:center; gap:.5rem; padding:.7rem 1rem; border:1px solid #b98527; border-radius:11px; color:#201a0e; background:linear-gradient(135deg,#ffd779,#f59e0b); font:inherit; font-weight:800; cursor:pointer; white-space:nowrap; }
+    .rabbit-monitor__refresh:disabled { opacity:.65; cursor:wait; }
+    .rabbit-monitor__refresh span { font-size:1.3rem; line-height:1; }
     .rabbit-monitor__meta { display:flex; flex-wrap:wrap; gap:.75rem 1.4rem; align-items:center; padding:1rem 1.2rem; margin-bottom:1rem; border:1px solid var(--mws-border,#354155); border-radius:14px; background:var(--mws-surface,#191f2a); }
     .rabbit-monitor__live { color:#6ee7b7; display:inline-flex; align-items:center; gap:.4rem; }
     .rabbit-monitor__live i { width:8px; height:8px; border-radius:50%; background:#6ee7b7; box-shadow:0 0 0 4px #6ee7b722; }
@@ -98,33 +180,40 @@
     .rabbit-stat span { color:var(--mws-muted,#a5b1c3); font-size:.9rem; }
     .rabbit-stat strong { color:#f6c453; font-size:clamp(1.5rem,2.5vw,2rem); line-height:1.4; overflow-wrap:anywhere; }
     .rabbit-stat small { color:var(--mws-subtle,#7e8ba0)!important; }
-    .rabbit-monitor__panel { padding:1.2rem; border:1px solid var(--mws-border,#354155); border-radius:16px; background:var(--mws-surface,#191f2a); }
+    .rabbit-monitor__panel { margin-bottom:1.15rem; padding:1.2rem; border:1px solid var(--mws-border,#354155); border-radius:16px; background:var(--mws-surface,#191f2a); }
     .rabbit-monitor__panel-heading { margin-bottom:1rem; }
     .rabbit-monitor__panel-heading h2 { margin:0 0 .2rem; font-size:1.2rem; }
     .rabbit-monitor__count { white-space:nowrap; color:#ffd27a; background:#44351e; padding:.35rem .7rem; border-radius:999px; font-weight:750; }
-    .rabbit-queues { min-width:1000px; }
+    .rabbit-queues { min-width:1000px; margin-bottom:0; }
     .rabbit-queues__name { font-weight:750; overflow-wrap:anywhere; }
+    .rabbit-queues__description { min-width:250px; max-width:460px; white-space:normal; }
     .rabbit-queues .has-messages { color:#ffd27a; font-weight:800; }
+    .rabbit-queues .has-errors { color:#ff9b8b; font-weight:850; }
     .rabbit-queue-state { display:inline-block; padding:.2rem .55rem; border-radius:999px; font-size:.8rem; font-weight:750; }
     .rabbit-queue-state.is-running { color:#9cf0c7; background:#183b32; }
     .rabbit-queue-state.is-other { color:#ffe0a0; background:#44351e; }
-    .rabbit-monitor__empty { padding:2rem; border:1px solid var(--mws-border,#354155); border-radius:14px; background:var(--mws-surface,#191f2a); }
+    .rabbit-monitor__alert { margin:.6rem 0; padding:1rem; border:1px solid #814b38; border-radius:12px; color:#ffd8ca; background:#3a2422; overflow-wrap:anywhere; }
+    .rabbit-monitor__alert small { display:block; margin-top:.4rem; color:#e6b5a5; }
+    .rabbit-monitor__empty { padding:1.25rem; border:1px dashed var(--mws-border,#354155); border-radius:12px; color:var(--mws-muted,#a5b1c3); background:var(--mws-surface,#191f2a); }
     .rabbit-monitor__note { color:var(--mws-muted,#a5b1c3); margin-top:.8rem; font-size:.85rem; }
     @media(max-width:900px) { .rabbit-monitor__stats { grid-template-columns:repeat(2,minmax(0,1fr)); } }
-    @media(max-width:560px) { .rabbit-monitor__header,.rabbit-monitor__panel-heading { align-items:flex-start; flex-direction:column; } .rabbit-monitor__stats { grid-template-columns:1fr; } }
+    @media(max-width:560px) { .rabbit-monitor__header,.rabbit-monitor__panel-heading { align-items:flex-start; flex-direction:column; } .rabbit-monitor__stats { grid-template-columns:1fr; } .rabbit-monitor__refresh { width:100%; justify-content:center; } }
 </style>
 
 @code {
     private RabbitMqMonitoringSnapshot? Snapshot;
-    private string? ErrorMessage;
+    private IReadOnlyList<RabbitMqLogSummary> LogSummaries = Array.Empty<RabbitMqLogSummary>();
+    private IReadOnlyList<RabbitMqLogEventSummary> LogEvents = Array.Empty<RabbitMqLogEventSummary>();
+    private string? RabbitError;
+    private string? SqlError;
     private bool IsLoading;
     private CancellationTokenSource? _refreshCancellation;
     private PeriodicTimer? _timer;
 
     protected override async Task OnInitializedAsync()
     {
-        await RefreshAsync();
         _refreshCancellation = new CancellationTokenSource();
+        await RefreshAsync();
         _timer = new PeriodicTimer(TimeSpan.FromSeconds(15));
         _ = AutoRefreshAsync(_refreshCancellation.Token);
     }
@@ -148,16 +237,41 @@
         IsLoading = true;
         try
         {
-            ErrorMessage = null;
-            Snapshot = await Monitoring.GetSnapshotAsync(_refreshCancellation?.Token ?? CancellationToken.None);
+            var token = _refreshCancellation?.Token ?? CancellationToken.None;
+            RabbitError = null;
+            SqlError = null;
+
+            try
+            {
+                Snapshot = await Monitoring.GetSnapshotAsync(token);
+            }
+            catch (OperationCanceledException) when (token.IsCancellationRequested) { throw; }
+            catch (Exception ex)
+            {
+                RabbitError = ex is HttpRequestException
+                    ? "به Management API دسترسی نداریم. آدرس، پورت ۱۵۶۷۲، فعال بودن افزونه rabbitmq_management و مجوز کاربر را بررسی کنید."
+                    : ex.Message;
+            }
+
+            try
+            {
+                var summariesTask = Monitoring.GetLogSummaryAsync(token);
+                var eventsTask = Monitoring.GetLogEventsAsync(token);
+                await Task.WhenAll(summariesTask, eventsTask);
+                LogSummaries = await summariesTask;
+                LogEvents = await eventsTask;
+            }
+            catch (OperationCanceledException) when (token.IsCancellationRequested) { throw; }
+            catch (Exception ex)
+            {
+                SqlError = ex is Microsoft.Data.SqlClient.SqlException
+                    ? "اتصال یا اجرای پرس‌وجو روی دیتابیس ناموفق بود. اتصال دیتابیس و وجود جدول‌های گزارش را بررسی کنید."
+                    : ex.Message;
+                LogSummaries = Array.Empty<RabbitMqLogSummary>();
+                LogEvents = Array.Empty<RabbitMqLogEventSummary>();
+            }
         }
         catch (OperationCanceledException) when (_refreshCancellation?.IsCancellationRequested == true) { }
-        catch (Exception ex)
-        {
-            ErrorMessage = ex is HttpRequestException
-                ? "به Management API دسترسی نداریم. آدرس، پورت ۱۵۶۷۲، فعال بودن افزونه rabbitmq_management و مجوز کاربر را بررسی کنید."
-                : ex.Message;
-        }
         finally
         {
             IsLoading = false;
@@ -167,6 +281,7 @@
 
     private static string N(long value) => value.ToString("N0");
     private static string N(int value) => value.ToString("N0");
+    private static bool IsError(string? level) => string.Equals(level, "Error", StringComparison.OrdinalIgnoreCase);
 
     public void Dispose()
     {
