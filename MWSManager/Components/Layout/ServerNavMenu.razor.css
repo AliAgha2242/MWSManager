@@ -39,11 +39,11 @@
     padding: 0;
     border: 1px solid #3b4b60;
     border-radius: 12px;
-    color: #8deadd;
-    background: #243442;
+    color: #ffd27a;
+    background: #3a3022;
     cursor: pointer;
 }
-.server-sidebar .sidebar-toggle:hover { background: #2c4552; border-color: #4e8b88; }
+.server-sidebar .sidebar-toggle:hover { background: #51402a; border-color: #b68a36; }
 .server-sidebar .sidebar-toggle i { font-size: 25px; }
 .server-sidebar .logo_name { overflow: hidden; color: #e7edf5; font-size: 16px; font-weight: 800; white-space: nowrap; }
 .server-sidebar.close .logo_name { display: none; }
@@ -79,7 +79,7 @@
     transition: background .15s ease, border-color .15s ease;
 }
 .server-sidebar .checkbox-list label:hover { background: #263443; border-color: #4a6377; }
-.server-sidebar .checkbox-list label.server-select-all { color: #a5f3e7; background: #193438; border-color: #2e6968; font-weight: 750; }
+.server-sidebar .checkbox-list label.server-select-all { color: #ffe0a0; background: #3b3020; border-color: #8b682b; font-weight: 750; }
 .server-sidebar .checkbox-list ::deep input[type="checkbox"] {
     flex: 0 0 16px;
     width: 16px;
@@ -87,7 +87,7 @@
     min-height: 16px;
     margin: 0;
     padding: 0;
-    accent-color: #43d9c3;
+    accent-color: #f6c453;
     cursor: pointer;
 }
 .server-sidebar .checkbox-list ::deep input[type="checkbox"]:disabled { cursor: not-allowed; opacity: .45; }
@@ -95,7 +95,7 @@
 .server-sidebar .server-success { color: #8de7bd !important; border-color: #2b5f50 !important; }
 .server-sidebar .server-error { color: #ff9aa8 !important; border-color: #70404b !important; background: #33232d !important; }
 .server-sidebar .server-normal { color: #cbd5e3 !important; }
-.server-sidebar .server-wait { color: #f6c96b; font-weight: 800; }
+.server-sidebar .server-wait { color: #ffad55; font-weight: 800; }
 .server-sidebar .server-state-icon { flex: 0 0 auto; font-size: 16px; }
 .server-sidebar.close .logo-details { justify-content: center; padding-inline: 4px; }
 .server-sidebar.close .checkbox-list { padding-inline: 5px; }
