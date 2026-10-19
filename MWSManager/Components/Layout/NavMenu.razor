@@ -1,141 +1,92 @@
-﻿
+@using Microsoft.AspNetCore.Components
+@inject NavigationManager Navigation
 
-
-
-<div dir="rtl" class="sidebar close">
+<div dir="rtl" class="sidebar @(isCollapsed ? "close" : "")">
     <div class="logo-details">
-        @* <i class="bx bxl-c-plus-plus"></i> *@
-        <div class="home-content">
+        <button type="button" class="sidebar-toggle" aria-label="تغییر اندازه منو" title="تغییر اندازه منو" @onclick="ToggleSidebar">
             <i class="bx bx-menu"></i>
-            @* <span class="text">Drop Down Sidebar</span> *@
-        </div>
-        <span class="logo_name">MWSMan</span>
+        </button>
+        <span class="logo_name">MWSManager</span>
     </div>
+
     <ul class="nav-links">
-
-
-        <li>
+        <li class="@(requestsOpen ? "showMenu" : "")">
             <div class="iocn-link">
-                <a>
-                    <i class="bx bx-rss"></i>
-                    <span class="link_name"> درخواست</span>
-                </a>
-                <i class="bx bxs-chevron-down arrow"></i>
+                <button type="button" class="nav-group-button" @onclick="() => ToggleGroup(0)" aria-expanded="@requestsOpen">
+                    <i class="bx bx-rss"></i><span class="link_name">درخواست</span>
+                </button>
+                <button type="button" class="arrow" aria-label="باز و بسته کردن درخواست‌ها" @onclick="() => ToggleGroup(0)"><i class="bx bxs-chevron-down"></i></button>
             </div>
             <ul class="sub-menu">
-                <li><NavLink href="/ReqOrMessCreateAndSend/10"> درخواست جدید</NavLink></li>
+                <li><NavLink href="/ReqOrMessCreateAndSend/10">درخواست جدید</NavLink></li>
                 <li><NavLink href="/ReqOrMessReadySend/10">ارسال درخواست آماده</NavLink></li>
                 <li><NavLink href="/ReqOrMessEditDelete/10">حذف و ویرایش درخواست</NavLink></li>
             </ul>
         </li>
-
-        <li>
+        <li class="@(messagesOpen ? "showMenu" : "")">
             <div class="iocn-link">
-                <a>
-                    <i class="bx bx-message"></i>
-                    <span class="link_name">پیام</span>
-                </a>
-                <i class="bx bxs-chevron-down arrow"></i>
+                <button type="button" class="nav-group-button" @onclick="() => ToggleGroup(1)" aria-expanded="@messagesOpen">
+                    <i class="bx bx-message"></i><span class="link_name">پیام</span>
+                </button>
+                <button type="button" class="arrow" aria-label="باز و بسته کردن پیام‌ها" @onclick="() => ToggleGroup(1)"><i class="bx bxs-chevron-down"></i></button>
             </div>
             <ul class="sub-menu">
-                @* <li><a class="link_name" href="#">پیام</a></li> *@
                 <li><NavLink href="/ReqOrMessCreateAndSend/20">پیام جدید</NavLink></li>
                 <li><NavLink href="/ReqOrMessReadySend/20">ارسال پیام آماده</NavLink></li>
                 <li><NavLink href="/ReqOrMessEditDelete/20">حذف و ویرایش پیام</NavLink></li>
-                @* <li><a href="#">Card Design</a></li> *@
             </ul>
         </li>
-        <li>
+        <li class="@(tasksOpen ? "showMenu" : "")">
             <div class="iocn-link">
-                <a>
-                    <i class="bx bx-time"></i>
-                    <span class="link_name">زمان بندی</span>
-                </a>
-                <i class="bx bxs-chevron-down arrow"></i>
+                <button type="button" class="nav-group-button" @onclick="() => ToggleGroup(2)" aria-expanded="@tasksOpen">
+                    <i class="bx bx-time"></i><span class="link_name">زمان‌بندی</span>
+                </button>
+                <button type="button" class="arrow" aria-label="باز و بسته کردن زمان‌بندی" @onclick="() => ToggleGroup(2)"><i class="bx bxs-chevron-down"></i></button>
             </div>
             <ul class="sub-menu">
-                <li><a class="link_name" href="#">زمان بندی</a></li>
-                <li><a href="/RabbitTaskCreate">ایجاد زمان بندی</a></li>
-                <li><a href="/RabbitTaskRead">لیست زمان بندی ها</a></li>
-
-                @* <li><a href="/RabbitTaskRead">ویرایش زمان بندی</a></li> *@
-
+                <li><NavLink href="/RabbitTaskCreate">ایجاد زمان‌بندی</NavLink></li>
+                <li><NavLink href="/RabbitTaskRead">لیست زمان‌بندی‌ها</NavLink></li>
             </ul>
         </li>
-        @* <li>
+        <li class="@(readyOpen ? "showMenu" : "")">
             <div class="iocn-link">
-                <a>
-                    <i class="bx bx-collection"></i>
-                    <span class="link_name">نقاط پایان</span>
-                </a>
-                <i class="bx bxs-chevron-down arrow"></i>
+                <button type="button" class="nav-group-button" @onclick="() => ToggleGroup(3)" aria-expanded="@readyOpen">
+                    <i class="bx bx-book-alt"></i><span class="link_name">عملیات آماده</span>
+                </button>
+                <button type="button" class="arrow" aria-label="باز و بسته کردن عملیات آماده" @onclick="() => ToggleGroup(3)"><i class="bx bxs-chevron-down"></i></button>
             </div>
             <ul class="sub-menu">
-                <li><a class="link_name" href="#">نقاط پایان</a></li>
-                <li><a href="#">لیست نقاط پایان</a></li>
-                <li><a href="#">بدنه نقاط پایان</a></li>
-            </ul>
-        </li> *@
-       @*  <li>
-            <div class="iocn-link">
-                <a>
-                    <i class="bx bxs-message-rounded"></i>
-                    <span class="link_name">ربیت</span>
-                </a>
-                <i class="bx bxs-chevron-down arrow"></i>
-            </div>
-            <ul class="sub-menu">
-                <li><a class="link_name" href="#">ربیت</a></li>
-                <li><a href="#">مدیریت صف ها</a></li>
-                <li><a href="#">مدیریت اکسچنج ها</a></li>
-                <li><a href="#">مدیریت هاست ها</a></li>
-                <li><a href="#">مدیریت کاربران</a></li>
-            </ul>
-        </li> *@
-        <li>
-            <div class="iocn-link">
-                <a>
-                    <i class="bx bx-book-alt"></i>
-                    <span class="link_name">عملیات آماده</span>
-                </a>
-                <i class="bx bxs-chevron-down arrow"></i>
-            </div>
-            <ul class="sub-menu">
-                <li><a class="link_name" href="#">عملیات آماده</a></li>
-                <li><a href="/ReqOrMessReadyCreate/20">ایجاد پیام آماده</a></li>
-                <li><a href="/ReqOrMessReadyCreate/10">ایجاد درخواست آماده</a></li>
-                <li><a href="/SendAgainOnLogBase">ارسال درخواست یا پیام مجدد</a></li>
-
+                <li><NavLink href="/ReqOrMessReadyCreate/20">ایجاد پیام آماده</NavLink></li>
+                <li><NavLink href="/ReqOrMessReadyCreate/10">ایجاد درخواست آماده</NavLink></li>
+                <li><NavLink href="/SendAgainOnLogBase">ارسال مجدد از گزارش</NavLink></li>
             </ul>
         </li>
-
-        <li>
-            <div class="profile-details">
-                <div class="profile-content">
-                    <img src="media/logo2 (002).png" alt="ProfileLogo" />
-                </div>
-                <div class="name-job">
-                    <div class="profile_name">هلدینگ صنعتی مینو</div>
-                    <div class="job">شرکت قاسم ایران</div>
-                </div>
-                <i class="bx bx-log-out"></i>
-            </div>
+        <li class="nav-home"><NavLink href="/" Match="NavLinkMatch.All"><i class="bx bx-home-alt-2"></i><span class="link_name">صفحه اصلی</span></NavLink></li>
+        <li class="profile-details">
+            <div class="profile-content"><img src="media/logo2 (002).png" alt="نشان شرکت" /></div>
+            <div class="name-job"><div class="profile_name">هلدینگ صنعتی مینو</div><div class="job">شرکت قاسم ایران</div></div>
         </li>
     </ul>
 </div>
-<script>
-        let arrows = document.querySelectorAll(".arrow");
-    arrows.forEach((arrow) => {
-        arrow.addEventListener("click", (e) => {
-            let arrowParent = arrow.closest("li");
-            arrowParent.classList.toggle("showMenu");
-        });
-    });
-    let sidebar = document.querySelector(".sidebar");
-    let sidebarBtn = document.querySelector(".bx-menu");
-    sidebarBtn.addEventListener("click", () => {
-        sidebar.classList.toggle("close");
-    });
 
-</script>
+@code {
+    private bool isCollapsed = true;
+    private bool requestsOpen;
+    private bool messagesOpen;
+    private bool tasksOpen;
+    private bool readyOpen;
 
+    private void ToggleSidebar() => isCollapsed = !isCollapsed;
+
+    private void ToggleGroup(int group)
+    {
+        switch (group)
+        {
+            case 0: requestsOpen = !requestsOpen; break;
+            case 1: messagesOpen = !messagesOpen; break;
+            case 2: tasksOpen = !tasksOpen; break;
+            case 3: readyOpen = !readyOpen; break;
+        }
+        if (isCollapsed) isCollapsed = false;
+    }
+}
