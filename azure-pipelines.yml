@@ -1,26 +1,32 @@
+
 # ============================================================
-# MWSManager - Docker Compose deployment to Rabbit-srv
+# MWSManager - Docker Compose Deployment to Rabbit-srv
 # ============================================================
-# How this pipeline works:
-# 1) It runs on the Windows build agent installed on the TFS server.
-# 2) It opens a PowerShell Remoting (WinRM) session to Rabbit-srv.
-# 3) It copies repository files to the deployment directory on Rabbit-srv.
-# 4) It runs "docker compose up -d --build" on Rabbit-srv, where Docker is installed.
 #
-# SETUP BEFORE RUNNING:
-# - Assumes docker-compose.yml is at the repository root. Change composeFile if needed.
-# - Ensure Dockerfile/build contexts referenced by Compose are inside the repository.
-# - Configure PowerShell Remoting (WinRM) from the TFS agent to Rabbit-srv.
-# - The account must be allowed to connect over WinRM and run Docker commands on Rabbit-srv.
-# - In TFS/Azure DevOps Pipeline > Variables, add:
-#     RabbitSrvUsername = DOMAIN\username (normal variable)
-#     RabbitSrvPassword = password (mark as SECRET)
-# - Never put real passwords in this YAML file.
-# - Prefer WinRM over HTTPS and restrict remote access for production.
+# Execution:
+#   - Pipeline runs on the Windows agent installed on TFS.
+#   - Docker is installed on Rabbit-srv.
+#   - PowerShell Remoting (WinRM) is used for remote execution.
 #
-# Deployment gate:
-# Deployment runs only if the commit message contains "deploy".
-# Remove the condition on the task if every successful run should deploy automatically.
+# Pipeline steps:
+#   1. Validate configuration
+#   2. Connect to Rabbit-srv
+#   3. Prepare deployment directory
+#   4. Copy repository files
+#   5. Verify Docker environment
+#   6. Deploy containers
+#   7. Verify deployment
+#   8. Cleanup remote session
+#
+# Required pipeline variables:
+#   RabbitSrvUsername = DOMAIN\username
+#   RabbitSrvPassword = Secret
+#
+# Deployment condition:
+#   Commit message must contain "deploy".
+#
+# IMPORTANT:
+#   Configure WinRM and permissions on Rabbit-srv before running.
 # ============================================================
 
 trigger:
@@ -31,9 +37,7 @@ trigger:
 pr: none
 
 pool:
-  # Windows agent pool installed on the TFS server.
   name: WebAgentPool
-  
 
 variables:
   remoteComputer: 'Rabbit-srv'
@@ -41,87 +45,329 @@ variables:
   composeFile: 'docker-compose.yml'
 
 steps:
+
+  # ----------------------------------------------------------
+  # Step 1: Checkout repository
+  # ----------------------------------------------------------
   - checkout: self
     clean: true
+    displayName: 'Checkout Repository'
 
+  # ----------------------------------------------------------
+  # Step 2: Validate deployment configuration
+  # ----------------------------------------------------------
   - task: PowerShell@2
-    displayName: 'Deploy with Docker Compose to Rabbit-srv'
-    # Deploy only when the commit message contains "deploy".
+    displayName: '1 - Validate Configuration'
     condition: and(succeeded(), contains(variables['Build.SourceVersionMessage'], 'deploy'))
     inputs:
-      targetType: 'inline'
+      targetType: inline
       script: |
         $ErrorActionPreference = 'Stop'
 
-        $sourcePath = "$(Build.SourcesDirectory)"
-        $remoteComputer = "$(remoteComputer)"
-        $remoteDeployPath = "$(remoteDeployPath)"
-        $composeFile = "$(composeFile)"
+        $composePath = Join-Path `
+          "$(Build.SourcesDirectory)" `
+          "$(composeFile)"
 
-        $composePath = Join-Path $sourcePath $composeFile
         if (-not (Test-Path -LiteralPath $composePath)) {
-          throw "Compose file not found: $composePath. Update composeFile or add the Compose file to the repository root."
+          throw "Compose file not found: $composePath"
         }
 
-        if ([string]::IsNullOrWhiteSpace($env:RABBIT_SRV_USERNAME) -or
-            [string]::IsNullOrWhiteSpace($env:RABBIT_SRV_PASSWORD)) {
-          throw "Missing RabbitSrvUsername or RabbitSrvPassword pipeline variables. Define both and mark RabbitSrvPassword as secret."
+        if ([string]::IsNullOrWhiteSpace($env:RABBIT_SRV_USERNAME)) {
+          throw "RabbitSrvUsername pipeline variable is missing."
         }
 
-        $securePassword = ConvertTo-SecureString $env:RABBIT_SRV_PASSWORD -AsPlainText -Force
+        if ([string]::IsNullOrWhiteSpace($env:RABBIT_SRV_PASSWORD)) {
+          throw "RabbitSrvPassword pipeline variable is missing."
+        }
+
+        Write-Host "Configuration validation completed."
+        Write-Host "Compose file: $composePath"
+        Write-Host "Remote server: $(remoteComputer)"
+        Write-Host "Remote directory: $(remoteDeployPath)"
+    env:
+      RABBIT_SRV_USERNAME: $(RabbitSrvUsername)
+      RABBIT_SRV_PASSWORD: $(RabbitSrvPassword)
+
+  # ----------------------------------------------------------
+  # Step 3: Connect to Rabbit-srv and prepare deployment folder
+  # ----------------------------------------------------------
+  - task: PowerShell@2
+    displayName: '2 - Connect and Prepare Remote Directory'
+    condition: and(succeeded(), contains(variables['Build.SourceVersionMessage'], 'deploy'))
+    inputs:
+      targetType: inline
+      script: |
+        $ErrorActionPreference = 'Stop'
+
+        $securePassword = ConvertTo-SecureString `
+          $env:RABBIT_SRV_PASSWORD -AsPlainText -Force
+
         $credential = [System.Management.Automation.PSCredential]::new(
           $env:RABBIT_SRV_USERNAME,
           $securePassword
         )
 
         $session = $null
+
         try {
-          Write-Host "Connecting to $remoteComputer using PowerShell Remoting..."
-          $session = New-PSSession -ComputerName $remoteComputer -Credential $credential
+          Write-Host "Connecting to $(remoteComputer)..."
 
-          Write-Host "Preparing deployment directory: $remoteDeployPath"
-          Invoke-Command -Session $session -ArgumentList $remoteDeployPath -ScriptBlock {
+          $session = New-PSSession `
+            -ComputerName "$(remoteComputer)" `
+            -Credential $credential
+
+          Write-Host "Connection established."
+
+          Write-Host "Preparing deployment directory..."
+
+          Invoke-Command -Session $session -ArgumentList "$(remoteDeployPath)" -ScriptBlock {
             param($path)
-            New-Item -ItemType Directory -Path $path -Force | Out-Null
-          }
 
-          Write-Host "Copying repository files to Rabbit-srv (excluding .git)..."
-          $itemsToCopy = Get-ChildItem -LiteralPath $sourcePath -Force |
-            Where-Object { $_.Name -ne '.git' }
-          foreach ($item in $itemsToCopy) {
-            Copy-Item -Path $item.FullName -Destination $remoteDeployPath -ToSession $session -Recurse -Force
-          }
-
-          Write-Host "Checking Docker and Docker Compose on Rabbit-srv..."
-          Invoke-Command -Session $session -ScriptBlock {
             $ErrorActionPreference = 'Stop'
-            docker --version
-            if ($LASTEXITCODE -ne 0) { throw "docker --version failed" }
-            docker compose version
-            if ($LASTEXITCODE -ne 0) { throw "docker compose version failed" }
-          }
 
-          Write-Host "Starting/updating containers with Docker Compose..."
-          Invoke-Command -Session $session -ArgumentList $remoteDeployPath, $composeFile -ScriptBlock {
-            param($path, $file)
-            $ErrorActionPreference = 'Stop'
-            Set-Location -LiteralPath $path
-            docker compose -f $file up -d --build --remove-orphans
-            if ($LASTEXITCODE -ne 0) {
-              throw "docker compose up failed with exit code $LASTEXITCODE"
-            }
-            Write-Host "Current Compose services:"
-            docker compose -f $file ps
-          }
+            New-Item `
+              -ItemType Directory `
+              -Path $path `
+              -Force | Out-Null
 
-          Write-Host "Docker Compose deployment completed."
+            Write-Host "Deployment directory is ready: $path"
+          }
         }
         finally {
           if ($null -ne $session) {
-            Remove-PSSession -Session $session
+            Remove-PSSession $session
           }
         }
     env:
       RABBIT_SRV_USERNAME: $(RabbitSrvUsername)
       RABBIT_SRV_PASSWORD: $(RabbitSrvPassword)
 
+  # ----------------------------------------------------------
+  # Step 4: Copy repository files to Rabbit-srv
+  # ----------------------------------------------------------
+  - task: PowerShell@2
+    displayName: '3 - Copy Repository Files'
+    condition: and(succeeded(), contains(variables['Build.SourceVersionMessage'], 'deploy'))
+    inputs:
+      targetType: inline
+      script: |
+        $ErrorActionPreference = 'Stop'
+
+        $sourcePath = "$(Build.SourcesDirectory)"
+        $remoteDeployPath = "$(remoteDeployPath)"
+
+        $securePassword = ConvertTo-SecureString `
+          $env:RABBIT_SRV_PASSWORD -AsPlainText -Force
+
+        $credential = [System.Management.Automation.PSCredential]::new(
+          $env:RABBIT_SRV_USERNAME,
+          $securePassword
+        )
+
+        $session = $null
+
+        try {
+          Write-Host "Connecting to $(remoteComputer)..."
+
+          $session = New-PSSession `
+            -ComputerName "$(remoteComputer)" `
+            -Credential $credential
+
+          Write-Host "Copying repository files..."
+
+          $itemsToCopy = Get-ChildItem `
+            -LiteralPath $sourcePath `
+            -Force |
+            Where-Object { $_.Name -ne '.git' }
+
+          foreach ($item in $itemsToCopy) {
+            Write-Host "Copying: $($item.Name)"
+
+            Copy-Item `
+              -Path $item.FullName `
+              -Destination $remoteDeployPath `
+              -ToSession $session `
+              -Recurse `
+              -Force
+          }
+
+          Write-Host "Repository files copied successfully."
+        }
+        finally {
+          if ($null -ne $session) {
+            Remove-PSSession $session
+          }
+        }
+    env:
+      RABBIT_SRV_USERNAME: $(RabbitSrvUsername)
+      RABBIT_SRV_PASSWORD: $(RabbitSrvPassword)
+
+  # ----------------------------------------------------------
+  # Step 5: Verify Docker and Docker Compose on Rabbit-srv
+  # ----------------------------------------------------------
+  - task: PowerShell@2
+    displayName: '4 - Verify Docker Environment'
+    condition: and(succeeded(), contains(variables['Build.SourceVersionMessage'], 'deploy'))
+    inputs:
+      targetType: inline
+      script: |
+        $ErrorActionPreference = 'Stop'
+
+        $securePassword = ConvertTo-SecureString `
+          $env:RABBIT_SRV_PASSWORD -AsPlainText -Force
+
+        $credential = [System.Management.Automation.PSCredential]::new(
+          $env:RABBIT_SRV_USERNAME,
+          $securePassword
+        )
+
+        $session = $null
+
+        try {
+          $session = New-PSSession `
+            -ComputerName "$(remoteComputer)" `
+            -Credential $credential
+
+          Invoke-Command -Session $session -ScriptBlock {
+            $ErrorActionPreference = 'Stop'
+
+            Write-Host "Checking Docker version..."
+            docker --version
+
+            if ($LASTEXITCODE -ne 0) {
+              throw "Docker is unavailable."
+            }
+
+            Write-Host "Checking Docker Compose version..."
+            docker compose version
+
+            if ($LASTEXITCODE -ne 0) {
+              throw "Docker Compose is unavailable."
+            }
+
+            Write-Host "Docker environment is ready."
+          }
+        }
+        finally {
+          if ($null -ne $session) {
+            Remove-PSSession $session
+          }
+        }
+    env:
+      RABBIT_SRV_USERNAME: $(RabbitSrvUsername)
+      RABBIT_SRV_PASSWORD: $(RabbitSrvPassword)
+
+  # ----------------------------------------------------------
+  # Step 6: Deploy containers using Docker Compose
+  # ----------------------------------------------------------
+  - task: PowerShell@2
+    displayName: '5 - Deploy Docker Compose'
+    condition: and(succeeded(), contains(variables['Build.SourceVersionMessage'], 'deploy'))
+    inputs:
+      targetType: inline
+      script: |
+        $ErrorActionPreference = 'Stop'
+
+        $securePassword = ConvertTo-SecureString `
+          $env:RABBIT_SRV_PASSWORD -AsPlainText -Force
+
+        $credential = [System.Management.Automation.PSCredential]::new(
+          $env:RABBIT_SRV_USERNAME,
+          $securePassword
+        )
+
+        $session = $null
+
+        try {
+          $session = New-PSSession `
+            -ComputerName "$(remoteComputer)" `
+            -Credential $credential
+
+          Invoke-Command `
+            -Session $session `
+            -ArgumentList "$(remoteDeployPath)", "$(composeFile)" `
+            -ScriptBlock {
+              param($path, $file)
+
+              $ErrorActionPreference = 'Stop'
+
+              Set-Location -LiteralPath $path
+
+              Write-Host "Starting Docker Compose deployment..."
+              Write-Host "Directory: $path"
+              Write-Host "Compose file: $file"
+
+              docker compose -f $file up -d --build --remove-orphans
+
+              if ($LASTEXITCODE -ne 0) {
+                throw "Docker Compose deployment failed. Exit code: $LASTEXITCODE"
+              }
+
+              Write-Host "Docker Compose deployment completed."
+            }
+        }
+        finally {
+          if ($null -ne $session) {
+            Remove-PSSession $session
+          }
+        }
+    env:
+      RABBIT_SRV_USERNAME: $(RabbitSrvUsername)
+      RABBIT_SRV_PASSWORD: $(RabbitSrvPassword)
+
+  # ----------------------------------------------------------
+  # Step 7: Verify deployment status
+  # ----------------------------------------------------------
+  - task: PowerShell@2
+    displayName: '6 - Verify Deployment'
+    condition: and(succeeded(), contains(variables['Build.SourceVersionMessage'], 'deploy'))
+    inputs:
+      targetType: inline
+      script: |
+        $ErrorActionPreference = 'Stop'
+
+        $securePassword = ConvertTo-SecureString `
+          $env:RABBIT_SRV_PASSWORD -AsPlainText -Force
+
+        $credential = [System.Management.Automation.PSCredential]::new(
+          $env:RABBIT_SRV_USERNAME,
+          $securePassword
+        )
+
+        $session = $null
+
+        try {
+          $session = New-PSSession `
+            -ComputerName "$(remoteComputer)" `
+            -Credential $credential
+
+          Invoke-Command `
+            -Session $session `
+            -ArgumentList "$(remoteDeployPath)", "$(composeFile)" `
+            -ScriptBlock {
+              param($path, $file)
+
+              $ErrorActionPreference = 'Stop'
+
+              Set-Location -LiteralPath $path
+
+              Write-Host "Checking Compose service status..."
+
+              docker compose -f $file ps
+
+              if ($LASTEXITCODE -ne 0) {
+                throw "Failed to retrieve Docker Compose service status."
+              }
+
+              Write-Host "Deployment verification completed."
+            }
+        }
+        finally {
+          if ($null -ne $session) {
+            Remove-PSSession $session
+          }
+        }
+    env:
+      RABBIT_SRV_USERNAME: $(RabbitSrvUsername)
+      RABBIT_SRV_PASSWORD: $(RabbitSrvPassword)
+```
