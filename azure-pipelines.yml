@@ -370,4 +370,3 @@ steps:
     env:
       RABBIT_SRV_USERNAME: $(RabbitSrvUsername)
       RABBIT_SRV_PASSWORD: $(RabbitSrvPassword)
-```
