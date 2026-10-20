@@ -1,83 +1,126 @@
-# Azure DevOps pipeline for MWSManager (.NET 10)
+# ============================================================
+# MWSManager - Docker Compose deployment to Rabbit-srv
+# ============================================================
+# How this pipeline works:
+# 1) It runs on the Windows build agent installed on the TFS server.
+# 2) It opens a PowerShell Remoting (WinRM) session to Rabbit-srv.
+# 3) It copies repository files to the deployment directory on Rabbit-srv.
+# 4) It runs "docker compose up -d --build" on Rabbit-srv, where Docker is installed.
+#
+# SETUP BEFORE RUNNING:
+# - Assumes docker-compose.yml is at the repository root. Change composeFile if needed.
+# - Ensure Dockerfile/build contexts referenced by Compose are inside the repository.
+# - Configure PowerShell Remoting (WinRM) from the TFS agent to Rabbit-srv.
+# - The account must be allowed to connect over WinRM and run Docker commands on Rabbit-srv.
+# - In TFS/Azure DevOps Pipeline > Variables, add:
+#     RabbitSrvUsername = DOMAIN\username (normal variable)
+#     RabbitSrvPassword = password (mark as SECRET)
+# - Never put real passwords in this YAML file.
+# - Prefer WinRM over HTTPS and restrict remote access for production.
+#
+# Deployment gate:
+# Deployment runs only if the commit message contains "deploy".
+# Remove the condition on the task if every successful run should deploy automatically.
+# ============================================================
+
 trigger:
   branches:
     include:
       - master
-      - ui/modernize-layout-and-global-styles
 
-pr:
-  branches:
-    include:
-      - master
+pr: none
 
 pool:
-  vmImage: 'windows-latest'
+  # Windows agent pool installed on the TFS server.
+  name: WebAgentPool
 
 variables:
-  buildConfiguration: 'Release'
-  webProject: 'MWSManager/MWSManager.csproj'
-  publishDirectory: '$(Build.ArtifactStagingDirectory)/publish'
-  nugetPackages: '$(Pipeline.Workspace)/.nuget/packages'
+  remoteComputer: 'Rabbit-srv'
+  remoteDeployPath: 'E:\MWSManager-New'
+  composeFile: 'docker-compose.yml'
 
 steps:
   - checkout: self
     clean: true
 
-  - task: UseDotNet@2
-    displayName: 'Install .NET SDK 10'
+  - task: PowerShell@2
+    displayName: 'Deploy with Docker Compose to Rabbit-srv'
+    # Deploy only when the commit message contains "deploy".
+    condition: and(succeeded(), contains(variables['Build.SourceVersionMessage'], 'deploy'))
     inputs:
-      packageType: 'sdk'
-      version: '10.0.x'
+      targetType: 'inline'
+      script: |
+        $ErrorActionPreference = 'Stop'
 
-  - task: Cache@2
-    displayName: 'Cache NuGet packages'
-    inputs:
-      key: 'nuget | "$(Agent.OS)" | **/*.csproj,global.json'
-      restoreKeys: |
-        nuget | "$(Agent.OS)"
-      path: '$(nugetPackages)'
+        $sourcePath = "$(Build.SourcesDirectory)"
+        $remoteComputer = "$(remoteComputer)"
+        $remoteDeployPath = "$(remoteDeployPath)"
+        $composeFile = "$(composeFile)"
 
-  - task: DotNetCoreCLI@2
-    displayName: 'Restore'
-    inputs:
-      command: 'restore'
-      projects: '$(webProject)'
+        $composePath = Join-Path $sourcePath $composeFile
+        if (-not (Test-Path -LiteralPath $composePath)) {
+          throw "Compose file not found: $composePath. Update composeFile or add the Compose file to the repository root."
+        }
+
+        if ([string]::IsNullOrWhiteSpace($env:RABBIT_SRV_USERNAME) -or
+            [string]::IsNullOrWhiteSpace($env:RABBIT_SRV_PASSWORD)) {
+          throw "Missing RabbitSrvUsername or RabbitSrvPassword pipeline variables. Define both and mark RabbitSrvPassword as secret."
+        }
+
+        $securePassword = ConvertTo-SecureString $env:RABBIT_SRV_PASSWORD -AsPlainText -Force
+        $credential = [System.Management.Automation.PSCredential]::new(
+          $env:RABBIT_SRV_USERNAME,
+          $securePassword
+        )
+
+        $session = $null
+        try {
+          Write-Host "Connecting to $remoteComputer using PowerShell Remoting..."
+          $session = New-PSSession -ComputerName $remoteComputer -Credential $credential
+
+          Write-Host "Preparing deployment directory: $remoteDeployPath"
+          Invoke-Command -Session $session -ArgumentList $remoteDeployPath -ScriptBlock {
+            param($path)
+            New-Item -ItemType Directory -Path $path -Force | Out-Null
+          }
+
+          Write-Host "Copying repository files to Rabbit-srv (excluding .git)..."
+          $itemsToCopy = Get-ChildItem -LiteralPath $sourcePath -Force |
+            Where-Object { $_.Name -ne '.git' }
+          foreach ($item in $itemsToCopy) {
+            Copy-Item -Path $item.FullName -Destination $remoteDeployPath -ToSession $session -Recurse -Force
+          }
+
+          Write-Host "Checking Docker and Docker Compose on Rabbit-srv..."
+          Invoke-Command -Session $session -ScriptBlock {
+            $ErrorActionPreference = 'Stop'
+            docker --version
+            if ($LASTEXITCODE -ne 0) { throw "docker --version failed" }
+            docker compose version
+            if ($LASTEXITCODE -ne 0) { throw "docker compose version failed" }
+          }
+
+          Write-Host "Starting/updating containers with Docker Compose..."
+          Invoke-Command -Session $session -ArgumentList $remoteDeployPath, $composeFile -ScriptBlock {
+            param($path, $file)
+            $ErrorActionPreference = 'Stop'
+            Set-Location -LiteralPath $path
+            docker compose -f $file up -d --build --remove-orphans
+            if ($LASTEXITCODE -ne 0) {
+              throw "docker compose up failed with exit code $LASTEXITCODE"
+            }
+            Write-Host "Current Compose services:"
+            docker compose -f $file ps
+          }
+
+          Write-Host "Docker Compose deployment completed."
+        }
+        finally {
+          if ($null -ne $session) {
+            Remove-PSSession -Session $session
+          }
+        }
     env:
-      NUGET_PACKAGES: '$(nugetPackages)'
+      RABBIT_SRV_USERNAME: $(RabbitSrvUsername)
+      RABBIT_SRV_PASSWORD: $(RabbitSrvPassword)
 
-  - task: DotNetCoreCLI@2
-    displayName: 'Build'
-    inputs:
-      command: 'build'
-      projects: '$(webProject)'
-      arguments: '--configuration $(buildConfiguration) --no-restore'
-    env:
-      NUGET_PACKAGES: '$(nugetPackages)'
-
-  - task: DotNetCoreCLI@2
-    displayName: 'Publish web application'
-    inputs:
-      command: 'publish'
-      publishWebProjects: false
-      projects: '$(webProject)'
-      arguments: '--configuration $(buildConfiguration) --no-build --output "$(publishDirectory)"'
-      zipAfterPublish: false
-      modifyOutputPath: false
-    env:
-      NUGET_PACKAGES: '$(nugetPackages)'
-
-  - task: ArchiveFiles@2
-    displayName: 'Create deployment ZIP'
-    inputs:
-      rootFolderOrFile: '$(publishDirectory)'
-      includeRootFolder: false
-      archiveType: 'zip'
-      archiveFile: '$(Build.ArtifactStagingDirectory)/MWSManager-$(Build.BuildId).zip'
-      replaceExistingArchive: true
-
-  - task: PublishBuildArtifacts@1
-    displayName: 'Publish deployment artifact'
-    inputs:
-      PathtoPublish: '$(Build.ArtifactStagingDirectory)/MWSManager-$(Build.BuildId).zip'
-      ArtifactName: 'MWSManager-drop'
-      publishLocation: 'Container'
