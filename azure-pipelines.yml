@@ -33,6 +33,7 @@ pr: none
 pool:
   # Windows agent pool installed on the TFS server.
   name: WebAgentPool
+  
 
 variables:
   remoteComputer: 'Rabbit-srv'
