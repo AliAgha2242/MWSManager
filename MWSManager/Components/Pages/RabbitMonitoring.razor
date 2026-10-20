@@ -95,11 +95,18 @@
         <div class="rabbit-monitor__empty">در حال دریافت وضعیت زنده RabbitMQ...</div>
     }
 
-    <section class="rabbit-monitor__panel rabbit-monitor__sql">
-        <div class="rabbit-monitor__panel-heading">
-            <div><h2>گزارش ارتباط سرورها</h2><p>گزارش هفت روز اخیر؛ فیلتر بر اساس فرستنده و گیرنده</p></div>
+    <details class="rabbit-monitor__panel rabbit-monitor__sql rabbit-monitor__collapse rabbit-monitor__service-logs">
+        <summary class="rabbit-monitor__panel-heading">
+            <span class="rabbit-monitor__collapse-title">
+                <span class="rabbit-monitor__chevron">⌄</span>
+                <span>
+                    <strong>گزارش ارتباط سرورها</strong>
+                    <small>گزارش هفت روز اخیر؛ فیلتر بر اساس فرستنده و گیرنده</small>
+                </span>
+            </span>
             <span class="rabbit-monitor__count">@FilteredLogSummaries.Count از @LogSummaries.Count ردیف</span>
-        </div>
+        </summary>
+        <div class="rabbit-monitor__collapse-body">
         <div class="rabbit-monitor__filters">
             <label>
                 <span>فرستنده</span>
@@ -156,7 +163,8 @@
                 </table>
             </div>
         }
-    </section>
+        </div>
+    </details>
 
     <details class="rabbit-monitor__panel rabbit-monitor__sql rabbit-monitor__collapse rabbit-monitor__events">
         <summary class="rabbit-monitor__panel-heading">
@@ -247,7 +255,12 @@
     .rabbit-monitor__collapse[open] > summary .rabbit-monitor__chevron { transform:rotate(180deg); }
     .rabbit-monitor__collapse-meta { display:inline-flex; flex-wrap:wrap; gap:.4rem; align-items:center; color:var(--mws-muted,#a5b1c3); font-size:.85rem; }
     .rabbit-monitor__collapse-body { padding:.8rem 1rem 1rem; }
-    .rabbit-monitor__events > summary { margin:0; }
+    .rabbit-monitor__events > summary, .rabbit-monitor__service-logs > summary { margin:0; }
+    .rabbit-monitor__service-logs > summary { margin-bottom:0; }
+    .rabbit-monitor__service-logs .rabbit-monitor__collapse-title { text-align:right; }
+    .rabbit-monitor__service-logs .rabbit-monitor__collapse-title > span:last-child { display:flex; flex-direction:column; gap:.2rem; }
+    .rabbit-monitor__service-logs .rabbit-monitor__collapse-title small { color:var(--mws-muted,#a5b1c3); font-weight:400; }
+    .rabbit-monitor__service-logs[open] > summary { margin-bottom:1rem; }
     .rabbit-monitor__events .rabbit-monitor__collapse-title { text-align:right; }
     .rabbit-monitor__events .rabbit-monitor__collapse-title span:last-child { display:flex; flex-direction:column; gap:.2rem; }
     .rabbit-monitor__events .rabbit-monitor__collapse-title small { color:var(--mws-muted,#a5b1c3); font-weight:400; }
