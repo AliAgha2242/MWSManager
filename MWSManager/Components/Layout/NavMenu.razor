@@ -61,8 +61,26 @@
                 <li><NavLink href="/SendAgainOnLogBase">ارسال مجدد از گزارش</NavLink></li>
             </ul>
         </li>
-        <li class="nav-home nav-monitoring"><NavLink href="/RabbitMonitoring"><i class="bx bx-pulse"></i><span class="link_name">مانیتورینگ RabbitMQ</span></NavLink></li>
-        <li class="nav-home"><NavLink href="/" Match="NavLinkMatch.All"><i class="bx bx-home-alt-2"></i><span class="link_name">صفحه اصلی</span></NavLink></li>
+
+        <li class="@(monitorOpen ? "showMenu" : "")">
+            <div class="iocn-link">
+                <button type="button" class="nav-group-button" @onclick="() => ToggleGroup(4)" aria-expanded="@monitorOpen">
+                    <i class="bx bx-pulse"></i><span class="link_name">مانیتورینگ</span>
+                </button>
+                <button type="button" class="arrow" aria-label="باز و بسته کردن مانیتورینگ" @onclick="() => ToggleGroup(4)"><i class="bx bxs-chevron-down"></i></button>
+            </div>
+            <ul class="sub-menu">
+                <li><NavLink href="/RabbitMonitoring">مانیتورینگ RabbitMQ</NavLink></li>
+            </ul>
+        </li>
+
+
+
+
+      @*   <li class="nav-home nav-monitoring"><NavLink href="/RabbitMonitoring"><i class="bx bx-pulse"></i>
+            <span class="link_name">مانیتورینگ RabbitMQ</span></NavLink>
+            </li> *@
+        <li class="nav-home"><NavLink href="/" Match="NavLinkMatch.All"><i class="bx bx-home-alt-2"></i><div></div><span class="link_name">صفحه اصلی</span></NavLink></li>
         <li class="profile-details">
             <div class="profile-content"><img src="media/logo2 (002).png" alt="نشان شرکت" /></div>
             <div class="name-job"><div class="profile_name">هلدینگ صنعتی مینو</div><div class="job">شرکت قاسم ایران</div></div>
@@ -76,6 +94,9 @@
     private bool messagesOpen;
     private bool tasksOpen;
     private bool readyOpen;
+    private bool monitorOpen;
+
+    
 
     private void ToggleSidebar() => isCollapsed = !isCollapsed;
 
@@ -87,6 +108,8 @@
             case 1: messagesOpen = !messagesOpen; break;
             case 2: tasksOpen = !tasksOpen; break;
             case 3: readyOpen = !readyOpen; break;
+            case 4: monitorOpen = !monitorOpen; break;
+
         }
         if (isCollapsed) isCollapsed = false;
     }
