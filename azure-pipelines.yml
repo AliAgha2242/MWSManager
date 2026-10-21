@@ -283,10 +283,7 @@ steps:
             -ComputerName "$(remoteComputer)" `
             -Credential $credential
 
-          Invoke-Command `
-            -Session $session `
-            -ArgumentList "$(remoteDeployPath)", "$(composeFile)" `
-            -ScriptBlock {
+          Invoke-Command -Session $session -ArgumentList "$(remoteDeployPath)", "$(composeFile)" -ScriptBlock {
               param($path, $file)
 
               $ErrorActionPreference = 'Stop'
