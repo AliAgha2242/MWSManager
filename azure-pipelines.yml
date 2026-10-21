@@ -5,6 +5,7 @@
 #
 # Execution:
 #   - Pipeline runs on the Windows agent installed on TFS.
+
 #   - Docker is installed on Rabbit-srv.
 #   - PowerShell Remoting (WinRM) is used for remote execution.
 #
