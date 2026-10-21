@@ -9,7 +9,6 @@
 #   - Docker is installed on Rabbit-srv.
 #   - PowerShell Remoting (WinRM) is used for remote execution.
 #
-
 # Pipeline steps:
 #   1. Validate configuration
 #   2. Connect to Rabbit-srv
