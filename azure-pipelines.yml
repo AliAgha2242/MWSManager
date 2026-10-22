@@ -37,6 +37,10 @@ trigger:
       - ui/modernize-layout-and-global-styles
 pr: none
 
+
+workspace:
+  clean: all
+  
 pool:
   name: WebAgentPool
 
