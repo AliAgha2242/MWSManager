@@ -213,60 +213,62 @@ steps:
       targetType: inline
       script: |
        
-          $ErrorActionPreference = 'Stop'
           
-          $securePassword = ConvertTo-SecureString `
-              $env:RABBIT_SRV_PASSWORD -AsPlainText -Force
-          
-          $credential = [System.Management.Automation.PSCredential]::new(
-              $env:RABBIT_SRV_USERNAME,
-              $securePassword
-          )
-          
-          $session = $null
-          
-          try {
-              $session = New-PSSession `
-                  -ComputerName "$(remoteComputer)" `
-                  -Credential $credential
-          
-              Invoke-Command `
-                  -Session $session `
-                  -ArgumentList "$(remoteDeployPath)", "$(composeFile)" `
-                  -ErrorAction Continue `
-                  -ScriptBlock {
-                      param($path, $file)
-          
-                      $ErrorActionPreference = 'Continue'
-          
-                      Set-Location -LiteralPath $path
-          
-                      Write-Host "Starting Docker Compose deployment..."
-                      Write-Host "Directory: $path"
-                      Write-Host "Compose file: $file"
-          
-                      docker compose -f $file up -d --build
-                      $dockerExitCode = $LASTEXITCODE
-          
-                      Write-Host "Docker exit code: $dockerExitCode"
-          
-                      if ($dockerExitCode -ne 0) {
-                          throw "Docker Compose failed with exit code: $dockerExitCode"
+              $ErrorActionPreference = 'Stop'
+              
+              $securePassword = ConvertTo-SecureString `
+                  $env:RABBIT_SRV_PASSWORD -AsPlainText -Force
+              
+              $credential = [System.Management.Automation.PSCredential]::new(
+                  $env:RABBIT_SRV_USERNAME,
+                  $securePassword
+              )
+              
+              $session = $null
+              
+              try {
+                  $session = New-PSSession `
+                      -ComputerName "$(remoteComputer)" `
+                      -Credential $credential
+              
+                  Invoke-Command `
+                      -Session $session `
+                      -ArgumentList "$(remoteDeployPath)", "$(composeFile)" `
+                      -ErrorAction Continue `
+                      -ScriptBlock {
+                          param($path, $file)
+              
+                          $ErrorActionPreference = 'Continue'
+              
+                          Set-Location -LiteralPath $path
+              
+                          Write-Host "Starting Docker Compose deployment..."
+                          Write-Host "Directory: $path"
+                          Write-Host "Compose file: $file"
+              
+                          docker compose -f $file up -d --build
+                          $dockerExitCode = $LASTEXITCODE
+              
+                          Write-Host "Docker exit code: $dockerExitCode"
+              
+                          if ($dockerExitCode -ne 0) {
+                              throw "Docker Compose failed with exit code: $dockerExitCode"
+                          }
+              
+                          Write-Host "Docker Compose deployment completed successfully."
+              
+                          [PSCustomObject]@{
+                              Success  = $true
+                              ExitCode = $dockerExitCode
+                          }
                       }
-          
-                      Write-Host "Docker Compose deployment completed successfully."
-          
-                      [PSCustomObject]@{
-                          Success  = $true
-                          ExitCode = $dockerExitCode
-                      }
-                  }
-          }
-          finally {
-              if ($null -ne $session) {
-                  Remove-PSSession $session
               }
-          }
+              finally {
+                  if ($null -ne $session) {
+                      Remove-PSSession $session
+                  }
+              }
+              
 
     env:
       RABBIT_SRV_USERNAME: $(RabbitSrvUsername)
