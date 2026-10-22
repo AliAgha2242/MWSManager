@@ -34,7 +34,6 @@ trigger:
   branches:
     include:
       - master
-      - ui/modernize-layout-and-global-styles
 pr: none
 
 pool:
