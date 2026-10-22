@@ -212,64 +212,48 @@ steps:
     inputs:
       targetType: inline
       script: |
-       
-          
-              $ErrorActionPreference = 'Stop'
-              
-              $securePassword = ConvertTo-SecureString `
-                  $env:RABBIT_SRV_PASSWORD -AsPlainText -Force
-              
-              $credential = [System.Management.Automation.PSCredential]::new(
-                  $env:RABBIT_SRV_USERNAME,
-                  $securePassword
-              )
-              
-              $session = $null
-              
-              try {
-                  $session = New-PSSession `
-                      -ComputerName "$(remoteComputer)" `
-                      -Credential $credential
-              
-                  Invoke-Command `
-                      -Session $session `
-                      -ArgumentList "$(remoteDeployPath)", "$(composeFile)" `
-                      -ErrorAction Continue `
-                      -ScriptBlock {
-                          param($path, $file)
-              
-                          $ErrorActionPreference = 'Continue'
-              
-                          Set-Location -LiteralPath $path
-              
-                          Write-Host "Starting Docker Compose deployment..."
-                          Write-Host "Directory: $path"
-                          Write-Host "Compose file: $file"
-              
-                          docker compose -f $file up -d --build
-                          $dockerExitCode = $LASTEXITCODE
-              
-                          Write-Host "Docker exit code: $dockerExitCode"
-              
-                          if ($dockerExitCode -ne 0) {
-                              throw "Docker Compose failed with exit code: $dockerExitCode"
-                          }
-              
-                          Write-Host "Docker Compose deployment completed successfully."
-              
-                          [PSCustomObject]@{
-                              Success  = $true
-                              ExitCode = $dockerExitCode
-                          }
-                      }
-              }
-              finally {
-                  if ($null -ne $session) {
-                      Remove-PSSession $session
-                  }
-              }
-              
+        $ErrorActionPreference = 'Stop'
 
+        $securePassword = ConvertTo-SecureString `
+          $env:RABBIT_SRV_PASSWORD -AsPlainText -Force
+
+        $credential = [System.Management.Automation.PSCredential]::new(
+          $env:RABBIT_SRV_USERNAME,
+          $securePassword
+        )
+
+        $session = $null
+
+        try {
+          $session = New-PSSession `
+            -ComputerName "$(remoteComputer)" `
+            -Credential $credential
+
+          Invoke-Command -Session $session -ScriptBlock {
+            $ErrorActionPreference = 'Stop'
+
+            Write-Host "Checking Docker version..."
+            docker --version
+
+            if ($LASTEXITCODE -ne 0) {
+              throw "Docker is unavailable."
+            }
+
+            Write-Host "Checking Docker Compose version..."
+            docker compose version
+
+            if ($LASTEXITCODE -ne 0) {
+              throw "Docker Compose is unavailable."
+            }
+
+            Write-Host "Docker environment is ready."
+          }
+        }
+        finally {
+          if ($null -ne $session) {
+            Remove-PSSession $session
+          }
+        }
     env:
       RABBIT_SRV_USERNAME: $(RabbitSrvUsername)
       RABBIT_SRV_PASSWORD: $(RabbitSrvPassword)
@@ -300,45 +284,54 @@ steps:
             -ComputerName "$(remoteComputer)" `
             -Credential $credential
 
-          Invoke-Command `
+          # Docker's native stdout/stderr are redirected by Start-Process on
+          # Rabbit-srv. Only ordinary PowerShell text returns over WinRM.
+          $result = Invoke-Command `
             -Session $session `
             -ArgumentList "$(remoteDeployPath)", "$(composeFile)" `
             -ScriptBlock {
               param($path, $file)
 
               $ErrorActionPreference = 'Stop'
-
               Set-Location -LiteralPath $path
 
-              Write-Host "Starting Docker Compose deployment..."
-              Write-Host "Directory: $path"
-              Write-Host "Compose file: $file"
-
-              # Redirect Docker output to files on the remote server.
-              # This avoids PowerShell remoting misclassifying native stderr
-              # output as a terminating NativeCommandError on the build agent.
               $stdout = Join-Path $path 'docker-deploy-out.log'
               $stderr = Join-Path $path 'docker-deploy-err.log'
+              $docker = (Get-Command docker.exe -ErrorAction Stop).Source
+              $arguments = "compose -f `"$file`" up -d --build"
 
-              docker compose -f $file up -d --build 1> $stdout 2> $stderr
-              $exitCode = $LASTEXITCODE
+              Write-Output "Starting Docker Compose on $env:COMPUTERNAME"
+              Write-Output "Directory: $path"
+              Write-Output "Compose file: $file"
 
-              Write-Host "----- Docker Compose standard output -----"
-              if (Test-Path -LiteralPath $stdout) {
-                Get-Content -LiteralPath $stdout
-              }
+              $process = Start-Process `
+                -FilePath $docker `
+                -ArgumentList $arguments `
+                -WorkingDirectory $path `
+                -Wait `
+                -PassThru `
+                -NoNewWindow `
+                -RedirectStandardOutput $stdout `
+                -RedirectStandardError $stderr
 
-              Write-Host "----- Docker Compose standard error -----"
-              if (Test-Path -LiteralPath $stderr) {
-                Get-Content -LiteralPath $stderr
-              }
+              $exitCode = $process.ExitCode
+              Write-Output "Docker Compose exit code: $exitCode"
 
               if ($exitCode -ne 0) {
-                throw "Docker Compose deployment failed. Exit code: $exitCode. See $stdout and $stderr on the remote server."
+                Write-Output "Deployment failed. Logs: $stdout ; $stderr"
+                throw "Docker Compose failed with exit code $exitCode"
               }
 
-              Write-Host "Docker Compose deployment completed successfully."
+              Write-Output 'DEPLOYMENT_OK'
             }
+
+          $result | ForEach-Object { Write-Host ([string]$_) }
+
+          if ($result -notcontains 'DEPLOYMENT_OK') {
+            throw 'Remote deployment did not return DEPLOYMENT_OK. Check the remote logs.'
+          }
+
+          Write-Host 'Docker Compose deployment completed successfully.'
         }
         finally {
           if ($null -ne $session) {
@@ -386,15 +379,32 @@ steps:
 
               Set-Location -LiteralPath $path
 
-              Write-Host "Checking Compose service status..."
+              Write-Output "Checking Compose service status..."
 
-              docker compose -f $file ps
+              $stdout = Join-Path $path 'docker-compose-ps-out.log'
+              $stderr = Join-Path $path 'docker-compose-ps-err.log'
+              $docker = (Get-Command docker.exe -ErrorAction Stop).Source
+              $arguments = "compose -f `"$file`" ps"
 
-              if ($LASTEXITCODE -ne 0) {
-                throw "Failed to retrieve Docker Compose service status."
+              $process = Start-Process `
+                -FilePath $docker `
+                -ArgumentList $arguments `
+                -WorkingDirectory $path `
+                -Wait `
+                -PassThru `
+                -NoNewWindow `
+                -RedirectStandardOutput $stdout `
+                -RedirectStandardError $stderr
+
+              if ($process.ExitCode -ne 0) {
+                throw "Failed to retrieve Docker Compose service status. Exit code: $($process.ExitCode). See $stderr"
               }
 
-              Write-Host "Deployment verification completed."
+              if (Test-Path -LiteralPath $stdout) {
+                Get-Content -LiteralPath $stdout | ForEach-Object { Write-Output ([string]$_) }
+              }
+
+              Write-Output "Deployment verification completed."
             }
         }
         finally {
