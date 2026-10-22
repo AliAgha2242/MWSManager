@@ -19,7 +19,61 @@
     body {
         display: block
     }
+    .action-panel-grid .btn {
+        width: 100%;
+        height: 40px;
+        padding: 4px 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        white-space: normal;
+        line-height: 1.4;
+        font-size: 12px;
+        border-radius: 10px;
+    }
 
+
+    .action-panel-grid .btn-warning {
+        background-color: #f5c451;
+        border-color: #f5c451;
+        color: #18202d;
+    }
+
+    .action-panel-grid .btn-success {
+        background-color: #39a879;
+        border-color: #39a879;
+        color: #fff;
+    }
+
+
+    .action-panel-grid .btn-danger {
+        background-color: #fa7890;
+        border-color: #fa7890;
+        color: #18202d;
+    }
+
+  
+    .server-button {
+        width: 100%;
+        height: 100%;
+        min-height: 40px;
+        padding: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #263449;
+        border: 1px solid #3b4c65;
+        color: #dce6f5;
+        border-radius: 10px;
+        font-size: 12px;
+        white-space: normal;
+    }
+
+        .server-button:hover {
+            background: #344963;
+            color: #fff;
+        }
     .search-panel {
         width: 90%;
         margin: 20px 120px auto;
@@ -140,12 +194,13 @@
                             <span class="value">@((!item.StopForce && DateTime.Compare(item.ToDateTime, DockerStaticDateTime.NowDateTime) == 1) ? "فعال" : "غیر فعال")</span>
                         </div>
                     </div>
-                     <div class="col-lg-3 col-md-6">
-                        <div class="info-item" style="padding:0;padding-right:20px">
-                            <input type="button" class="btn" @onclick="()=>ShowServer(item)" value="  لیست سرور ها " />
-                        </div>
+                    <div class="info-item p-0">
+                        <button type="button"
+                                class="btn server-button"
+                                @onclick="() => ShowServer(item)">
+                            لیست سرورها
+                        </button>
                     </div>
-
                 </div>
 
             </div>
