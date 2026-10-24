@@ -298,7 +298,7 @@ steps:
               $stdout = Join-Path $path 'docker-deploy-out.log'
               $stderr = Join-Path $path 'docker-deploy-err.log'
               $docker = (Get-Command docker.exe -ErrorAction Stop).Source
-              $arguments = "compose -f `"$file`" up -d --build"
+              $arguments = "compose up -d --build"
 
               Write-Output "Starting Docker Compose on $env:COMPUTERNAME"
               Write-Output "Directory: $path"
