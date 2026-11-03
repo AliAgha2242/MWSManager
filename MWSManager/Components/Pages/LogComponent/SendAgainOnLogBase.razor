@@ -1,0 +1,354 @@
+﻿@page "/SendAgainOnLogBase"
+@using Application.ServiceContract
+@using FluentValidation
+@using FluentValidation.Results
+@using MWSMan.Core.Infrastructure.Extenssion
+@using MWSMan.Core.Model.Events
+@using MWSMan.Core.Model.PublicModels.LogModels
+@using MWSMan.Core.Persistence.StaticConfiguration
+@using Model.ApplicationModels
+@using Model.PresentationModels
+@using Model.PublicModels
+@using Persistence
+@using System.Threading.Tasks
+@rendermode InteractiveServer
+@inject ILogService logService;
+@inject ISend send;
+@inject IList<ServerSelected> ServerSelecteds
+@inject IRequestHubService requestHubService
+@inject IValidator<RabbitConsumerRequestHub> Validator;
+@inject IMinooOperationConfiguration operationConfiguration
+
+<title>ارسال مجدد</title>
+<!-- Bootstrap 5 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+
+<style>
+
+
+
+
+
+    .form-container {
+        background: #ffffff7a;
+        border-radius: 10px;
+        padding: 30px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        max-width: 600px;
+        width: 85%;
+        min-width: 500px;
+        direction: rtl;
+        overflow: hidden;
+        transform: scale(1.2);
+        transform-origin: center;
+        margin-left: 12%;
+    }
+
+    .parameters-container {
+        max-height: 320px;
+        overflow-y: auto;
+        margin-bottom: 15px;
+        padding-right: 5px;
+    }
+
+    .form-row {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 10px;
+        margin-top: 5px;
+    }
+
+        .form-row input, .form-row select {
+            flex: 1;
+        }
+
+    .submit-btn {
+        display: block;
+        margin: 5px auto;
+        /* width: 120px; */
+    }
+
+    /* Scrollbar خوشگل */
+    .parameters-container::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .parameters-container::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 4px;
+    }
+
+    .parameters-container::-webkit-scrollbar-thumb {
+        background: #007bff;
+        border-radius: 4px;
+    }
+
+        .parameters-container::-webkit-scrollbar-thumb:hover {
+            background: #0056b3;
+        }
+
+    .remove-btn {
+        background: transparent;
+        border: none;
+        color: red;
+        font-size: 18px;
+        cursor: pointer;
+    }
+
+    .parameters-container {
+        scrollbar-width: none;
+    }
+
+        .parameters-container::-webkit-scrollbar {
+            display: none;
+        }
+
+    /* Shadow بالا و پایین فرم اصلی */
+    .form-container {
+        box-shadow: 0 -10px 15px rgba(0,0,0,.05), 0 10px 20px rgba(0,0,0,.15);
+    }
+
+    .invalid {
+        border: 2px solid red !important;
+    }
+
+</style>
+
+
+@if (ShowAlert)
+{
+    <div style="margin-left:11%;z-index:100;max-width: 500px;" class="alert alert-success alert-dismissible fade show" role="alert">
+        @AlertMessage
+        <button type="button" class="btn-close" @onclick="() => ShowAlert = false"></button>
+    </div>
+}
+
+
+
+
+<div class="form-container">
+    <!-- اولین ردیف: select -->
+    <div class="form-row mb-3 d-block">
+        <label class="col-form-label">شناسه(Identifier)  :</label>
+        <input class="form-control" @bind="Identifire" disabled="@isLoading" @oninput='async (e)=>
+                                                                                                              {
+                                                                                                                  await ChangeIdentifire(e);
+                                                                                                              }
+' />
+
+                                                               <div class="form-row d-inline">
+                                                                   <label class="col-form-label mt-1">نام تابع اجرا :</label>
+                                                                   <select class="form-control" @bind="ProccessorName">
+                @foreach (var item in operationConfiguration.GetAllMethods().Select(p => p.MethodName))
+                {
+                    <option value="@item">@item</option>
+                }
+            </select>
+            <label class="col-form-label mt-1">نوع ارسال قبل :</label>
+            <input class="form-control " @bind="ReqOrMessText" disabled />
+
+
+            <label class="col-form-label mt-1">فرستنده :</label>
+            <input class="form-control" @bind="SenderName" disabled />
+            <label class="col-form-label mt-1">گیرنده :</label>
+            <input class="form-control" @bind="ReceiverName" disabled />
+            <label class="col-form-label mt-1">بدنه :</label>
+            <textarea class="form-control" @bind="Body"></textarea>
+            <div class="col-12">
+                <label class="col-form-label mt-1">نوع ارسال جدید :</label>
+                <label>پیام</label>
+                <input class="" type="radio" checked=@(ReqOrMessEnum == RequestOrMessageEnum.Message) name="ReqOrMessEnum" @onchange="(e) => ChangeMessageRadio(e)" />
+                <label>درخواست</label>
+                <input class="" type="radio" checked=@(ReqOrMessEnum == RequestOrMessageEnum.Request) name="ReqOrMessEnum" @onchange="(e) => ChangeRequestRadio(e)" />
+            </div>
+        </div>
+
+
+    </div>
+    <div>
+        <div class="col-12 d-flex">
+            <button type="button" disabled="@isLoading" class="btn btn-success submit-btn d-inline" @onclick="() => SaveReqOrMess()">ذخیره</button>
+            <button type="button" disabled="@isLoading" class="btn btn-primary submit-btn d-inline " @onclick="() => SendRequestAsync()">ارسال به سرور های انتخابی </button>
+        </div>
+    </div>
+</div>
+
+@code {
+
+
+    public class ParameterInput
+    {
+        public string Name { get; set; } = "";
+        public string Value { get; set; } = "";
+    }
+
+    string? ProccessorName;
+    string? SenderName;
+    string? ReceiverName;
+    string? Identifire;
+    string? Body;
+    string? FullBody;
+    bool FindLog;
+    string? ReqOrMessText;
+    RequestOrMessageEnum ReqOrMessEnum;
+
+
+
+
+    bool ShowAlert = false;
+    string AlertMessage = "";
+    private bool isLoading = false;
+
+
+
+    // protected override void OnInitialized()
+    // {
+    //     ProccessorName = "...Loading";
+    //     ReqOrMessEnum = RequestOrMessageEnum.Message;
+    //     SenderName = "...Loading";
+    //     ReceiverName = "...Loading";
+    //     Body = "...Loading";
+    //     ReqOrMessText = "...Loading";
+    // }
+
+    private async Task SendRequestAsync()
+    {
+
+        if (FindLog)
+        {
+            if (ReqOrMessEnum is not (RequestOrMessageEnum.Message) && ReqOrMessEnum is not RequestOrMessageEnum.Request)
+            {
+                AlertMessage = "نوع ارسال جدید را مشخص کنید";
+                ShowAlert = true;
+                return;
+            }
+            // await send.SendAuto(ServerSelecteds.Where(p => p.isSelected).Select(_ => _.serverInfo.ServerName), ProccessorName, FullBody.TooDictionary(), ReqOrMessEnum).ToListAsync();
+        }
+        else
+        {
+            AlertMessage = "درخواستی یافت نشد";
+            ShowAlert = true;
+            ProccessorName = null;
+            // ReqOrMessEnum = RequestOrMessageEnum.Message;
+            SenderName = null;
+            ReceiverName = null;
+            ReqOrMessText = null;
+            Body = null;
+        }
+    }
+    public async Task ChangeIdentifire(ChangeEventArgs e)
+    {
+        if (e.Value.ToString().Length > 10)
+        {
+            this.ProccessorName = "...Loading";
+            // ReqOrMessEnum = RequestOrMessageEnum.Message;
+            SenderName = "...Loading";
+            ReceiverName = "...Loading";
+            Body = "...Loading";
+            ReqOrMessText = "...Loading";
+            changeLoading();
+            await Task.Yield();
+            await GetLog(e);
+            changeLoading();
+        }
+    }
+
+    public async Task GetLog(ChangeEventArgs e)
+    {
+        bool ShowAlert = false;
+
+        var result = await logService.GetLogInAllServer(e.Value.ToString());
+        if (!result.IsSuccess)
+        {
+            FindLog = false;
+            AlertMessage = "مشکلی در فراخونی داده پیش آمده است" + "\n" + result.ErrMsg;
+            ShowAlert = true;
+            ProccessorName = null;
+            // ReqOrMessEnum = result.Data.IsTransactional? RequestOrMessageEnum.Request : RequestOrMessageEnum.Message;
+            SenderName = null;
+            ReceiverName = null;
+            Body = null;
+            ReqOrMessText = null;
+            return;
+        }
+        if (result.Data is null)
+        {
+            FindLog = false;
+            AlertMessage = "درخواستی یافت نشد";
+            ShowAlert = true;
+            ProccessorName = null;
+            // ReqOrMessEnum = RequestOrMessageEnum.Message;
+            SenderName = null;
+            ReceiverName = null;
+            Body = null;
+            ReqOrMessText = null;
+            return;
+
+        }
+        FindLog = true;
+        ProccessorName = result.Data.RoutingKey;
+        ReqOrMessEnum = (result.Data.IsTransactional ? RequestOrMessageEnum.Request : RequestOrMessageEnum.Message);
+        SenderName = result.Data.SenderName;
+        ReceiverName = result.Data.ReceiverName;
+        Body = result.Data.Body?.Substring(0, (result.Data.Body.Length > 500 ? 500 : result.Data.Body.Length));
+        FullBody = result.Data.Body;
+        ReqOrMessText = (result.Data.IsTransactional ? "Transactional With Api" : "Queue With Rabbit");
+        StateHasChanged();
+
+    }
+
+
+    public async Task SaveReqOrMess()
+    {
+
+        if (ReqOrMessEnum is not (RequestOrMessageEnum.Message) && ReqOrMessEnum is not RequestOrMessageEnum.Request)
+        {
+            AlertMessage = "نوع ارسال جدید را مشخص کنید";
+            ShowAlert = true;
+            return;
+        }
+        changeLoading();
+        string? data = Body;
+        RabbitConsumerRequestHub packet = new RabbitConsumerRequestHub(data, ProccessorName, (ReqOrMessEnum is RequestOrMessageEnum.Request), DockerStaticDateTime.NowDateTime.Ticks.ToString(), ProccessorName);
+        ValidationResult validaitionResult = Validator.Validate(packet);
+        if (!validaitionResult.IsValid)
+        {
+            AlertMessage = validaitionResult.Errors.First().ErrorMessage ?? "";
+            ShowAlert = true;
+            changeLoading();
+            return;
+        }
+        var result = await requestHubService.CreateAsync(packet);
+        if (!result.IsSuccess)
+        {
+            AlertMessage = result.ErrMsg ?? "";
+            ShowAlert = true;
+            return;
+        }
+        AlertMessage = "موفق بود";
+        ShowAlert = true;
+
+        changeLoading();
+
+
+    }
+    private void changeLoading()
+    {
+        isLoading = !isLoading;
+        StateHasChanged();
+    }
+    private void ChangeMessageRadio(ChangeEventArgs e)
+    {
+        if (e.Value.ToString().ToLower() == "on")
+            ReqOrMessEnum = RequestOrMessageEnum.Message;
+    }
+    private void ChangeRequestRadio(ChangeEventArgs e)
+    {
+        if (e.Value.ToString().ToLower() == "on")
+            ReqOrMessEnum = RequestOrMessageEnum.Request;
+    }
+
+
+
+
+}
