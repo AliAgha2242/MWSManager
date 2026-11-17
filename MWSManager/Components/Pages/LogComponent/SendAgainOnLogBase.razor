@@ -155,11 +155,17 @@
             <label class="col-form-label mt-1">بدنه :</label>
             <textarea class="form-control" @bind="Body"></textarea>
             <div class="col-12">
-                <label class="col-form-label mt-1">نوع ارسال جدید :</label>
                 <label>پیام</label>
-                <input class="" type="radio" checked=@(ReqOrMessEnum == RequestOrMessageEnum.Message) name="ReqOrMessEnum" @onchange="(e) => ChangeMessageRadio(e)" />
+                <input type="radio"
+                       name="ReqOrMessEnum"
+                       checked="@(ReqOrMessEnum == RequestOrMessageEnum.Message)"
+                       @onchange="() => ReqOrMessEnum = RequestOrMessageEnum.Message" />
+
                 <label>درخواست</label>
-                <input class="" type="radio" checked=@(ReqOrMessEnum == RequestOrMessageEnum.Request) name="ReqOrMessEnum" @onchange="(e) => ChangeRequestRadio(e)" />
+                <input type="radio"
+                       name="ReqOrMessEnum"
+                       checked="@(ReqOrMessEnum == RequestOrMessageEnum.Request)"
+                       @onchange="() => ReqOrMessEnum = RequestOrMessageEnum.Request" />
             </div>
         </div>
 
@@ -222,7 +228,7 @@
                 ShowAlert = true;
                 return;
             }
-            // await send.SendAuto(ServerSelecteds.Where(p => p.isSelected).Select(_ => _.serverInfo.ServerName), ProccessorName, FullBody.TooDictionary(), ReqOrMessEnum).ToListAsync();
+            await send.SendAuto(ServerSelecteds.Where(p => p.isSelected).Select(_ => _.serverInfo.ServerName), ProccessorName, FullBody.TooDictionary(), ReqOrMessEnum).ToListAsync();
         }
         else
         {
@@ -288,12 +294,14 @@
         FindLog = true;
         ProccessorName = result.Data.RoutingKey;
         ReqOrMessEnum = (result.Data.IsTransactional ? RequestOrMessageEnum.Request : RequestOrMessageEnum.Message);
-        SenderName = result.Data.SenderName;
+        if(ReqOrMessEnum is RequestOrMessageEnum.Message)
+
+            SenderName = result.Data.SenderName;
         ReceiverName = result.Data.ReceiverName;
         Body = result.Data.Body?.Substring(0, (result.Data.Body.Length > 500 ? 500 : result.Data.Body.Length));
         FullBody = result.Data.Body;
         ReqOrMessText = (result.Data.IsTransactional ? "Transactional With Api" : "Queue With Rabbit");
-        StateHasChanged();
+        await InvokeAsync(StateHasChanged);
 
     }
 
